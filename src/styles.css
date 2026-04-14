@@ -1155,9 +1155,7 @@ input[type='search']:focus {
     linear-gradient(
       180deg,
       #ffffff 0 80px,
-      #0c2142 80px,
-      #1d4f8f 58%,
-      #7cc9ff 100%
+      #0c2142 80px
     );
   padding: 1.45rem;
 }
