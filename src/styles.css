@@ -988,7 +988,7 @@ code {
 
 .profile-panel .panel-heading h3,
 .history-panel .panel-heading h3 {
-  color: #2f2e36;
+  color: #ffffff;
 }
 
 .notice {
@@ -1189,7 +1189,7 @@ input[type='search']:focus {
     linear-gradient(
       180deg,
       #ffffff 0 80px,
-      #0c2142 80px
+      #00266345 80px
     );
   padding: 1.45rem;
 }
