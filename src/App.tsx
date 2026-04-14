@@ -392,8 +392,8 @@ function OnboardingView(props: {
   const finalStep = 3;
 
   const dialogue = [
-    "Salut dresseur. Moi, c'est le Professeur Coco. Je serai ton guide pour cette aventure Pokemon a Yffiniac.",
-    "Dans la ville, des figurines Pokemon sont cachées un peu partout. Chaque figurine possède une puce NFC que tu pourras scanner pour l'ajouter a ton Pokedex.",
+    "Salut dresseur. Moi, c'est le Professeur Coco. Je serai ton guide pour cette aventure Pokémon à Yffiniac.",
+    "Dans la ville, des figurines Pokémon sont cachées un peu partout. Chaque figurine possède une puce NFC que tu pourras scanner pour l'ajouter à ton Pokedex.",
     '',
     "Parfait. Maintenant, rejoins-moi devant la mairie d'Yffiniac pour recuperer ton premier starter et lancer officiellement ton aventure.",
   ];
@@ -749,7 +749,7 @@ export default function App() {
           <div className="dex-toolbar">
             <div className="dex-toolbar-head">
               <p className="eyebrow">Collection</p>
-              <h3>Pokedex d Yffiniac</h3>
+              <h3>Pokedex d'Yffiniac</h3>
             </div>
 
             <div className="toolbar-controls">
