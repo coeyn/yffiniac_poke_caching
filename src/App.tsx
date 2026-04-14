@@ -143,10 +143,12 @@ function CaptureView(props: {
   const clue = getPokemonClue(pokemon);
   const [phase, setPhase] = useState<CapturePhase>('approach');
   const [hasRecorded, setHasRecorded] = useState(false);
+  const [wasAlreadyFound, setWasAlreadyFound] = useState(Boolean(foundRecord));
 
   useEffect(() => {
     setPhase('approach');
     setHasRecorded(false);
+    setWasAlreadyFound(Boolean(props.collection.found[props.captureState.dex]));
     const revealTimer = window.setTimeout(() => {
       setPhase('ready');
     }, 1100);
@@ -200,7 +202,7 @@ function CaptureView(props: {
         ? `${pokemon.name} surgit des herbes. Lance une Pokeball.`
         : phase === 'throwing'
           ? 'La Pokeball file droit sur la figurine.'
-          : foundRecord
+          : wasAlreadyFound
             ? `${pokemon.name} est deja dans ta collection.`
             : `${pokemon.name} rejoint maintenant ta collection locale.`;
 
@@ -233,7 +235,7 @@ function CaptureView(props: {
         <div className="capture-copy">
           <h1>{pokemon.name}</h1>
           <p className="capture-text">
-            {foundRecord
+            {wasAlreadyFound
               ? 'Cette figurine a deja ete validee sur cet appareil.'
               : 'Tu viens de trouver une figurine Pokemon cachée dans Yffiniac.'}
           </p>
