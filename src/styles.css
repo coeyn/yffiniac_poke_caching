@@ -110,6 +110,10 @@ code {
   display: grid;
   place-items: center;
   padding: 1.5rem;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.54), transparent 30%),
+    linear-gradient(180deg, rgba(248, 241, 226, 0.18), rgba(29, 84, 44, 0.1)),
+    linear-gradient(180deg, #eff6d7 0%, #d9e8a7 40%, #9fbe69 100%);
 }
 
 .capture-card {
@@ -126,6 +130,23 @@ code {
   backdrop-filter: blur(18px);
 }
 
+.capture-card-scene {
+  width: min(100%, 38rem);
+  gap: 1.15rem;
+  padding: clamp(1.1rem, 3vw, 1.6rem);
+  background:
+    linear-gradient(180deg, rgba(255, 251, 244, 0.74), rgba(255, 248, 237, 0.9)),
+    rgba(255, 251, 244, 0.86);
+}
+
+.capture-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .capture-card h1 {
   font-family: 'Bricolage Grotesque', sans-serif;
   margin: 0;
@@ -136,6 +157,7 @@ code {
 
 .capture-image {
   width: min(100%, 220px);
+  filter: drop-shadow(0 24px 24px rgba(20, 38, 54, 0.18));
 }
 
 .capture-dex {
@@ -150,14 +172,216 @@ code {
   color: var(--muted);
 }
 
+.capture-arena {
+  position: relative;
+  width: 100%;
+  min-height: 25rem;
+  overflow: hidden;
+  border-radius: calc(var(--radius-xl) - 8px);
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.78), transparent 20%),
+    linear-gradient(180deg, #dff3a7 0%, #b6db78 48%, #5f8d3b 100%);
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  isolation: isolate;
+}
+
+.capture-glow,
+.capture-impact,
+.capture-ball-flight,
+.capture-grass,
+.capture-pokemon-stage,
+.capture-scene-text {
+  position: absolute;
+}
+
+.capture-glow {
+  inset: auto 50% 5.9rem;
+  width: 14rem;
+  height: 5rem;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 240, 161, 0.82), rgba(255, 240, 161, 0));
+  opacity: 0.72;
+}
+
+.capture-grass {
+  left: -5%;
+  width: 110%;
+  background-repeat: repeat-x;
+  background-size: 112px 100%;
+}
+
+.capture-grass-back {
+  bottom: 7.4rem;
+  height: 7.2rem;
+  opacity: 0.84;
+  background-image:
+    linear-gradient(120deg, transparent 0 16%, rgba(63, 106, 34, 0.78) 16% 22%, transparent 22% 34%, rgba(77, 123, 48, 0.76) 34% 42%, transparent 42% 56%, rgba(59, 97, 31, 0.72) 56% 63%, transparent 63% 100%);
+  animation: grass-wave 2.8s ease-in-out infinite;
+}
+
+.capture-grass-front {
+  bottom: 0;
+  height: 9.8rem;
+  background-image:
+    linear-gradient(120deg, transparent 0 12%, rgba(47, 87, 26, 0.96) 12% 18%, transparent 18% 28%, rgba(56, 103, 30, 0.96) 28% 36%, transparent 36% 48%, rgba(37, 72, 20, 0.98) 48% 56%, transparent 56% 68%, rgba(63, 118, 35, 0.98) 68% 76%, transparent 76% 100%);
+  animation: grass-wave 1.8s ease-in-out infinite reverse;
+}
+
+.capture-pokemon-stage {
+  left: 50%;
+  bottom: 4.7rem;
+  transform: translate3d(-50%, 2.8rem, 0) scale(0.74);
+  transform-origin: center bottom;
+  opacity: 0;
+  transition:
+    transform 460ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    opacity 260ms ease;
+  z-index: 2;
+}
+
+.capture-arena.is-approach .capture-pokemon-stage {
+  animation: wild-rustle 0.7s ease-in-out infinite;
+}
+
+.capture-arena.is-ready .capture-pokemon-stage,
+.capture-arena.is-throwing .capture-pokemon-stage,
+.capture-arena.is-captured .capture-pokemon-stage {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0) scale(1);
+}
+
+.capture-arena.is-ready .capture-image {
+  animation: float-pokemon 3.6s ease-in-out infinite;
+}
+
+.capture-ball-flight {
+  right: 1.4rem;
+  bottom: 1.5rem;
+  width: 3.4rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #fff 0 22%, transparent 23%),
+    linear-gradient(180deg, #f25a47 0 47%, #1e2b39 47% 53%, #f7f3ed 53% 100%);
+  box-shadow:
+    inset 0 0 0 5px rgba(255, 255, 255, 0.82),
+    0 16px 22px rgba(20, 38, 54, 0.18);
+  opacity: 0;
+  transform: translate3d(0, 0, 0) scale(0.84);
+  z-index: 3;
+}
+
+.capture-arena.is-throwing .capture-ball-flight {
+  opacity: 1;
+  animation: ball-throw 1.15s cubic-bezier(0.22, 0.84, 0.18, 1) forwards;
+}
+
+.capture-impact {
+  left: 50%;
+  bottom: 11rem;
+  width: 1rem;
+  aspect-ratio: 1;
+  transform: translateX(-50%) scale(0.1);
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(circle, rgba(255, 248, 220, 0.92), rgba(255, 248, 220, 0));
+  z-index: 4;
+}
+
+.capture-arena.is-throwing .capture-impact {
+  animation: ball-impact 0.46s ease-out 0.92s forwards;
+}
+
+.capture-arena.is-captured .capture-pokemon-stage {
+  animation: caught-bounce 0.52s ease-out;
+}
+
+.capture-arena.is-captured .capture-glow {
+  background: radial-gradient(circle, rgba(255, 230, 117, 0.9), rgba(255, 230, 117, 0));
+}
+
+.capture-scene-text {
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 5;
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border-radius: 20px;
+  background: rgba(20, 38, 54, 0.68);
+  color: #fff7ef;
+  text-align: left;
+  backdrop-filter: blur(12px);
+}
+
+.capture-copy {
+  display: grid;
+  gap: 0.7rem;
+  justify-items: center;
+}
+
 .capture-text {
   margin: 0;
   color: var(--muted);
 }
 
+.capture-clue {
+  width: 100%;
+  margin: 0;
+  padding: 1rem 1.05rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.56);
+  border: 1px solid rgba(20, 38, 54, 0.08);
+  color: var(--ink);
+  text-align: left;
+}
+
+.capture-clue span,
+.selection-clue span {
+  display: block;
+  margin-bottom: 0.32rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
 .capture-button {
   width: 100%;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
+  gap: 0.8rem;
+  min-height: 3.4rem;
+  padding: 0.95rem 1.3rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff8f2;
+  box-shadow: 0 14px 30px rgba(201, 71, 56, 0.24);
+}
+
+.capture-button:disabled {
+  cursor: wait;
+  opacity: 0.74;
+  transform: none;
+}
+
+.capture-button.is-throw {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent),
+    var(--accent);
+}
+
+.capture-button-ball {
+  width: 1.2rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #fff 0 26%, transparent 27%),
+    linear-gradient(180deg, #f25a47 0 47%, #1e2b39 47% 53%, #f7f3ed 53% 100%);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.82);
 }
 
 .hero {
@@ -735,6 +959,12 @@ input[type='search']:focus {
   color: var(--muted);
 }
 
+.selection-clue {
+  max-width: 34rem;
+  margin: 0.7rem 0 0;
+  color: var(--ink);
+}
+
 .status-badge {
   min-height: 2rem;
   padding: 0.25rem 0.8rem;
@@ -844,6 +1074,78 @@ input[type='search']:focus {
   }
 }
 
+@keyframes grass-wave {
+  0%,
+  100% {
+    transform: translateX(0) skewX(0deg);
+  }
+  50% {
+    transform: translateX(-8px) skewX(1.5deg);
+  }
+}
+
+@keyframes wild-rustle {
+  0%,
+  100% {
+    transform: translate3d(-50%, 2.8rem, 0) rotate(0deg) scale(0.74);
+  }
+  35% {
+    transform: translate3d(-51%, 2.5rem, 0) rotate(-3deg) scale(0.75);
+  }
+  65% {
+    transform: translate3d(-49%, 2.4rem, 0) rotate(3deg) scale(0.76);
+  }
+}
+
+@keyframes ball-throw {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(0.84) rotate(0deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translate3d(-6rem, -6rem, 0) scale(0.92) rotate(180deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translate3d(-11rem, -11.5rem, 0) scale(0.98) rotate(300deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-13.2rem, -12rem, 0) scale(1.02) rotate(420deg);
+  }
+}
+
+@keyframes ball-impact {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateX(-50%) scale(4.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) scale(7.2);
+  }
+}
+
+@keyframes caught-bounce {
+  0% {
+    transform: translate3d(-50%, 0, 0) scale(1);
+  }
+  35% {
+    transform: translate3d(-50%, -0.8rem, 0) scale(0.96);
+  }
+  65% {
+    transform: translate3d(-50%, 0.15rem, 0) scale(1.02);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0) scale(1);
+  }
+}
+
 @media (max-width: 1080px) {
   .hero {
     grid-template-columns: 1fr;
@@ -867,6 +1169,22 @@ input[type='search']:focus {
 }
 
 @media (max-width: 760px) {
+  .capture-shell {
+    padding: 0.9rem;
+  }
+
+  .capture-arena {
+    min-height: 22rem;
+  }
+
+  .capture-pokemon-stage {
+    bottom: 4.9rem;
+  }
+
+  .capture-arena.is-throwing .capture-ball-flight {
+    animation-name: ball-throw-mobile;
+  }
+
   .hero {
     padding: 1.25rem 1rem 6rem;
   }
@@ -911,7 +1229,32 @@ input[type='search']:focus {
     align-items: flex-start;
   }
 
+  .capture-header,
+  .selection-strip {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .dex-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@keyframes ball-throw-mobile {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(0.84) rotate(0deg);
+  }
+  40% {
+    opacity: 1;
+    transform: translate3d(-4rem, -4.5rem, 0) scale(0.92) rotate(180deg);
+  }
+  75% {
+    opacity: 1;
+    transform: translate3d(-7rem, -8rem, 0) scale(0.98) rotate(300deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-8.6rem, -8.5rem, 0) scale(1.02) rotate(420deg);
   }
 }

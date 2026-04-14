@@ -1,4 +1,5 @@
 import { startTransition, useDeferredValue, useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { getPokemonClue } from './data/pokemon-clues';
 import { pokemonCatalog } from './data/pokemon';
 import {
   createEmptyCollection,
@@ -24,6 +25,8 @@ type CaptureState = {
   id: number;
   tagCode: string | null;
 };
+
+type CapturePhase = 'approach' | 'ready' | 'throwing' | 'captured';
 
 type PokemonView = {
   id: number;
@@ -119,27 +122,108 @@ function CaptureView(props: {
 }) {
   const pokemon = displayCatalog[props.captureState.id - 1];
   const foundRecord = props.collection.found[props.captureState.dex];
+  const clue = getPokemonClue(pokemon);
+  const [phase, setPhase] = useState<CapturePhase>('approach');
+
+  useEffect(() => {
+    setPhase('approach');
+    const revealTimer = window.setTimeout(() => {
+      setPhase('ready');
+    }, 1100);
+
+    return () => window.clearTimeout(revealTimer);
+  }, [props.captureState.dex]);
+
+  useEffect(() => {
+    if (phase !== 'throwing') {
+      return;
+    }
+
+    const captureTimer = window.setTimeout(() => {
+      setPhase('captured');
+    }, 1450);
+
+    return () => window.clearTimeout(captureTimer);
+  }, [phase]);
+
+  function handlePrimaryAction(): void {
+    if (phase === 'ready') {
+      setPhase('throwing');
+      return;
+    }
+
+    if (phase === 'captured') {
+      props.onCapture();
+    }
+  }
+
+  const primaryButtonLabel =
+    phase === 'ready'
+      ? 'Lancer la Pokeball'
+      : phase === 'throwing'
+        ? 'Capture en cours...'
+        : foundRecord
+          ? 'Revenir a ma collection'
+          : 'Ajouter a ma collection';
+
+  const sceneMessage =
+    phase === 'approach'
+      ? 'Les hautes herbes bougent... quelque chose approche.'
+      : phase === 'ready'
+        ? `${pokemon.name} surgit des herbes. Lance une Pokeball.`
+        : phase === 'throwing'
+          ? 'La Pokeball file droit sur la figurine.'
+          : foundRecord
+            ? `${pokemon.name} etait deja enregistre sur cet appareil.`
+            : `${pokemon.name} est maintenant dans ta collection locale.`;
 
   return (
     <main className="capture-shell">
-      <section className="capture-card">
-        <p className="hero-kicker">Capture detectee</p>
-        <img
-          src={resolvePublicAsset(pokemon.image)}
-          alt={pokemon.name}
-          width="220"
-          height="220"
-          className="capture-image"
-        />
-        <span className="capture-dex">#{pokemon.dex}</span>
-        <h1>{pokemon.name}</h1>
-        <p className="capture-text">
-          {foundRecord
-            ? 'Cette figurine a deja ete ajoutee sur cet appareil.'
-            : 'Tu viens de tomber sur une nouvelle figurine Pokemon a Yffiniac.'}
-        </p>
-        <button className="primary-button capture-button" type="button" onClick={props.onCapture}>
-          {foundRecord ? 'Revenir a ma collection' : 'Ajouter a ma collection'}
+      <section className="capture-card capture-card-scene">
+        <div className="capture-header">
+          <p className="hero-kicker">Rencontre sauvage</p>
+          <span className="capture-dex">#{pokemon.dex}</span>
+        </div>
+
+        <div className={`capture-arena is-${phase}`} aria-live="polite">
+          <div className="capture-glow" aria-hidden="true" />
+          <div className="capture-grass capture-grass-back" aria-hidden="true" />
+          <div className="capture-pokemon-stage">
+            <img
+              src={resolvePublicAsset(pokemon.image)}
+              alt={pokemon.name}
+              width="220"
+              height="220"
+              className="capture-image"
+            />
+          </div>
+          <div className="capture-grass capture-grass-front" aria-hidden="true" />
+          <div className="capture-ball-flight" aria-hidden="true" />
+          <div className="capture-impact" aria-hidden="true" />
+          <p className="capture-scene-text">{sceneMessage}</p>
+        </div>
+
+        <div className="capture-copy">
+          <h1>{pokemon.name}</h1>
+          <p className="capture-text">
+            {foundRecord
+              ? 'Cette figurine a deja ete validee sur cet appareil, mais tu peux rejouer la scene.'
+              : 'Tu viens de trouver une figurine Pokemon cachee dans Yffiniac.'}
+          </p>
+          <p className="capture-clue">
+            <span>Indice</span>
+            {clue}
+          </p>
+        </div>
+
+        <button
+          className={`capture-button ${phase === 'ready' ? 'is-throw' : ''}`}
+          type="button"
+          onClick={handlePrimaryAction}
+          disabled={phase === 'approach' || phase === 'throwing'}
+        >
+          <span className="capture-button-ball" aria-hidden="true" />
+          {primaryButtonLabel}
         </button>
       </section>
     </main>
@@ -170,6 +254,7 @@ export default function App() {
   const selectedPokemon =
     displayCatalog.find((pokemon) => pokemon.dex === selectedDex) ?? displayCatalog[24];
   const selectedFoundRecord = collection.found[selectedPokemon.dex];
+  const selectedClue = getPokemonClue(selectedPokemon);
   const lastHistoryEntry = collection.history[0];
   const lastScannedPokemon = lastHistoryEntry ? displayCatalog[lastHistoryEntry.id - 1] : null;
 
@@ -443,6 +528,10 @@ export default function App() {
                 #{selectedPokemon.dex} {selectedPokemon.name}
               </h4>
               <p>{selectedFoundRecord ? 'Deja capture' : 'Pas encore capture'}</p>
+              <p className="selection-clue">
+                <span>Indice</span>
+                {selectedClue}
+              </p>
             </div>
 
             <div className="selection-status">
