@@ -547,32 +547,6 @@ code {
   color: var(--danger);
 }
 
-.hero-metrics {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.9rem;
-  margin: 2.1rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.hero-metrics li {
-  padding-top: 1rem;
-  border-top: 1px solid var(--line);
-}
-
-.hero-metrics strong {
-  display: block;
-  font-size: 1.15rem;
-}
-
-.hero-metrics span {
-  display: block;
-  margin-top: 0.32rem;
-  color: var(--muted);
-  font-size: 0.94rem;
-}
-
 .hero-stage {
   display: grid;
   gap: 1rem;
@@ -1259,24 +1233,6 @@ input[type='search']:focus {
 
   .hero-stage {
     display: none;
-  }
-
-  .hero-metrics {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.65rem;
-    margin-top: 1.3rem;
-  }
-
-  .hero-metrics li {
-    padding-top: 0.65rem;
-  }
-
-  .hero-metrics strong {
-    font-size: 0.98rem;
-  }
-
-  .hero-metrics span {
-    font-size: 0.8rem;
   }
 
   .hero-progress,

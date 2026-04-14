@@ -357,21 +357,6 @@ export default function App() {
               {notice.message ? <p>{notice.message}</p> : null}
             </div>
           ) : null}
-
-          <ul className="hero-metrics">
-            <li>
-              <strong>{foundCount} / 151</strong>
-              <span>Pokemon trouves</span>
-            </li>
-            <li>
-              <strong>{completionPercent}%</strong>
-              <span>Pokedex complete</span>
-            </li>
-            <li>
-              <strong>{lastScannedPokemon ? lastScannedPokemon.name : 'Aucun'}</strong>
-              <span>Derniere capture</span>
-            </li>
-          </ul>
         </div>
 
         <div className="hero-stage" aria-live="polite">
