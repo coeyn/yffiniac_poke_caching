@@ -1228,6 +1228,11 @@ input[type='search']:focus {
   width: min(100%, 18rem);
 }
 
+.toolbar-controls input[type='search'] {
+  min-height: 2.45rem;
+  padding: 0.65rem 0.9rem;
+}
+
 .filter-row {
   display: flex;
   flex-wrap: wrap;
@@ -1235,8 +1240,8 @@ input[type='search']:focus {
 }
 
 .filter-chip {
-  min-height: 2.75rem;
-  padding: 0.65rem 1rem;
+  min-height: 2.35rem;
+  padding: 0.45rem 0.9rem;
   border-radius: 10px;
   border: 1px solid rgba(123, 161, 214, 0.14);
   background: rgba(13, 24, 44, 0.78);
