@@ -963,10 +963,8 @@ code {
   background:
     linear-gradient(
       180deg,
-      #d9f2ff 0 80px,
-      #12345d 80px,
-      #205f94 58%,
-      #7bc6ff 100%
+      #d9f2ff 0 40px,
+      #0c2142 80px
     );
 }
 
@@ -974,10 +972,8 @@ code {
   background:
     linear-gradient(
       180deg,
-      #ffe2b8 0 80px,
-      #3d2146 80px,
-      #6d3577 56%,
-      #d38cff 100%
+      #ffe2b8 0 40px,
+      #0c2142 80px
     );
 }
 
