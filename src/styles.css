@@ -331,10 +331,22 @@ code {
   overflow: hidden;
   border-radius: calc(var(--radius-xl) - 8px);
   background:
-    radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.78), transparent 20%),
-    linear-gradient(180deg, #dff3a7 0%, #b6db78 48%, #5f8d3b 100%);
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.82), transparent 18%),
+    radial-gradient(circle at 24% 28%, rgba(255, 244, 196, 0.24), transparent 16%),
+    linear-gradient(180deg, #e9f7bc 0%, #c7e58a 34%, #79a94a 68%, #446927 100%);
   border: 1px solid rgba(255, 255, 255, 0.52);
   isolation: isolate;
+}
+
+.capture-arena::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 110%, rgba(37, 72, 20, 0.3), transparent 38%),
+    linear-gradient(180deg, transparent 0 56%, rgba(39, 83, 25, 0.16) 100%);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .capture-glow,
@@ -360,24 +372,70 @@ code {
   left: -5%;
   width: 110%;
   background-repeat: repeat-x;
-  background-size: 112px 100%;
+  background-size: 144px 100%;
+  transform-origin: center bottom;
+}
+
+.capture-grass::before,
+.capture-grass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat-x;
+  background-position: bottom center;
+  pointer-events: none;
 }
 
 .capture-grass-back {
   bottom: 7.4rem;
-  height: 7.2rem;
+  height: 7.8rem;
   opacity: 0.84;
   background-image:
-    linear-gradient(120deg, transparent 0 16%, rgba(63, 106, 34, 0.78) 16% 22%, transparent 22% 34%, rgba(77, 123, 48, 0.76) 34% 42%, transparent 42% 56%, rgba(59, 97, 31, 0.72) 56% 63%, transparent 63% 100%);
-  animation: grass-wave 2.8s ease-in-out infinite;
+    linear-gradient(180deg, rgba(235, 249, 196, 0.16), rgba(235, 249, 196, 0));
+  animation: grass-wave-back 3.8s ease-in-out infinite;
+}
+
+.capture-grass-back::before {
+  background-size: 132px 100%;
+  background-image:
+    radial-gradient(ellipse at 20% 100%, rgba(171, 215, 95, 0.86) 0 14%, transparent 15%),
+    radial-gradient(ellipse at 52% 100%, rgba(122, 170, 62, 0.9) 0 14%, transparent 15%),
+    radial-gradient(ellipse at 84% 100%, rgba(97, 142, 44, 0.84) 0 12%, transparent 13%);
+  filter: blur(1px);
+}
+
+.capture-grass-back::after {
+  background-size: 118px 100%;
+  background-image:
+    linear-gradient(70deg, transparent 0 18%, rgba(82, 134, 43, 0.88) 18% 22%, transparent 22% 38%, rgba(101, 152, 55, 0.72) 38% 42%, transparent 42% 58%, rgba(74, 117, 35, 0.86) 58% 62%, transparent 62% 100%);
+  clip-path: polygon(0 100%, 0 58%, 7% 72%, 13% 42%, 20% 72%, 28% 28%, 36% 74%, 44% 36%, 52% 70%, 60% 24%, 68% 74%, 76% 40%, 84% 72%, 92% 32%, 100% 58%, 100% 100%);
+  animation: grass-detail-drift 5.4s ease-in-out infinite;
 }
 
 .capture-grass-front {
   bottom: 0;
-  height: 9.8rem;
+  height: 10.4rem;
   background-image:
-    linear-gradient(120deg, transparent 0 12%, rgba(47, 87, 26, 0.96) 12% 18%, transparent 18% 28%, rgba(56, 103, 30, 0.96) 28% 36%, transparent 36% 48%, rgba(37, 72, 20, 0.98) 48% 56%, transparent 56% 68%, rgba(63, 118, 35, 0.98) 68% 76%, transparent 76% 100%);
-  animation: grass-wave 1.8s ease-in-out infinite reverse;
+    linear-gradient(180deg, rgba(33, 72, 20, 0.08), rgba(33, 72, 20, 0.32));
+  animation: grass-wave-front 2.2s ease-in-out infinite;
+}
+
+.capture-grass-front::before {
+  background-size: 156px 100%;
+  background-image:
+    linear-gradient(70deg, transparent 0 14%, rgba(60, 121, 35, 0.98) 14% 17%, transparent 17% 29%, rgba(45, 96, 27, 0.96) 29% 33%, transparent 33% 46%, rgba(83, 143, 42, 0.98) 46% 50%, transparent 50% 61%, rgba(37, 76, 22, 0.98) 61% 65%, transparent 65% 100%);
+  clip-path: polygon(0 100%, 0 62%, 5% 84%, 10% 36%, 16% 80%, 22% 18%, 30% 82%, 38% 28%, 46% 74%, 54% 12%, 62% 80%, 70% 26%, 78% 78%, 86% 20%, 94% 84%, 100% 60%, 100% 100%);
+  filter: drop-shadow(0 -10px 18px rgba(211, 244, 145, 0.16));
+}
+
+.capture-grass-front::after {
+  background-size: 164px 100%;
+  background-image:
+    radial-gradient(circle at 14% 84%, rgba(225, 255, 175, 0.22) 0 5%, transparent 6%),
+    radial-gradient(circle at 56% 76%, rgba(255, 247, 196, 0.16) 0 4%, transparent 5%),
+    linear-gradient(76deg, transparent 0 16%, rgba(87, 158, 48, 0.8) 16% 18%, transparent 18% 34%, rgba(49, 97, 27, 0.92) 34% 37%, transparent 37% 54%, rgba(105, 176, 58, 0.74) 54% 56%, transparent 56% 100%);
+  clip-path: polygon(0 100%, 0 70%, 6% 88%, 12% 44%, 20% 84%, 28% 24%, 36% 86%, 44% 34%, 52% 74%, 60% 16%, 68% 82%, 76% 30%, 84% 80%, 92% 22%, 100% 72%, 100% 100%);
+  animation: grass-detail-drift 4.2s ease-in-out infinite reverse;
 }
 
 .capture-pokemon-stage {
@@ -1271,13 +1329,36 @@ input[type='search']:focus {
   }
 }
 
-@keyframes grass-wave {
+@keyframes grass-wave-back {
   0%,
   100% {
-    transform: translateX(0) skewX(0deg);
+    transform: translateX(0) rotate(0deg) scaleY(1);
   }
   50% {
-    transform: translateX(-8px) skewX(1.5deg);
+    transform: translateX(-10px) rotate(-1.2deg) scaleY(1.03);
+  }
+}
+
+@keyframes grass-wave-front {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg) scaleY(1);
+  }
+  35% {
+    transform: translateX(6px) rotate(0.8deg) scaleY(1.02);
+  }
+  65% {
+    transform: translateX(-5px) rotate(-0.9deg) scaleY(0.99);
+  }
+}
+
+@keyframes grass-detail-drift {
+  0%,
+  100% {
+    transform: translateX(0) scaleX(1);
+  }
+  50% {
+    transform: translateX(-12px) scaleX(1.02);
   }
 }
 
