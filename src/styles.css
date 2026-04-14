@@ -430,6 +430,7 @@ code {
 
 .hero-copy {
   max-width: 44rem;
+  align-self: start;
 }
 
 .hero-kicker,
@@ -486,7 +487,7 @@ code {
 }
 
 .hero-notice {
-  margin-top: 1.4rem;
+  margin-top: 0;
   max-width: 32rem;
 }
 

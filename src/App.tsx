@@ -351,9 +351,6 @@ export default function App() {
     <div className="app-shell">
       <header className="hero">
         <div className="hero-copy">
-          <p className="hero-kicker">Yffiniac Poke Caching</p>
-          <h1>Retrouve les figurines Pokemon cachees dans la ville et remplis ton Pokedex.</h1>
-
           {notice.title || notice.message ? (
             <div className={`notice notice-${notice.tone} hero-notice`}>
               {notice.title ? <strong>{notice.title}</strong> : null}
