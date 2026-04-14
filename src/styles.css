@@ -454,9 +454,9 @@ code {
 }
 
 .hero h1 {
-  max-width: 12ch;
-  margin-top: 0.85rem;
-  font-size: clamp(3rem, 7vw, 6.2rem);
+  max-width: 14ch;
+  margin-top: 0.7rem;
+  font-size: clamp(2.2rem, 4.8vw, 4.4rem);
 }
 
 .hero-description {
@@ -1243,6 +1243,11 @@ input[type='search']:focus {
     gap: 1.2rem;
     min-height: auto;
     padding: 1.1rem 1rem 3.2rem;
+  }
+
+  .hero h1 {
+    max-width: 11ch;
+    font-size: clamp(1.7rem, 7vw, 2.35rem);
   }
 
   .hero::after {
