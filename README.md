@@ -1,53 +1,35 @@
-# Yffiniac Poké Caching
+# Yffiniac Poke Caching
 
-Jeu de geocaching Pokémon autour d’Yffiniac, soutenu par la mairie. Le principe : retrouver 151 figurines cachées dans la ville, scanner leur puce NFC, puis compléter sa collection.
+Jeu de geocaching Pokemon autour d’Yffiniac, soutenu par la mairie. Le principe : retrouver 151 figurines cachees dans la ville, scanner leur puce NFC, puis completer sa collection.
 
-## MVP livré
+## MVP actuel
 
 - application web `React + Vite + TypeScript`
-- collection locale des 151 premiers Pokémon
-- scans enregistrés en `localStorage` sur l’appareil
-- lecture NFC via Web NFC côté navigateur
+- collection locale des 151 premiers Pokemon
+- scans enregistres en `localStorage` sur l’appareil
+- lecture NFC via Web NFC cote navigateur
 - saisie manuelle de secours pour les tests desktop et les appareils non compatibles
-- sprites Pokémon servis localement depuis le projet
-- découpage du parcours en zones de chasse pour préparer le déploiement terrain
+- sprites Pokemon servis localement depuis le projet
+- format de tag opaque base sur une URL GitHub Pages
 
-## Choix recommandé pour les images
+## Format NFC retenu
 
-Pour ce projet, le meilleur choix est d’héberger les images localement sur le serveur et dans le dépôt, pas de les charger à chaque visite via une API externe.
-
-Pourquoi :
-
-- il n’y a que 151 Pokémon, donc le volume reste raisonnable
-- l’expérience sera plus fiable pour un projet municipal et un usage terrain
-- pas de dépendance runtime à une API tierce ni à ses limites de disponibilité
-- temps de chargement plus stable
-- possibilité d’aller vers une PWA plus tard
-
-Le bon compromis est celui utilisé ici : les visuels sont servis localement par l’application. Une API externe peut rester utile plus tard pour enrichir les données, mais pas pour le cœur du jeu.
-
-## Limite importante du MVP
-
-Cette première version ne fournit pas encore une preuve anti-triche forte, car tout est stocké localement sur l’appareil. Un joueur pourrait donc théoriquement partager un code.
-
-Pour une vraie validation robuste, la prochaine étape sera :
-
-- comptes utilisateurs
-- base de données serveur
-- jetons de tags uniques validés côté backend
-- historique centralisé des scans
-
-## Format NFC conseillé
-
-Pour commencer simplement avec les puces `NTAG213 / NFC213`, stocker un enregistrement texte NDEF de la forme :
+Chaque puce doit contenir une URL du type :
 
 ```text
-YFFINIAC-POKE:025
+https://coeyn.github.io/yffiniac_poke_caching/?tag=YF-8A21C4
 ```
 
-Le MVP actuel accepte aussi `025` tout seul pour les tests.
+Le code `YF-XXXXXX` est opaque. Le site l’interprete ensuite pour retrouver le Pokemon correspondant.
 
-## Compatibilité Web NFC
+Avantages :
+
+- si le joueur scanne la puce sans avoir deja ouvert le site, le telephone peut ouvrir directement la web app
+- le numero du Pokemon n’est pas ecrit en clair dans la puce
+- le systeme reste simple a poser sur le terrain
+- ce format pourra etre conserve plus tard si un backend est ajoute
+
+## Compatibilite Web NFC
 
 Le scan navigateur fonctionne surtout avec :
 
@@ -55,11 +37,11 @@ Le scan navigateur fonctionne surtout avec :
 - Chrome ou Edge
 - site servi en HTTPS
 
-Sur desktop, sur iPhone, ou sur un appareil sans Web NFC, la saisie manuelle permet tout de même de tester le jeu.
+Sur desktop, sur iPhone, ou sur un appareil sans Web NFC, la saisie manuelle permet de tester le flux.
 
 ## GitHub Pages
 
-Le dépôt est configuré pour un déploiement via GitHub Actions sur GitHub Pages.
+Le depot est configure pour un deploiement via GitHub Actions sur GitHub Pages.
 
 URL attendue :
 
@@ -67,13 +49,22 @@ URL attendue :
 https://coeyn.github.io/yffiniac_poke_caching/
 ```
 
-Si le site n’apparaît pas, vérifier dans GitHub :
+Si le site n’apparait pas, verifier dans GitHub :
 
 - `Settings > Pages`
 - `Source: GitHub Actions`
-- l’onglet `Actions` pour confirmer que le workflow de déploiement est bien passé au vert
+- l’onglet `Actions` pour confirmer que le workflow de deploiement est passe au vert
 
-## Développement
+## Suite du projet
+
+Feuille de route a maintenir ici plutot que dans l’interface :
+
+1. stabiliser la demo NFC sur telephone avec le format URL `?tag=...`
+2. preparer un tableau de pose des figurines pour la mairie
+3. ajouter plus tard les comptes joueurs et la validation serveur
+4. renforcer ensuite la securite anti-triche si le projet monte en charge
+
+## Developpement
 
 ```bash
 npm install

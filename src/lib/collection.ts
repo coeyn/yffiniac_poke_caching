@@ -1,4 +1,4 @@
-export type ScanSource = 'nfc' | 'manual';
+export type ScanSource = 'nfc' | 'manual' | 'url';
 
 export type FoundPokemonRecord = {
   id: number;

@@ -1,19 +1,16 @@
+import { getPokemonIdFromTagCode } from '../data/tag-codes';
 import { formatDex } from './collection';
 
 export type ParsedTagPayload = {
   id: number;
   dex: string;
+  tagCode: string | null;
 };
 
 export type ScanPayload = {
   rawText: string;
   serialNumber: string | null;
 };
-
-const supportedPatterns = [
-  /(?:yffiniac(?:[_ -]?poke(?:[_ -]?caching)?)?|pokemon|pokedex)[^0-9]{0,10}(\d{1,3})/i,
-  /^\s*(\d{1,3})\s*$/,
-];
 
 function decodeRecord(record: NDEFRecord): string | null {
   if (!record.data) {
@@ -25,6 +22,62 @@ function decodeRecord(record: NDEFRecord): string | null {
   return decoder.decode(record.data);
 }
 
+function parsePokemonId(id: number, tagCode: string | null): ParsedTagPayload | null {
+  if (!Number.isInteger(id) || id < 1 || id > 151) {
+    return null;
+  }
+
+  return {
+    id,
+    dex: formatDex(id),
+    tagCode,
+  };
+}
+
+function parseUrlTag(normalized: string): ParsedTagPayload | null {
+  try {
+    const url = new URL(normalized);
+    const tagCode = url.searchParams.get('tag')?.trim().toUpperCase() ?? null;
+    if (!tagCode) {
+      return null;
+    }
+
+    const id = getPokemonIdFromTagCode(tagCode);
+    return id ? parsePokemonId(id, tagCode) : null;
+  } catch {
+    return null;
+  }
+}
+
+function parseTagCode(normalized: string): ParsedTagPayload | null {
+  const match = normalized.match(/\b(YF-[A-Z0-9]{6})\b/i);
+  if (!match) {
+    return null;
+  }
+
+  const tagCode = match[1].toUpperCase();
+  const id = getPokemonIdFromTagCode(tagCode);
+  return id ? parsePokemonId(id, tagCode) : null;
+}
+
+function parseLegacyDex(normalized: string): ParsedTagPayload | null {
+  const patterns = [
+    /(?:yffiniac(?:[_ -]?poke(?:[_ -]?caching)?)?|pokemon|pokedex)[^0-9]{0,10}(\d{1,3})/i,
+    /^\s*(\d{1,3})\s*$/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = normalized.match(pattern);
+    if (!match) {
+      continue;
+    }
+
+    return parsePokemonId(Number(match[1]), null);
+  }
+
+  return null;
+}
+
 export function isWebNfcAvailable(): boolean {
   return typeof window !== 'undefined' && 'NDEFReader' in window;
 }
@@ -32,24 +85,7 @@ export function isWebNfcAvailable(): boolean {
 export function parseTagPayload(rawText: string): ParsedTagPayload | null {
   const normalized = rawText.trim();
 
-  for (const pattern of supportedPatterns) {
-    const match = normalized.match(pattern);
-    if (!match) {
-      continue;
-    }
-
-    const id = Number(match[1]);
-    if (!Number.isInteger(id) || id < 1 || id > 151) {
-      return null;
-    }
-
-    return {
-      id,
-      dex: formatDex(id),
-    };
-  }
-
-  return null;
+  return parseUrlTag(normalized) ?? parseTagCode(normalized) ?? parseLegacyDex(normalized);
 }
 
 export async function beginNfcScan(
