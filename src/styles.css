@@ -1157,8 +1157,8 @@ input[type='search']:focus {
   background:
     linear-gradient(
       180deg,
-      #ffffff 0 20px,
-      #0c2142 20px,
+      #ffffff 0 80px,
+      #0c2142 80px,
       #1d4f8f 58%,
       #7cc9ff 100%
     );
@@ -1167,19 +1167,29 @@ input[type='search']:focus {
 
 .dex-toolbar {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
+  grid-template-columns: 1fr;
+  align-items: start;
   gap: 1rem;
   margin-bottom: 1.25rem;
 }
 
 .dex-toolbar-head {
   display: grid;
-  gap: 0.35rem;
+  justify-items: center;
+  align-items: center;
+  min-height: 64px;
+  margin: -0.85rem -0.2rem 0;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.dex-toolbar-head h3 {
+  color: #6b7280;
 }
 
 .toolbar-controls {
   display: flex;
+  width: 100%;
   justify-content: end;
   align-items: center;
   flex-wrap: wrap;
