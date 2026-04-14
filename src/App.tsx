@@ -388,6 +388,21 @@ function OnboardingView(props: {
   onStart: () => void;
 }) {
   const trimmedName = props.explorerName.trim();
+  const [step, setStep] = useState(0);
+  const finalStep = 3;
+
+  const dialogue = [
+    "Salut dresseur. Moi, c'est le Professeur Coco. Je serai ton guide pour cette aventure Pokemon a Yffiniac.",
+    'Dans la ville, des figurines Pokemon sont cachees un peu partout. Chaque figurine possede une puce NFC que tu pourras scanner pour l ajouter a ton Pokedex.',
+    '',
+    "Parfait. Maintenant, rejoins-moi devant la mairie d'Yffiniac pour recuperer ton premier starter et lancer officiellement ton aventure.",
+  ];
+
+  function handleNext(): void {
+    if (step < finalStep) {
+      setStep((currentStep) => currentStep + 1);
+    }
+  }
 
   return (
     <main className="capture-shell professor-shell">
@@ -404,50 +419,55 @@ function OnboardingView(props: {
 
           <div className="professor-copy">
             <p className="hero-kicker">Professeur Coco</p>
-            <p className="capture-text">
-              Salut dresseur. Je vais t accompagner pour ton aventure Pokemon a Yffiniac.
-            </p>
+            <div className="dialogue-bubble">
+              {step === 2 ? (
+                <>
+                  <p className="dialogue-label">Creation du pseudo</p>
+                  <label className="stacked-field onboarding-field" htmlFor="trainer-name">
+                    Ton nom de dresseur
+                    <input
+                      id="trainer-name"
+                      name="trainer-name"
+                      type="text"
+                      value={props.explorerName}
+                      onChange={(event) => props.onNameChange(event.target.value.slice(0, 32))}
+                      placeholder="Ex: Team Yffiniac"
+                      autoComplete="nickname"
+                    />
+                  </label>
+                </>
+              ) : (
+                <p className="capture-text">{dialogue[step]}</p>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="onboarding-steps">
-          <article className="onboarding-step">
-            <strong>1. Cherche les figurines</strong>
-            <p>Chaque figurine Pokemon cachee dans la ville contient une puce NFC.</p>
-          </article>
+        <div className="dialogue-controls">
+          <p className="dialogue-progress">
+            Etape {step + 1} / {finalStep + 1}
+          </p>
 
-          <article className="onboarding-step">
-            <strong>2. Scanne le tag</strong>
-            <p>Quand tu scans une figurine, elle rejoint ton Pokedex sur cet appareil.</p>
-          </article>
-
-          <article className="onboarding-step">
-            <strong>3. Reviens me voir</strong>
-            <p>Au point de depart, je pourrai analyser ta progression et te donner les starters.</p>
-          </article>
+          {step < finalStep ? (
+            <button
+              className="capture-button"
+              type="button"
+              onClick={handleNext}
+              disabled={step === 2 && trimmedName.length < 2}
+            >
+              Suivant
+            </button>
+          ) : (
+            <button
+              className="capture-button"
+              type="button"
+              onClick={props.onStart}
+              disabled={trimmedName.length < 2}
+            >
+              Commencer l aventure
+            </button>
+          )}
         </div>
-
-        <label className="stacked-field onboarding-field" htmlFor="trainer-name">
-          Ton nom de dresseur
-          <input
-            id="trainer-name"
-            name="trainer-name"
-            type="text"
-            value={props.explorerName}
-            onChange={(event) => props.onNameChange(event.target.value.slice(0, 32))}
-            placeholder="Ex: Team Yffiniac"
-            autoComplete="nickname"
-          />
-        </label>
-
-        <button
-          className="capture-button"
-          type="button"
-          onClick={props.onStart}
-          disabled={trimmedName.length < 2}
-        >
-          Commencer l aventure
-        </button>
       </section>
     </main>
   );

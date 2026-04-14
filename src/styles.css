@@ -220,32 +220,43 @@ code {
   line-height: 1;
 }
 
-.onboarding-steps {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.8rem;
+.onboarding-field {
+  margin-bottom: 0;
 }
 
-.onboarding-step {
-  margin: 0;
-  padding: 1rem;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.62);
+.dialogue-bubble {
+  position: relative;
+  padding: 1rem 1.05rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.68);
   border: 1px solid rgba(20, 38, 54, 0.08);
 }
 
-.onboarding-step strong {
-  display: block;
-  margin-bottom: 0.45rem;
+.dialogue-bubble::before {
+  content: '';
+  position: absolute;
+  top: 1.2rem;
+  left: -0.5rem;
+  width: 1rem;
+  height: 1rem;
+  background: rgba(255, 255, 255, 0.68);
+  border-left: 1px solid rgba(20, 38, 54, 0.08);
+  border-bottom: 1px solid rgba(20, 38, 54, 0.08);
+  transform: rotate(45deg);
 }
 
-.onboarding-step p {
+.dialogue-label,
+.dialogue-progress {
   margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
   color: var(--muted);
 }
 
-.onboarding-field {
-  margin-bottom: 0;
+.dialogue-controls {
+  display: grid;
+  gap: 0.65rem;
 }
 
 .starter-grid {
@@ -1421,7 +1432,6 @@ input[type='search']:focus {
 
   .professor-head,
   .professor-stats,
-  .onboarding-steps,
   .starter-grid {
     grid-template-columns: 1fr;
   }
