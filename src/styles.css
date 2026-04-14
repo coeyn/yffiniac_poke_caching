@@ -1279,13 +1279,13 @@ input[type='search']:focus {
   max-height: 70svh;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0.15rem 0.35rem 0.25rem 0.1rem;
+  padding: 0.15rem 0.75rem 0.25rem 0.1rem;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
 }
 
 .dex-grid::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
 
 .dex-grid::-webkit-scrollbar-thumb {
