@@ -38,7 +38,7 @@ body {
   margin: 0;
   min-width: 320px;
   background:
-    linear-gradient(135deg, #4d9ebc 0%, #02081e 50%, #4d9ebc 100%);
+    linear-gradient(225deg, #4d9ebc 0%, #02081e 50%, #4d9ebc 100%);
 }
 
 body::before,
