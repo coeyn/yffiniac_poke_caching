@@ -1,10 +1,13 @@
 import { startTransition, useDeferredValue, useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { PROFESSOR_COCO_TAG, starterPokemonIds } from './data/professor-coco';
 import { getPokemonClue } from './data/pokemon-clues';
 import { pokemonCatalog } from './data/pokemon';
 import {
+  claimProfessorStarter,
   createEmptyCollection,
   loadCollection,
   markPokemonFound,
+  recordProfessorVisit,
   saveCollection,
   type CollectionState,
 } from './lib/collection';
@@ -19,12 +22,21 @@ type Notice = {
   message: string;
 };
 
-type CaptureState = {
+type PokemonEncounterState = {
+  kind: 'pokemon';
   rawUrl: string;
   dex: string;
   id: number;
   tagCode: string | null;
 };
+
+type ProfessorEncounterState = {
+  kind: 'professor';
+  rawUrl: string;
+  tagCode: string;
+};
+
+type EncounterState = PokemonEncounterState | ProfessorEncounterState;
 
 type CapturePhase = 'approach' | 'ready' | 'throwing' | 'captured';
 
@@ -82,7 +94,7 @@ function filterPokemon(collection: CollectionState, query: string, filterMode: F
   });
 }
 
-function readCaptureState(): CaptureState | null {
+function readEncounterState(): EncounterState | null {
   if (typeof window === 'undefined') {
     return null;
   }
@@ -97,7 +109,16 @@ function readCaptureState(): CaptureState | null {
     return null;
   }
 
+  if (parsed.kind === 'professor') {
+    return {
+      kind: 'professor',
+      rawUrl: currentUrl.toString(),
+      tagCode: parsed.tagCode,
+    };
+  }
+
   return {
+    kind: 'pokemon',
     rawUrl: currentUrl.toString(),
     dex: parsed.dex,
     id: parsed.id,
@@ -116,7 +137,7 @@ function clearCaptureTagFromUrl(): void {
 }
 
 function CaptureView(props: {
-  captureState: CaptureState;
+  captureState: PokemonEncounterState;
   collection: CollectionState;
   onCaptured: () => void;
   onReturn: () => void;
@@ -242,11 +263,135 @@ function CaptureView(props: {
   );
 }
 
+function ProfessorCocoView(props: {
+  collection: CollectionState;
+  onChooseStarter: (starterId: number) => void;
+  onReturn: () => void;
+}) {
+  const starterChoices = props.collection.professor.startersClaimed;
+  const starterSet = new Set(starterChoices);
+  const foundCount = Object.keys(props.collection.found).length;
+  const starterPool = starterPokemonIds
+    .map((id) => displayCatalog[id - 1])
+    .filter((pokemon) => !starterSet.has(pokemon.dex));
+  const [claimedStarterId, setClaimedStarterId] = useState<number | null>(null);
+  const startersCount = starterChoices.length;
+  const canClaimStarter =
+    startersCount === 0 || (startersCount === 1 && foundCount >= 50) || (startersCount === 2 && foundCount >= 100);
+  const progressTarget = startersCount === 1 ? 50 : startersCount === 2 ? 100 : null;
+  const chosenStarter = claimedStarterId ? displayCatalog[claimedStarterId - 1] : null;
+
+  function handleStarterChoice(starterId: number): void {
+    setClaimedStarterId(starterId);
+    props.onChooseStarter(starterId);
+  }
+
+  function renderMessage(): string {
+    if (chosenStarter) {
+      return `Parfait. ${chosenStarter.name} rejoint officiellement ton equipe de depart.`;
+    }
+
+    if (startersCount === 0) {
+      return "Bienvenue a Yffiniac, dresseur. Je suis le Professeur Coco. Choisis ton premier compagnon pour lancer l'aventure.";
+    }
+
+    if (canClaimStarter) {
+      if (startersCount === 1) {
+        return 'Analyse terminee: tu as atteint 50 Pokemon. Tu peux maintenant choisir un deuxieme starter.';
+      }
+
+      return 'Analyse terminee: tu as atteint 100 Pokemon. Le dernier starter de l aventure est a toi.';
+    }
+
+    const nextMessage =
+      progressTarget !== null
+        ? `Reviens me voir quand tu auras valide ${progressTarget} Pokemon.`
+        : 'Tu as deja reuni les trois starters. Continue la chasse.';
+
+    return `Je vois ${foundCount} Pokemon valides sur cet appareil. ${nextMessage}`;
+  }
+
+  return (
+    <main className="capture-shell professor-shell">
+      <section className="capture-card professor-card">
+        <div className="professor-badge">
+          <span>{PROFESSOR_COCO_TAG}</span>
+          <p>Point de depart officiel a la mairie</p>
+        </div>
+
+        <div className="professor-head">
+          <div className="professor-avatar" aria-hidden="true">
+            <span>PC</span>
+          </div>
+
+          <div className="professor-copy">
+            <p className="hero-kicker">Professeur Coco</p>
+            <h1>Laboratoire d aventure</h1>
+            <p className="capture-text">{renderMessage()}</p>
+          </div>
+        </div>
+
+        <dl className="professor-stats">
+          <div>
+            <dt>Pokemon valides</dt>
+            <dd>{foundCount}</dd>
+          </div>
+          <div>
+            <dt>Visites au labo</dt>
+            <dd>{props.collection.professor.visits}</dd>
+          </div>
+          <div>
+            <dt>Starters obtenus</dt>
+            <dd>{starterChoices.length} / 3</dd>
+          </div>
+        </dl>
+
+        {canClaimStarter && !chosenStarter ? (
+          <div className="starter-grid">
+            {starterPool.map((pokemon) => (
+              <button
+                key={pokemon.dex}
+                className="starter-card"
+                type="button"
+                onClick={() => handleStarterChoice(pokemon.id)}
+              >
+                <img
+                  src={resolvePublicAsset(pokemon.image)}
+                  alt={pokemon.name}
+                  width="128"
+                  height="128"
+                />
+                <strong>{pokemon.name}</strong>
+                <span>#{pokemon.dex}</span>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="professor-summary">
+            <p>
+              {starterChoices.length > 0
+                ? `Equipe de depart actuelle : ${starterChoices
+                    .map((dex) => displayCatalog[Number(dex) - 1]?.name)
+                    .filter(Boolean)
+                    .join(', ')}.`
+                : 'Aucun starter choisi pour le moment.'}
+            </p>
+          </div>
+        )}
+
+        <button className="capture-button" type="button" onClick={props.onReturn}>
+          {chosenStarter ? 'Retourner au Pokedex' : 'Fermer le labo'}
+        </button>
+      </section>
+    </main>
+  );
+}
+
 export default function App() {
   const [collection, setCollection] = useState(loadCollection);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
-  const [captureState, setCaptureState] = useState<CaptureState | null>(readCaptureState);
+  const [encounterState, setEncounterState] = useState<EncounterState | null>(readEncounterState);
   const [selectedDex, setSelectedDex] = useState<string | null>(null);
   const [notice, setNotice] = useState<Notice>({
     tone: 'neutral',
@@ -272,9 +417,17 @@ export default function App() {
   const selectedClue = selectedPokemon ? getPokemonClue(selectedPokemon) : null;
 
   const capturePokemon = useMemo(
-    () => (captureState ? displayCatalog[captureState.id - 1] : null),
-    [captureState],
+    () => (encounterState?.kind === 'pokemon' ? displayCatalog[encounterState.id - 1] : null),
+    [encounterState],
   );
+
+  useEffect(() => {
+    if (encounterState?.kind !== 'professor') {
+      return;
+    }
+
+    setCollection((currentCollection) => recordProfessorVisit(currentCollection));
+  }, [encounterState]);
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent): void {
@@ -288,16 +441,16 @@ export default function App() {
   }, []);
 
   function handleCaptureRecorded(): void {
-    if (!captureState) {
+    if (encounterState?.kind !== 'pokemon') {
       return;
     }
 
-    const alreadyFound = Boolean(collection.found[captureState.dex]);
+    const alreadyFound = Boolean(collection.found[encounterState.dex]);
 
     setCollection((currentCollection) =>
       markPokemonFound(currentCollection, {
-        id: captureState.id,
-        payload: captureState.rawUrl,
+        id: encounterState.id,
+        payload: encounterState.rawUrl,
         source: 'url',
         serialNumber: null,
       }),
@@ -314,7 +467,28 @@ export default function App() {
 
   function handleCaptureReturn(): void {
     clearCaptureTagFromUrl();
-    setCaptureState(null);
+    setEncounterState(null);
+  }
+
+  function handleProfessorStarterChoice(starterId: number): void {
+    if (encounterState?.kind !== 'professor') {
+      return;
+    }
+
+    const starter = displayCatalog[starterId - 1];
+
+    setCollection((currentCollection) =>
+      claimProfessorStarter(currentCollection, {
+        id: starterId,
+        payload: encounterState.rawUrl,
+      }),
+    );
+
+    setNotice({
+      tone: 'success',
+      title: `${starter.name} rejoint ton equipe`,
+      message: 'Le Professeur Coco a valide ce starter sur cet appareil.',
+    });
   }
 
   function handleCollectionReset(): void {
@@ -336,12 +510,22 @@ export default function App() {
     });
   }
 
-  if (captureState) {
+  if (encounterState?.kind === 'pokemon') {
     return (
       <CaptureView
-        captureState={captureState}
+        captureState={encounterState}
         collection={collection}
         onCaptured={handleCaptureRecorded}
+        onReturn={handleCaptureReturn}
+      />
+    );
+  }
+
+  if (encounterState?.kind === 'professor') {
+    return (
+      <ProfessorCocoView
+        collection={collection}
+        onChooseStarter={handleProfessorStarterChoice}
         onReturn={handleCaptureReturn}
       />
     );

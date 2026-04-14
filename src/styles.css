@@ -139,6 +139,126 @@ code {
     rgba(255, 251, 244, 0.86);
 }
 
+.professor-shell {
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.48), transparent 32%),
+    linear-gradient(180deg, rgba(248, 241, 226, 0.14), rgba(28, 52, 99, 0.16)),
+    linear-gradient(180deg, #eff4fb 0%, #d5e3f8 42%, #aabbd6 100%);
+}
+
+.professor-card {
+  width: min(100%, 44rem);
+  justify-items: stretch;
+  text-align: left;
+}
+
+.professor-badge {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(20, 38, 54, 0.08);
+}
+
+.professor-badge span {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.92rem;
+}
+
+.professor-badge p,
+.professor-summary p,
+.professor-copy p,
+.professor-stats dt {
+  margin: 0;
+  color: var(--muted);
+}
+
+.professor-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+}
+
+.professor-avatar {
+  display: grid;
+  place-items: center;
+  width: 5rem;
+  aspect-ratio: 1;
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.85), transparent 36%),
+    linear-gradient(180deg, #3867a5 0%, #203a66 100%);
+  color: #f9f5ee;
+  box-shadow: 0 18px 30px rgba(20, 38, 54, 0.2);
+}
+
+.professor-avatar span {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: -0.04em;
+}
+
+.professor-copy {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.professor-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 0;
+}
+
+.professor-stats div,
+.professor-summary {
+  padding: 0.95rem 1rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(20, 38, 54, 0.08);
+}
+
+.professor-stats dd {
+  margin: 0.35rem 0 0;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.starter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.starter-card {
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
+  padding: 1rem 0.8rem;
+  border: 1px solid rgba(20, 38, 54, 0.08);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(250, 245, 238, 0.86)),
+    rgba(255, 255, 255, 0.74);
+  text-align: center;
+}
+
+.starter-card img {
+  width: min(100%, 128px);
+  filter: drop-shadow(0 16px 20px rgba(20, 38, 54, 0.16));
+}
+
+.starter-card strong {
+  font-size: 1rem;
+}
+
+.starter-card span {
+  color: var(--muted);
+}
+
 .capture-header {
   width: 100%;
   display: flex;
@@ -1261,6 +1381,16 @@ input[type='search']:focus {
   .hero-progress {
     padding: 0.9rem 1rem;
     border-radius: 24px;
+  }
+
+  .professor-head,
+  .professor-stats,
+  .starter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .professor-avatar {
+    width: 4.4rem;
   }
 
   .progress-ring {

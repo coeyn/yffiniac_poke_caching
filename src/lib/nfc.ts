@@ -1,11 +1,21 @@
+import { isProfessorCocoTag } from '../data/professor-coco';
 import { getPokemonIdFromTagCode } from '../data/tag-codes';
 import { formatDex } from './collection';
 
-export type ParsedTagPayload = {
+export type PokemonTagPayload = {
+  kind: 'pokemon';
   id: number;
   dex: string;
   tagCode: string | null;
 };
+
+export type ProfessorTagPayload = {
+  kind: 'professor';
+  professor: 'coco';
+  tagCode: string;
+};
+
+export type ParsedTagPayload = PokemonTagPayload | ProfessorTagPayload;
 
 export type ScanPayload = {
   rawText: string;
@@ -28,10 +38,24 @@ function parsePokemonId(id: number, tagCode: string | null): ParsedTagPayload | 
   }
 
   return {
+    kind: 'pokemon',
     id,
     dex: formatDex(id),
     tagCode,
   };
+}
+
+function parseTagCodeValue(tagCode: string): ParsedTagPayload | null {
+  if (isProfessorCocoTag(tagCode)) {
+    return {
+      kind: 'professor',
+      professor: 'coco',
+      tagCode,
+    };
+  }
+
+  const id = getPokemonIdFromTagCode(tagCode);
+  return id ? parsePokemonId(id, tagCode) : null;
 }
 
 function parseUrlTag(normalized: string): ParsedTagPayload | null {
@@ -42,8 +66,7 @@ function parseUrlTag(normalized: string): ParsedTagPayload | null {
       return null;
     }
 
-    const id = getPokemonIdFromTagCode(tagCode);
-    return id ? parsePokemonId(id, tagCode) : null;
+    return parseTagCodeValue(tagCode);
   } catch {
     return null;
   }
@@ -56,8 +79,7 @@ function parseTagCode(normalized: string): ParsedTagPayload | null {
   }
 
   const tagCode = match[1].toUpperCase();
-  const id = getPokemonIdFromTagCode(tagCode);
-  return id ? parsePokemonId(id, tagCode) : null;
+  return parseTagCodeValue(tagCode);
 }
 
 function parseLegacyDex(normalized: string): ParsedTagPayload | null {
