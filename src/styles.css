@@ -152,6 +152,10 @@ code {
   text-align: left;
 }
 
+.onboarding-card {
+  width: min(100%, 46rem);
+}
+
 .professor-summary p,
 .professor-copy p,
 .professor-stats dt {
@@ -214,6 +218,34 @@ code {
   font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 1.55rem;
   line-height: 1;
+}
+
+.onboarding-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.onboarding-step {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(20, 38, 54, 0.08);
+}
+
+.onboarding-step strong {
+  display: block;
+  margin-bottom: 0.45rem;
+}
+
+.onboarding-step p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.onboarding-field {
+  margin-bottom: 0;
 }
 
 .starter-grid {
@@ -1389,6 +1421,7 @@ input[type='search']:focus {
 
   .professor-head,
   .professor-stats,
+  .onboarding-steps,
   .starter-grid {
     grid-template-columns: 1fr;
   }

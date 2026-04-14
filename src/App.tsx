@@ -382,6 +382,77 @@ function ProfessorCocoView(props: {
   );
 }
 
+function OnboardingView(props: {
+  explorerName: string;
+  onNameChange: (value: string) => void;
+  onStart: () => void;
+}) {
+  const trimmedName = props.explorerName.trim();
+
+  return (
+    <main className="capture-shell professor-shell">
+      <section className="capture-card professor-card onboarding-card">
+        <div className="professor-head">
+          <div className="professor-avatar">
+            <img
+              src={resolvePublicAsset('/img/pp.png')}
+              alt="Professeur Coco"
+              width="160"
+              height="160"
+            />
+          </div>
+
+          <div className="professor-copy">
+            <p className="hero-kicker">Professeur Coco</p>
+            <p className="capture-text">
+              Salut dresseur. Je vais t accompagner pour ton aventure Pokemon a Yffiniac.
+            </p>
+          </div>
+        </div>
+
+        <div className="onboarding-steps">
+          <article className="onboarding-step">
+            <strong>1. Cherche les figurines</strong>
+            <p>Chaque figurine Pokemon cachee dans la ville contient une puce NFC.</p>
+          </article>
+
+          <article className="onboarding-step">
+            <strong>2. Scanne le tag</strong>
+            <p>Quand tu scans une figurine, elle rejoint ton Pokedex sur cet appareil.</p>
+          </article>
+
+          <article className="onboarding-step">
+            <strong>3. Reviens me voir</strong>
+            <p>Au point de depart, je pourrai analyser ta progression et te donner les starters.</p>
+          </article>
+        </div>
+
+        <label className="stacked-field onboarding-field" htmlFor="trainer-name">
+          Ton nom de dresseur
+          <input
+            id="trainer-name"
+            name="trainer-name"
+            type="text"
+            value={props.explorerName}
+            onChange={(event) => props.onNameChange(event.target.value.slice(0, 32))}
+            placeholder="Ex: Team Yffiniac"
+            autoComplete="nickname"
+          />
+        </label>
+
+        <button
+          className="capture-button"
+          type="button"
+          onClick={props.onStart}
+          disabled={trimmedName.length < 2}
+        >
+          Commencer l aventure
+        </button>
+      </section>
+    </main>
+  );
+}
+
 export default function App() {
   const [collection, setCollection] = useState(loadCollection);
   const [searchTerm, setSearchTerm] = useState('');
@@ -505,6 +576,23 @@ export default function App() {
     });
   }
 
+  function handleOnboardingStart(): void {
+    const explorerName = collection.explorerName.trim();
+    if (explorerName.length < 2) {
+      return;
+    }
+
+    setCollection((currentCollection) => ({
+      ...currentCollection,
+      explorerName,
+    }));
+    setNotice({
+      tone: 'success',
+      title: `Bienvenue ${explorerName}`,
+      message: 'Ton Pokedex local est pret. Tu peux commencer la chasse.',
+    });
+  }
+
   if (encounterState?.kind === 'pokemon') {
     return (
       <CaptureView
@@ -522,6 +610,21 @@ export default function App() {
         collection={collection}
         onChooseStarter={handleProfessorStarterChoice}
         onReturn={handleCaptureReturn}
+      />
+    );
+  }
+
+  if (collection.explorerName.trim().length < 2) {
+    return (
+      <OnboardingView
+        explorerName={collection.explorerName}
+        onNameChange={(value) =>
+          setCollection((currentCollection) => ({
+            ...currentCollection,
+            explorerName: value,
+          }))
+        }
+        onStart={handleOnboardingStart}
       />
     );
   }
@@ -573,28 +676,11 @@ export default function App() {
               <h3>Appareil en cours</h3>
             </div>
 
-            <label className="stacked-field" htmlFor="explorer-name">
-              Nom du dresseur
-              <input
-                id="explorer-name"
-                name="explorer-name"
-                type="text"
-                value={collection.explorerName}
-                onChange={(event) => {
-                  const value = event.target.value.slice(0, 32);
-                  startTransition(() => {
-                    setCollection((currentCollection) => ({
-                      ...currentCollection,
-                      explorerName: value,
-                    }));
-                  });
-                }}
-                placeholder="Ex: Team Yffiniac"
-                autoComplete="nickname"
-              />
-            </label>
-
             <dl className="stats-list">
+              <div>
+                <dt>Dresseur</dt>
+                <dd>{collection.explorerName}</dd>
+              </div>
               <div>
                 <dt>Progression</dt>
                 <dd>{completionPercent}%</dd>
