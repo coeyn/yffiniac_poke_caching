@@ -1218,7 +1218,7 @@ input[type='search']:focus {
 .toolbar-controls {
   display: flex;
   width: 100%;
-  justify-content: end;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.65rem;
@@ -1244,9 +1244,8 @@ input[type='search']:focus {
 }
 
 .filter-chip.active {
-  background: linear-gradient(180deg, #ffe16f, #efb93f);
-  border-color: #efb93f;
-  color: #1f1607;
+  background: #fff;
+  color: #2f2e36;
 }
 
 .selection-status {
