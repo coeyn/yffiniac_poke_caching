@@ -736,7 +736,7 @@ export default function App() {
               <p className="panel-text">Aucune capture enregistrée sur cet appareil pour l'instant.</p>
             ) : (
               <ol className="history-list">
-                {collection.history.map((entry) => (
+                {collection.history.slice(0, 3).map((entry) => (
                   <li key={`${entry.scannedAt}-${entry.dex}`}>
                     <div>
                       <span>#{entry.dex}</span>
