@@ -675,13 +675,14 @@ code {
   min-height: auto;
   padding: 1.35rem 4vw 3.2rem;
   overflow: hidden;
+  margin-top: 1.25rem;
 }
 
 .hero::before {
   content: '';
   position: absolute;
   inset: 0 4vw 0 4vw;
-  border-radius: 18px;
+  border-radius: 10px;
   background:
     linear-gradient(180deg, rgba(13, 27, 51, 0.96), rgba(8, 17, 34, 0.92)),
     linear-gradient(90deg, rgba(255, 94, 87, 0.1), transparent 34%, rgba(98, 192, 255, 0.08));
