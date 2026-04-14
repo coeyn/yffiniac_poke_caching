@@ -38,10 +38,7 @@ body {
   margin: 0;
   min-width: 320px;
   background:
-    radial-gradient(circle at 12% 10%, rgba(255, 94, 87, 0.18), transparent 18%),
-    radial-gradient(circle at 88% 14%, rgba(98, 192, 255, 0.16), transparent 16%),
-    radial-gradient(circle at 58% 120%, rgba(255, 209, 74, 0.16), transparent 28%),
-    linear-gradient(180deg, #07111f 0%, #0b1830 44%, #102447 100%);
+    linear-gradient(135deg, #4d9ebc 0%, #02081e 50%, #4d9ebc 100%);
 }
 
 body::before,
@@ -1422,7 +1419,7 @@ input[type='search']:focus {
   margin: 0;
   padding: 1rem;
   border-radius: 20px;
-  background: #ffffff12;
+  background: #fff3;
   border: 1px solid rgba(20, 38, 54, 0.08);
 }
 
