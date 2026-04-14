@@ -320,8 +320,13 @@ function ProfessorCocoView(props: {
         </div>
 
         <div className="professor-head">
-          <div className="professor-avatar" aria-hidden="true">
-            <span>PC</span>
+          <div className="professor-avatar">
+            <img
+              src={resolvePublicAsset('/img/pp.png')}
+              alt="Professeur Coco"
+              width="160"
+              height="160"
+            />
           </div>
 
           <div className="professor-copy">
