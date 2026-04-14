@@ -33,6 +33,11 @@ const dateFormatter = new Intl.DateTimeFormat('fr-FR', {
   timeStyle: 'short',
 });
 const filterModes: FilterMode[] = ['all', 'found', 'missing'];
+const publicBaseUrl = import.meta.env.BASE_URL;
+
+function resolvePublicAsset(path: string): string {
+  return `${publicBaseUrl}${path.replace(/^\//, '')}`;
+}
 
 function formatScanDate(value: string): string {
   return dateFormatter.format(new Date(value));
@@ -327,7 +332,7 @@ export default function App() {
 
           <figure className="featured-pokemon">
             <img
-              src={selectedPokemon.image}
+              src={resolvePublicAsset(selectedPokemon.image)}
               alt={selectedPokemon.name}
               width="320"
               height="320"
@@ -567,7 +572,7 @@ export default function App() {
                   <span className="dex-number">#{pokemon.dex}</span>
                   <div className="dex-visual">
                     <img
-                      src={pokemon.image}
+                      src={resolvePublicAsset(pokemon.image)}
                       alt=""
                       width="96"
                       height="96"
