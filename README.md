@@ -18,6 +18,7 @@ Chaque puce doit contenir une URL du type :
 
 ```text
 https://coeyn.github.io/yffiniac_poke_caching/?tag=YF-8A21C4
+https://coeyn.github.io/yffiniac_poke_caching/?tag=YF-COCO01
 ```
 
 Le code `YF-XXXXXX` est opaque. Le site l’interprete ensuite pour retrouver le Pokemon correspondant.

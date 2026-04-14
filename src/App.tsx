@@ -235,7 +235,7 @@ function CaptureView(props: {
           <p className="capture-text">
             {foundRecord
               ? 'Cette figurine a deja ete validee sur cet appareil.'
-              : 'Tu viens de trouver une figurine Pokemon cachee dans Yffiniac.'}
+              : 'Tu viens de trouver une figurine Pokemon cachée dans Yffiniac.'}
           </p>
           {clue ? (
             <p className="capture-clue">
@@ -293,10 +293,10 @@ function ProfessorCocoView(props: {
 
     if (canClaimStarter) {
       if (startersCount === 1) {
-        return 'Analyse terminee: tu as atteint 50 Pokemon. Tu peux maintenant choisir un deuxieme starter.';
+        return 'Analyse terminée: tu as atteint 50 Pokemon. Tu peux maintenant choisir un deuxieme starter.';
       }
 
-      return 'Analyse terminee: tu as atteint 100 Pokemon. Le dernier starter de l aventure est a toi.';
+      return 'Analyse terminée: tu as atteint 100 Pokemon. Le dernier starter de l aventure est a toi.';
     }
 
     const nextMessage =
@@ -393,7 +393,7 @@ function OnboardingView(props: {
 
   const dialogue = [
     "Salut dresseur. Moi, c'est le Professeur Coco. Je serai ton guide pour cette aventure Pokemon a Yffiniac.",
-    'Dans la ville, des figurines Pokemon sont cachees un peu partout. Chaque figurine possede une puce NFC que tu pourras scanner pour l ajouter a ton Pokedex.',
+    "Dans la ville, des figurines Pokemon sont cachées un peu partout. Chaque figurine possède une puce NFC que tu pourras scanner pour l'ajouter a ton Pokedex.",
     '',
     "Parfait. Maintenant, rejoins-moi devant la mairie d'Yffiniac pour recuperer ton premier starter et lancer officiellement ton aventure.",
   ];
@@ -591,7 +591,7 @@ export default function App() {
     setSearchTerm('');
     setNotice({
       tone: 'neutral',
-      title: 'Collection effacee',
+      title: 'Collection effacée',
       message: 'Le Pokedex de cet appareil a ete remis a zero.',
     });
   }
@@ -673,7 +673,7 @@ export default function App() {
               <p>
                 {lastScannedPokemon && lastHistoryEntry
                   ? `Derniere capture : ${lastScannedPokemon.name} le ${formatScanDate(lastHistoryEntry.scannedAt)}`
-                  : 'Aucune figurine validee pour le moment.'}
+                  : 'Aucune figurine validée pour le moment.'}
               </p>
             </div>
           </div>
@@ -717,7 +717,7 @@ export default function App() {
             </dl>
 
             <button className="danger-button" type="button" onClick={handleCollectionReset}>
-              Effacer les donnees locales
+              Effacer les données locales
             </button>
           </section>
 
@@ -728,7 +728,7 @@ export default function App() {
             </div>
 
             {collection.history.length === 0 ? (
-              <p className="panel-text">Aucune capture enregistree sur cet appareil pour l instant.</p>
+              <p className="panel-text">Aucune capture enregistrée sur cet appareil pour l'instant.</p>
             ) : (
               <ol className="history-list">
                 {collection.history.map((entry) => (
