@@ -1,5 +1,5 @@
 import { startTransition, useDeferredValue, useEffect, useMemo, useState, type CSSProperties } from 'react';
-import { PROFESSOR_COCO_TAG, starterPokemonIds } from './data/professor-coco';
+import { starterPokemonIds } from './data/professor-coco';
 import { getPokemonClue } from './data/pokemon-clues';
 import { pokemonCatalog } from './data/pokemon';
 import {
@@ -314,11 +314,6 @@ function ProfessorCocoView(props: {
   return (
     <main className="capture-shell professor-shell">
       <section className="capture-card professor-card">
-        <div className="professor-badge">
-          <span>{PROFESSOR_COCO_TAG}</span>
-          <p>Point de depart officiel a la mairie</p>
-        </div>
-
         <div className="professor-head">
           <div className="professor-avatar">
             <img
@@ -331,7 +326,6 @@ function ProfessorCocoView(props: {
 
           <div className="professor-copy">
             <p className="hero-kicker">Professeur Coco</p>
-            <h1>Laboratoire d aventure</h1>
             <p className="capture-text">{renderMessage()}</p>
           </div>
         </div>

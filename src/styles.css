@@ -152,21 +152,6 @@ code {
   text-align: left;
 }
 
-.professor-badge {
-  display: grid;
-  gap: 0.25rem;
-  padding: 0.9rem 1rem;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.62);
-  border: 1px solid rgba(20, 38, 54, 0.08);
-}
-
-.professor-badge span {
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.92rem;
-}
-
-.professor-badge p,
 .professor-summary p,
 .professor-copy p,
 .professor-stats dt {
