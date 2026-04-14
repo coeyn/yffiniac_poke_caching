@@ -524,14 +524,6 @@ export default function App() {
             </div>
           </div>
 
-          <div className="selection-strip">
-            <div className="selection-status">
-              <span>{filteredPokemon.length} affiches</span>
-              <span className="status-badge found">{foundCount} trouves</span>
-              <span>{totalPokemon - foundCount} restants</span>
-            </div>
-          </div>
-
           <div className="dex-grid">
             {filteredPokemon.map((pokemon) => {
               const foundRecord = collection.found[pokemon.dex];

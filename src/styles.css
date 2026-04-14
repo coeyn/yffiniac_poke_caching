@@ -470,7 +470,6 @@ code {
 .scan-actions,
 .manual-row,
 .filter-row,
-.selection-strip,
 .selection-status,
 .dex-toolbar,
 .toolbar-controls,
@@ -622,15 +621,13 @@ code {
 }
 
 .hero-progress-copy h2,
-.panel h3,
-.selection-strip h4 {
+.panel h3 {
   font-size: clamp(1.7rem, 2.4vw, 2.4rem);
 }
 
 .hero-progress-copy p,
 .panel-text,
 .compatibility-block p,
-.selection-strip p,
 .site-footer p {
   color: var(--muted);
 }
@@ -713,7 +710,6 @@ code {
 
 .scan-actions,
 .manual-row,
-.selection-strip,
 .toolbar-controls,
 .filter-row {
   gap: 0.75rem;
@@ -918,16 +914,8 @@ input[type='search']:focus {
   color: #fff9f0;
 }
 
-.selection-strip {
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-  padding: 1rem 1.1rem;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, rgba(245, 195, 69, 0.12), rgba(255, 255, 255, 0.36));
-  border: 1px solid rgba(20, 38, 54, 0.08);
-}
-
 .selection-status {
+  margin-bottom: 1rem;
   gap: 0.5rem;
   flex-wrap: wrap;
   color: var(--muted);
@@ -1286,7 +1274,6 @@ input[type='search']:focus {
   }
 
   .hero-progress,
-  .selection-strip,
   .toolbar-controls,
   .manual-row,
   .scan-actions {
@@ -1342,7 +1329,7 @@ input[type='search']:focus {
 
 @media (max-width: 540px) {
   .capture-header,
-  .selection-strip {
+  .selection-status {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -1371,11 +1358,6 @@ input[type='search']:focus {
 
   .toolbar-controls {
     gap: 0.45rem;
-  }
-
-  .selection-strip {
-    margin-bottom: 0.8rem;
-    padding: 0.85rem 0.9rem;
   }
 
   .dex-tile {
