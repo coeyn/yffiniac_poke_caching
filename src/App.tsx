@@ -585,6 +585,7 @@ export default function App() {
     setCollection((currentCollection) => ({
       ...currentCollection,
       explorerName,
+      adventureStarted: true,
     }));
     setNotice({
       tone: 'success',
@@ -614,7 +615,7 @@ export default function App() {
     );
   }
 
-  if (collection.explorerName.trim().length < 2) {
+  if (!collection.adventureStarted) {
     return (
       <OnboardingView
         explorerName={collection.explorerName}

@@ -20,8 +20,9 @@ export type ScanHistoryEntry = {
 };
 
 export type CollectionState = {
-  version: 2;
+  version: 3;
   explorerName: string;
+  adventureStarted: boolean;
   found: Record<string, FoundPokemonRecord>;
   history: ScanHistoryEntry[];
   professor: ProfessorProgress;
@@ -51,8 +52,9 @@ export function createEmptyProfessorProgress(): ProfessorProgress {
 
 export function createEmptyCollection(): CollectionState {
   return {
-    version: 2,
+    version: 3,
     explorerName: '',
+    adventureStarted: false,
     found: {},
     history: [],
     professor: createEmptyProfessorProgress(),
@@ -73,6 +75,7 @@ export function loadCollection(): CollectionState {
     const parsed = JSON.parse(raw) as {
       version?: number;
       explorerName?: unknown;
+      adventureStarted?: unknown;
       found?: Record<string, FoundPokemonRecord>;
       history?: ScanHistoryEntry[];
       professor?: Partial<ProfessorProgress>;
@@ -82,15 +85,38 @@ export function loadCollection(): CollectionState {
       return {
         version: 2,
         explorerName: typeof parsed.explorerName === 'string' ? parsed.explorerName : '',
+        adventureStarted:
+          typeof parsed.explorerName === 'string' && parsed.explorerName.trim().length >= 2,
         found: parsed.found ?? {},
         history: parsed.history ?? [],
         professor: createEmptyProfessorProgress(),
       };
     }
 
+    if (parsed.version === 2) {
+      const explorerName = typeof parsed.explorerName === 'string' ? parsed.explorerName : '';
+      return {
+        version: 3,
+        explorerName,
+        adventureStarted:
+          typeof parsed.adventureStarted === 'boolean'
+            ? parsed.adventureStarted
+            : explorerName.trim().length >= 2,
+        found: parsed.found ?? {},
+        history: parsed.history ?? [],
+        professor: {
+          visits: parsed.professor?.visits ?? 0,
+          firstVisitAt: parsed.professor?.firstVisitAt ?? null,
+          lastVisitAt: parsed.professor?.lastVisitAt ?? null,
+          startersClaimed: parsed.professor?.startersClaimed ?? [],
+        },
+      };
+    }
+
     if (
-      parsed.version !== 2 ||
+      parsed.version !== 3 ||
       typeof parsed.explorerName !== 'string' ||
+      typeof parsed.adventureStarted !== 'boolean' ||
       !parsed.found ||
       !parsed.history
     ) {
@@ -98,8 +124,9 @@ export function loadCollection(): CollectionState {
     }
 
     return {
-      version: 2,
+      version: 3,
       explorerName: parsed.explorerName,
+      adventureStarted: parsed.adventureStarted,
       found: parsed.found,
       history: parsed.history,
       professor: {
