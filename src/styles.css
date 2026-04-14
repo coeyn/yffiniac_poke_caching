@@ -927,6 +927,7 @@ code {
   z-index: 2;
   display: grid;
   grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  align-items: start;
   gap: 1.25rem;
   padding: 0 4vw 3rem;
   margin-top: 0;
@@ -969,6 +970,10 @@ code {
 }
 
 .history-panel {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  max-height: calc(70svh + 11rem);
+  overflow: hidden;
   background:
     linear-gradient(
       180deg,
@@ -979,7 +984,7 @@ code {
 
 .profile-panel .panel-heading,
 .history-panel .panel-heading {
-  justify-items: start;
+  justify-items: center;
   align-items: center;
   min-height: 64px;
   margin: -0.85rem -0.2rem 1rem;
@@ -989,6 +994,7 @@ code {
 .profile-panel .panel-heading h3,
 .history-panel .panel-heading h3 {
   color: #ffffff;
+  font-size: xx-large;
 }
 
 .notice {
@@ -1115,6 +1121,10 @@ input[type='search']:focus {
   list-style: none;
   margin: 0;
   padding: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.2rem;
+  overscroll-behavior: contain;
 }
 
 .history-list li > div {
