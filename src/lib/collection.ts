@@ -83,7 +83,7 @@ export function loadCollection(): CollectionState {
 
     if (parsed.version === 1) {
       return {
-        version: 2,
+        version: 3,
         explorerName: typeof parsed.explorerName === 'string' ? parsed.explorerName : '',
         adventureStarted:
           typeof parsed.explorerName === 'string' && parsed.explorerName.trim().length >= 2,
