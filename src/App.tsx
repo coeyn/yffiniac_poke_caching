@@ -245,6 +245,7 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
   const [captureState, setCaptureState] = useState<CaptureState | null>(readCaptureState);
+  const [selectedDex, setSelectedDex] = useState<string | null>(null);
   const [notice, setNotice] = useState<Notice>({
     tone: 'neutral',
     title: 'Collection locale',
@@ -262,11 +263,26 @@ export default function App() {
   const filteredPokemon = filterPokemon(collection, deferredSearch, filterMode);
   const lastHistoryEntry = collection.history[0];
   const lastScannedPokemon = lastHistoryEntry ? displayCatalog[lastHistoryEntry.id - 1] : null;
+  const selectedPokemon = selectedDex
+    ? displayCatalog.find((pokemon) => pokemon.dex === selectedDex) ?? null
+    : null;
+  const selectedFoundRecord = selectedPokemon ? collection.found[selectedPokemon.dex] : null;
 
   const capturePokemon = useMemo(
     () => (captureState ? displayCatalog[captureState.id - 1] : null),
     [captureState],
   );
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'Escape') {
+        setSelectedDex(null);
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   function handleCaptureRecorded(): void {
     if (!captureState) {
@@ -513,7 +529,7 @@ export default function App() {
             <div>
               <p className="hero-label">Collection</p>
               <h4>{filteredPokemon.length} Pokemon affiches</h4>
-              <p>Les indices sont visibles directement sur chaque vignette.</p>
+              <p>Touche une vignette pour ouvrir son detail.</p>
             </div>
 
             <div className="selection-status">
@@ -525,12 +541,14 @@ export default function App() {
           <div className="dex-grid">
             {filteredPokemon.map((pokemon) => {
               const foundRecord = collection.found[pokemon.dex];
-              const clue = getPokemonClue(pokemon);
 
               return (
-                <article
+                <button
                   key={pokemon.dex}
                   className={['dex-tile', foundRecord ? 'is-found' : 'is-missing'].filter(Boolean).join(' ')}
+                  type="button"
+                  onClick={() => setSelectedDex(pokemon.dex)}
+                  aria-label={`Ouvrir ${pokemon.name}`}
                 >
                   <span className="dex-number">#{pokemon.dex}</span>
                   <div className="dex-visual">
@@ -545,19 +563,59 @@ export default function App() {
                   </div>
                   <div className="dex-copy">
                     <strong>{pokemon.name}</strong>
-                    <p className="dex-clue">{clue}</p>
-                    <small>
-                      {foundRecord
-                        ? `Trouve le ${formatScanDate(foundRecord.foundAt)}`
-                        : 'Encore cache dans la ville'}
-                    </small>
                   </div>
-                </article>
+                </button>
               );
             })}
           </div>
         </section>
       </main>
+
+      {selectedPokemon ? (
+        <div className="modal-backdrop" role="presentation" onClick={() => setSelectedDex(null)}>
+          <section
+            className="pokemon-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pokemon-modal-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="modal-close"
+              type="button"
+              onClick={() => setSelectedDex(null)}
+              aria-label="Fermer"
+            >
+              ×
+            </button>
+
+            <div className="pokemon-modal-head">
+              <span className="dex-number">#{selectedPokemon.dex}</span>
+              <img
+                src={resolvePublicAsset(selectedPokemon.image)}
+                alt={selectedPokemon.name}
+                width="140"
+                height="140"
+                className="pokemon-modal-image"
+              />
+              <h3 id="pokemon-modal-title">{selectedPokemon.name}</h3>
+            </div>
+
+            <div className="pokemon-modal-body">
+              <p className="pokemon-modal-clue">
+                <span>Indice</span>
+                {getPokemonClue(selectedPokemon)}
+              </p>
+
+              <p className="pokemon-modal-status">
+                {selectedFoundRecord
+                  ? `Trouve le ${formatScanDate(selectedFoundRecord.foundAt)}`
+                  : 'Pas encore trouve sur cet appareil.'}
+              </p>
+            </div>
+          </section>
+        </div>
+      ) : null}
     </div>
   );
 }
