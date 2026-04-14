@@ -461,6 +461,10 @@ code {
   transform: translate3d(-50%, 0, 0) scale(1);
 }
 
+.capture-arena.is-throwing .capture-pokemon-stage {
+  animation: pokemon-recall 0.4s cubic-bezier(0.3, 0.1, 0.2, 1) 0.88s forwards;
+}
+
 .capture-arena.is-ready .capture-image {
   animation: float-pokemon 3.6s ease-in-out infinite;
 }
@@ -504,7 +508,15 @@ code {
 }
 
 .capture-arena.is-captured .capture-pokemon-stage {
-  animation: caught-bounce 0.52s ease-out;
+  opacity: 0;
+  transform: translate3d(-50%, -3rem, 0) scale(0.12);
+  animation: none;
+}
+
+.capture-arena.is-captured .capture-ball-flight {
+  opacity: 1;
+  transform: translate3d(-13.2rem, -12rem, 0) scale(1.02) rotate(420deg);
+  animation: ball-settle 0.8s ease-out both;
 }
 
 .capture-arena.is-captured .capture-glow {
@@ -1389,7 +1401,7 @@ input[type='search']:focus {
     transform: translate3d(-11rem, -11.5rem, 0) scale(0.98) rotate(300deg);
   }
   100% {
-    opacity: 0;
+    opacity: 1;
     transform: translate3d(-13.2rem, -12rem, 0) scale(1.02) rotate(420deg);
   }
 }
@@ -1409,18 +1421,37 @@ input[type='search']:focus {
   }
 }
 
-@keyframes caught-bounce {
+@keyframes pokemon-recall {
   0% {
     transform: translate3d(-50%, 0, 0) scale(1);
+    opacity: 1;
   }
   35% {
-    transform: translate3d(-50%, -0.8rem, 0) scale(0.96);
+    transform: translate3d(-50%, -0.5rem, 0) scale(0.88);
+    opacity: 1;
   }
-  65% {
-    transform: translate3d(-50%, 0.15rem, 0) scale(1.02);
+  75% {
+    transform: translate3d(-50%, -2rem, 0) scale(0.32);
+    opacity: 0.7;
   }
   100% {
-    transform: translate3d(-50%, 0, 0) scale(1);
+    transform: translate3d(-50%, -3rem, 0) scale(0.08);
+    opacity: 0;
+  }
+}
+
+@keyframes ball-settle {
+  0% {
+    transform: translate3d(-13.2rem, -12rem, 0) scale(1.02) rotate(420deg);
+  }
+  35% {
+    transform: translate3d(-13.2rem, -10.6rem, 0) scale(0.98) rotate(430deg);
+  }
+  62% {
+    transform: translate3d(-13.2rem, -11.7rem, 0) scale(1.01) rotate(438deg);
+  }
+  100% {
+    transform: translate3d(-13.2rem, -11.2rem, 0) scale(1) rotate(440deg);
   }
 }
 
@@ -1469,6 +1500,10 @@ input[type='search']:focus {
 
   .capture-arena.is-throwing .capture-ball-flight {
     animation-name: ball-throw-mobile;
+  }
+
+  .capture-arena.is-captured .capture-ball-flight {
+    transform: translate3d(-8.6rem, -8.5rem, 0) scale(1.02) rotate(420deg);
   }
 
   .hero {
@@ -1678,7 +1713,7 @@ input[type='search']:focus {
     transform: translate3d(-7rem, -8rem, 0) scale(0.98) rotate(300deg);
   }
   100% {
-    opacity: 0;
+    opacity: 1;
     transform: translate3d(-8.6rem, -8.5rem, 0) scale(1.02) rotate(420deg);
   }
 }
