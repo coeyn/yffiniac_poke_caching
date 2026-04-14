@@ -12,7 +12,6 @@ import {
   type CollectionState,
 } from './lib/collection';
 import { parseTagPayload } from './lib/nfc';
-import { repairMojibake } from './lib/text';
 
 type FilterMode = 'all' | 'found' | 'missing';
 
@@ -54,10 +53,7 @@ const dateFormatter = new Intl.DateTimeFormat('fr-FR', {
 });
 const filterModes: FilterMode[] = ['all', 'found', 'missing'];
 const publicBaseUrl = import.meta.env.BASE_URL;
-const displayCatalog: PokemonView[] = pokemonCatalog.map((pokemon) => ({
-  ...pokemon,
-  name: repairMojibake(pokemon.name),
-}));
+const displayCatalog: PokemonView[] = pokemonCatalog;
 
 function resolvePublicAsset(path: string): string {
   return `${publicBaseUrl}${path.replace(/^\//, '')}`;
