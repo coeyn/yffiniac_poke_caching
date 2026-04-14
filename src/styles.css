@@ -954,6 +954,47 @@ code {
   margin-bottom: 1rem;
 }
 
+.profile-panel,
+.history-panel {
+  padding-top: 1.45rem;
+}
+
+.profile-panel {
+  background:
+    linear-gradient(
+      180deg,
+      #d9f2ff 0 80px,
+      #12345d 80px,
+      #205f94 58%,
+      #7bc6ff 100%
+    );
+}
+
+.history-panel {
+  background:
+    linear-gradient(
+      180deg,
+      #ffe2b8 0 80px,
+      #3d2146 80px,
+      #6d3577 56%,
+      #d38cff 100%
+    );
+}
+
+.profile-panel .panel-heading,
+.history-panel .panel-heading {
+  justify-items: start;
+  align-items: center;
+  min-height: 64px;
+  margin: -0.85rem -0.2rem 1rem;
+  padding: 0 1.1rem;
+}
+
+.profile-panel .panel-heading h3,
+.history-panel .panel-heading h3 {
+  color: #2f2e36;
+}
+
 .notice {
   display: grid;
   gap: 0.35rem;

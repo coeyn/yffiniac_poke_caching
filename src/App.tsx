@@ -698,10 +698,9 @@ export default function App() {
 
       <main className="workspace">
         <aside className="workspace-rail">
-          <section className="panel">
+          <section className="panel profile-panel">
             <div className="panel-heading">
-              <p className="eyebrow">Profil local</p>
-              <h3>Appareil en cours</h3>
+              <h3>Profil local</h3>
             </div>
 
             <dl className="stats-list">
@@ -728,10 +727,9 @@ export default function App() {
             </button>
           </section>
 
-          <section className="panel">
+          <section className="panel history-panel">
             <div className="panel-heading">
-              <p className="eyebrow">Historique</p>
-              <h3>Dernieres captures</h3>
+              <h3>Historique</h3>
             </div>
 
             {collection.history.length === 0 ? (
