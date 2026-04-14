@@ -496,7 +496,6 @@ code {
 .accent-button,
 .danger-button,
 .filter-chip,
-.history-list button,
 .dex-tile {
   transition:
     transform var(--transition),
@@ -577,7 +576,7 @@ code {
 
 .hero-stage {
   display: grid;
-  gap: 1.4rem;
+  gap: 1rem;
   justify-items: end;
 }
 
@@ -624,44 +623,17 @@ code {
 }
 
 .hero-progress-copy h2,
-.featured-pokemon h2,
 .panel h3,
 .selection-strip h4 {
   font-size: clamp(1.7rem, 2.4vw, 2.4rem);
 }
 
 .hero-progress-copy p,
-.featured-pokemon p,
 .panel-text,
 .compatibility-block p,
 .selection-strip p,
 .site-footer p {
   color: var(--muted);
-}
-
-.featured-pokemon {
-  width: min(100%, 28rem);
-  margin: 0;
-  padding: clamp(1.2rem, 2vw, 1.6rem);
-  border-radius: 32px;
-  background:
-    linear-gradient(180deg, rgba(255, 253, 249, 0.84), rgba(255, 249, 239, 0.84)),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent);
-  border: 1px solid rgba(255, 255, 255, 0.48);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(18px);
-}
-
-.featured-pokemon img {
-  margin-inline: auto;
-  width: min(100%, 320px);
-  animation: float-pokemon 5.6s ease-in-out infinite;
-}
-
-.featured-heading {
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 0.5rem 0;
 }
 
 .featured-heading span,
@@ -671,15 +643,6 @@ code {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-}
-
-.featured-heading span {
-  min-width: 4.5rem;
-  min-height: 2rem;
-  padding: 0.35rem 0.9rem;
-  background: rgba(20, 38, 54, 0.08);
-  color: var(--ink);
-  font-size: 0.9rem;
 }
 
 .workspace {
@@ -839,7 +802,7 @@ input[type='search']:focus {
   padding: 0;
 }
 
-.history-list li button {
+.history-list li > div {
   width: 100%;
   display: grid;
   justify-items: start;
@@ -959,12 +922,6 @@ input[type='search']:focus {
   color: var(--muted);
 }
 
-.selection-clue {
-  max-width: 34rem;
-  margin: 0.7rem 0 0;
-  color: var(--ink);
-}
-
 .status-badge {
   min-height: 2rem;
   padding: 0.25rem 0.8rem;
@@ -983,7 +940,7 @@ input[type='search']:focus {
 
 .dex-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 0.85rem;
   content-visibility: auto;
 }
@@ -1004,14 +961,6 @@ input[type='search']:focus {
 .dex-tile.is-found {
   background: rgba(255, 255, 255, 0.72);
   border-color: rgba(63, 127, 89, 0.14);
-}
-
-.dex-tile.is-active {
-  transform: translateY(-2px);
-  border-color: rgba(45, 143, 213, 0.28);
-  box-shadow:
-    inset 0 0 0 1px rgba(45, 143, 213, 0.14),
-    0 12px 30px rgba(20, 38, 54, 0.08);
 }
 
 .dex-number {
@@ -1047,6 +996,13 @@ input[type='search']:focus {
 .dex-copy {
   display: grid;
   gap: 0.35rem;
+}
+
+.dex-clue {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.94rem;
+  line-height: 1.45;
 }
 
 .dex-copy small {
@@ -1150,12 +1106,12 @@ input[type='search']:focus {
   .hero {
     grid-template-columns: 1fr;
     min-height: auto;
-    padding-bottom: 7rem;
+    padding-bottom: 4.5rem;
   }
 
   .workspace {
     grid-template-columns: 1fr;
-    margin-top: -4rem;
+    margin-top: -2.4rem;
   }
 
   .dex-toolbar {
@@ -1165,6 +1121,14 @@ input[type='search']:focus {
 
   .toolbar-controls {
     justify-content: flex-start;
+  }
+
+  .workspace-rail {
+    order: 2;
+  }
+
+  .dex-panel {
+    order: 1;
   }
 }
 
@@ -1186,7 +1150,9 @@ input[type='search']:focus {
   }
 
   .hero {
-    padding: 1.25rem 1rem 6rem;
+    gap: 1.2rem;
+    min-height: auto;
+    padding: 1.1rem 1rem 3.2rem;
   }
 
   .hero::after {
@@ -1195,8 +1161,26 @@ input[type='search']:focus {
     width: 18rem;
   }
 
+  .hero-stage {
+    display: none;
+  }
+
   .hero-metrics {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.65rem;
+    margin-top: 1.3rem;
+  }
+
+  .hero-metrics li {
+    padding-top: 0.65rem;
+  }
+
+  .hero-metrics strong {
+    font-size: 0.98rem;
+  }
+
+  .hero-metrics span {
+    font-size: 0.8rem;
   }
 
   .hero-progress,
@@ -1220,15 +1204,33 @@ input[type='search']:focus {
 
   .dex-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
+
+  .dex-tile {
+    padding: 0.8rem;
+    border-radius: 20px;
+  }
+
+  .dex-visual {
+    min-height: 5.3rem;
+  }
+
+  .dex-visual img {
+    width: 76px;
+    height: 76px;
+  }
+
+  .dex-clue {
+    font-size: 0.86rem;
+  }
+
+  .workspace-rail .panel:first-child {
+    padding-top: 0.95rem;
   }
 }
 
 @media (max-width: 540px) {
-  .featured-heading {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .capture-header,
   .selection-strip {
     flex-direction: column;
@@ -1236,7 +1238,15 @@ input[type='search']:focus {
   }
 
   .dex-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-stage {
+    justify-items: stretch;
+  }
+
+  .hero-progress-copy {
+    max-width: none;
   }
 }
 

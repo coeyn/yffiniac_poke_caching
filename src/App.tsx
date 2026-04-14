@@ -118,15 +118,18 @@ function clearCaptureTagFromUrl(): void {
 function CaptureView(props: {
   captureState: CaptureState;
   collection: CollectionState;
-  onCapture: () => void;
+  onCaptured: () => void;
+  onReturn: () => void;
 }) {
   const pokemon = displayCatalog[props.captureState.id - 1];
   const foundRecord = props.collection.found[props.captureState.dex];
   const clue = getPokemonClue(pokemon);
   const [phase, setPhase] = useState<CapturePhase>('approach');
+  const [hasRecorded, setHasRecorded] = useState(false);
 
   useEffect(() => {
     setPhase('approach');
+    setHasRecorded(false);
     const revealTimer = window.setTimeout(() => {
       setPhase('ready');
     }, 1100);
@@ -146,6 +149,15 @@ function CaptureView(props: {
     return () => window.clearTimeout(captureTimer);
   }, [phase]);
 
+  useEffect(() => {
+    if (phase !== 'captured' || hasRecorded) {
+      return;
+    }
+
+    props.onCaptured();
+    setHasRecorded(true);
+  }, [hasRecorded, phase, props]);
+
   function handlePrimaryAction(): void {
     if (phase === 'ready') {
       setPhase('throwing');
@@ -153,7 +165,7 @@ function CaptureView(props: {
     }
 
     if (phase === 'captured') {
-      props.onCapture();
+      props.onReturn();
     }
   }
 
@@ -162,9 +174,7 @@ function CaptureView(props: {
       ? 'Lancer la Pokeball'
       : phase === 'throwing'
         ? 'Capture en cours...'
-        : foundRecord
-          ? 'Revenir a ma collection'
-          : 'Ajouter a ma collection';
+        : 'Retourner au Pokedex';
 
   const sceneMessage =
     phase === 'approach'
@@ -174,8 +184,8 @@ function CaptureView(props: {
         : phase === 'throwing'
           ? 'La Pokeball file droit sur la figurine.'
           : foundRecord
-            ? `${pokemon.name} etait deja enregistre sur cet appareil.`
-            : `${pokemon.name} est maintenant dans ta collection locale.`;
+            ? `${pokemon.name} est deja dans ta collection.`
+            : `${pokemon.name} rejoint maintenant ta collection locale.`;
 
   return (
     <main className="capture-shell">
@@ -207,7 +217,7 @@ function CaptureView(props: {
           <h1>{pokemon.name}</h1>
           <p className="capture-text">
             {foundRecord
-              ? 'Cette figurine a deja ete validee sur cet appareil, mais tu peux rejouer la scene.'
+              ? 'Cette figurine a deja ete validee sur cet appareil.'
               : 'Tu viens de trouver une figurine Pokemon cachee dans Yffiniac.'}
           </p>
           <p className="capture-clue">
@@ -232,7 +242,6 @@ function CaptureView(props: {
 
 export default function App() {
   const [collection, setCollection] = useState(loadCollection);
-  const [selectedDex, setSelectedDex] = useState('025');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
   const [captureState, setCaptureState] = useState<CaptureState | null>(readCaptureState);
@@ -251,10 +260,6 @@ export default function App() {
   const completion = foundCount / totalPokemon;
   const completionPercent = Math.round(completion * 100);
   const filteredPokemon = filterPokemon(collection, deferredSearch, filterMode);
-  const selectedPokemon =
-    displayCatalog.find((pokemon) => pokemon.dex === selectedDex) ?? displayCatalog[24];
-  const selectedFoundRecord = collection.found[selectedPokemon.dex];
-  const selectedClue = getPokemonClue(selectedPokemon);
   const lastHistoryEntry = collection.history[0];
   const lastScannedPokemon = lastHistoryEntry ? displayCatalog[lastHistoryEntry.id - 1] : null;
 
@@ -263,7 +268,7 @@ export default function App() {
     [captureState],
   );
 
-  function handleCaptureConfirm(): void {
+  function handleCaptureRecorded(): void {
     if (!captureState) {
       return;
     }
@@ -279,7 +284,6 @@ export default function App() {
       }),
     );
 
-    setSelectedDex(captureState.dex);
     setNotice({
       tone: 'success',
       title: alreadyFound ? `${capturePokemon?.name ?? 'Pokemon'} deja trouve` : `${capturePokemon?.name ?? 'Pokemon'} capture`,
@@ -287,14 +291,16 @@ export default function App() {
         ? 'Cette capture etait deja presente sur cet appareil.'
         : 'Le Pokemon a bien ete ajoute a ta collection.',
     });
+  }
 
+  function handleCaptureReturn(): void {
     clearCaptureTagFromUrl();
     setCaptureState(null);
   }
 
   function handleCollectionReset(): void {
     const confirmed = window.confirm(
-      'Effacer toute la progression locale sur cet appareil ? Cette action reinitialise la collection et l’historique.',
+      'Effacer toute la progression locale sur cet appareil ? Cette action reinitialise la collection et l historique.',
     );
 
     if (!confirmed) {
@@ -302,7 +308,6 @@ export default function App() {
     }
 
     setCollection(createEmptyCollection());
-    setSelectedDex('025');
     setFilterMode('all');
     setSearchTerm('');
     setNotice({
@@ -314,7 +319,12 @@ export default function App() {
 
   if (captureState) {
     return (
-      <CaptureView captureState={captureState} collection={collection} onCapture={handleCaptureConfirm} />
+      <CaptureView
+        captureState={captureState}
+        collection={collection}
+        onCaptured={handleCaptureRecorded}
+        onReturn={handleCaptureReturn}
+      />
     );
   }
 
@@ -335,16 +345,16 @@ export default function App() {
 
           <ul className="hero-metrics">
             <li>
-              <strong>151</strong>
-              <span>figurines a retrouver</span>
+              <strong>{foundCount} / 151</strong>
+              <span>Pokemon trouves</span>
             </li>
             <li>
-              <strong>Yffiniac</strong>
-              <span>parcours dans toute la ville</span>
+              <strong>{completionPercent}%</strong>
+              <span>Pokedex complete</span>
             </li>
             <li>
-              <strong>Local</strong>
-              <span>progression gardee sur l’appareil</span>
+              <strong>{lastScannedPokemon ? lastScannedPokemon.name : 'Aucun'}</strong>
+              <span>Derniere capture</span>
             </li>
           </ul>
         </div>
@@ -373,28 +383,6 @@ export default function App() {
               </p>
             </div>
           </div>
-
-          <figure className="featured-pokemon">
-            <img
-              src={resolvePublicAsset(selectedPokemon.image)}
-              alt={selectedPokemon.name}
-              width="320"
-              height="320"
-              loading="eager"
-            />
-            <figcaption>
-              <p className="hero-label">Pokemon en focus</p>
-              <div className="featured-heading">
-                <span>#{selectedPokemon.dex}</span>
-                <h2>{selectedPokemon.name}</h2>
-              </div>
-              <p>
-                {selectedFoundRecord
-                  ? `Trouve le ${formatScanDate(selectedFoundRecord.foundAt)}`
-                  : 'Pas encore trouve sur cet appareil.'}
-              </p>
-            </figcaption>
-          </figure>
         </div>
       </header>
 
@@ -454,16 +442,16 @@ export default function App() {
             </div>
 
             {collection.history.length === 0 ? (
-              <p className="panel-text">Aucune capture enregistree sur cet appareil pour l’instant.</p>
+              <p className="panel-text">Aucune capture enregistree sur cet appareil pour l instant.</p>
             ) : (
               <ol className="history-list">
                 {collection.history.map((entry) => (
                   <li key={`${entry.scannedAt}-${entry.dex}`}>
-                    <button type="button" onClick={() => setSelectedDex(entry.dex)}>
+                    <div>
                       <span>#{entry.dex}</span>
                       <strong>{displayCatalog[entry.id - 1]?.name ?? `Pokemon #${entry.dex}`}</strong>
                       <small>{formatScanDate(entry.scannedAt)}</small>
-                    </button>
+                    </div>
                   </li>
                 ))}
               </ol>
@@ -475,9 +463,9 @@ export default function App() {
           <div className="dex-toolbar">
             <div>
               <p className="eyebrow">Collection</p>
-              <h3>Pokedex d’Yffiniac</h3>
+              <h3>Pokedex d Yffiniac</h3>
               <p className="panel-text">
-                Suis ta progression et retrouve les Pokemon qui manquent encore a ta collection.
+                Filtre les Pokemon et consulte directement leur indice dans les vignettes.
               </p>
             </div>
 
@@ -523,42 +511,26 @@ export default function App() {
 
           <div className="selection-strip">
             <div>
-              <p className="hero-label">Focus actuel</p>
-              <h4>
-                #{selectedPokemon.dex} {selectedPokemon.name}
-              </h4>
-              <p>{selectedFoundRecord ? 'Deja capture' : 'Pas encore capture'}</p>
-              <p className="selection-clue">
-                <span>Indice</span>
-                {selectedClue}
-              </p>
+              <p className="hero-label">Collection</p>
+              <h4>{filteredPokemon.length} Pokemon affiches</h4>
+              <p>Les indices sont visibles directement sur chaque vignette.</p>
             </div>
 
             <div className="selection-status">
-              <span className={selectedFoundRecord ? 'status-badge found' : 'status-badge missing'}>
-                {selectedFoundRecord ? 'Trouve' : 'A decouvrir'}
-              </span>
-              <span>{filteredPokemon.length} resultat(s)</span>
+              <span className="status-badge found">{foundCount} trouves</span>
+              <span>{totalPokemon - foundCount} restants</span>
             </div>
           </div>
 
           <div className="dex-grid">
             {filteredPokemon.map((pokemon) => {
               const foundRecord = collection.found[pokemon.dex];
-              const isActive = pokemon.dex === selectedPokemon.dex;
+              const clue = getPokemonClue(pokemon);
 
               return (
-                <button
+                <article
                   key={pokemon.dex}
-                  className={[
-                    'dex-tile',
-                    foundRecord ? 'is-found' : 'is-missing',
-                    isActive ? 'is-active' : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                  type="button"
-                  onClick={() => setSelectedDex(pokemon.dex)}
+                  className={['dex-tile', foundRecord ? 'is-found' : 'is-missing'].filter(Boolean).join(' ')}
                 >
                   <span className="dex-number">#{pokemon.dex}</span>
                   <div className="dex-visual">
@@ -573,13 +545,14 @@ export default function App() {
                   </div>
                   <div className="dex-copy">
                     <strong>{pokemon.name}</strong>
+                    <p className="dex-clue">{clue}</p>
                     <small>
                       {foundRecord
                         ? `Trouve le ${formatScanDate(foundRecord.foundAt)}`
                         : 'Encore cache dans la ville'}
                     </small>
                   </div>
-                </button>
+                </article>
               );
             })}
           </div>
