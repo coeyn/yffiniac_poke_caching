@@ -13,7 +13,7 @@
   --danger: #ff7b7b;
   --shadow: 0 24px 60px rgba(2, 8, 20, 0.46);
   --shadow-soft: 0 12px 28px rgba(2, 8, 20, 0.28);
-  --radius-xl: 18px;
+  --radius-xl: 30px;
   --radius-lg: 14px;
   --radius-md: 10px;
   --transition: 180ms ease;
@@ -1267,29 +1267,30 @@ input[type='search']:focus {
 }
 
 .dex-tile {
+  appearance: none;
+  -webkit-appearance: none;
   display: grid;
   place-items: center;
   aspect-ratio: 1;
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 12px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.06);
   text-align: center;
-  box-shadow:
-    var(--shadow-soft),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  box-shadow: none;
 }
 
 .dex-tile.is-found {
   background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.34);
   box-shadow:
     0 12px 28px rgba(4, 11, 22, 0.3),
     inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
-.dex-tile button {
-  appearance: none;
+.dex-tile:focus,
+.dex-tile:focus-visible {
+  outline: none;
 }
 
 .dex-number {
