@@ -34,4 +34,4 @@ Le code `YF-XXXXXX` est opaque. Le site l’interprete ensuite pour retrouver le
 
 ## Note exploitation
 
-Si besoin, je pourrai ensuite generer ici un tableau complet des 151 tags a ecrire sur les puces.
+Le tableau complet des 151 tags a ecrire sur les puces est disponible dans [docs/TAGS.md](</c:/Users/coeyn/Documents/projet code/yffiniac_poke_caching/docs/TAGS.md>).
