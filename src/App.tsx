@@ -810,7 +810,6 @@ export default function App() {
                   onClick={() => setSelectedDex(pokemon.dex)}
                   aria-label={`Ouvrir ${pokemon.name}`}
                 >
-                  <span className="dex-number">#{pokemon.dex}</span>
                   <div className="dex-visual">
                     <img
                       src={resolvePublicAsset(pokemon.image)}
@@ -820,9 +819,6 @@ export default function App() {
                       loading="lazy"
                       decoding="async"
                     />
-                  </div>
-                  <div className="dex-copy">
-                    <strong>{pokemon.name}</strong>
                   </div>
                 </button>
               );

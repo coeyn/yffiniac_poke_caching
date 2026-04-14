@@ -1184,7 +1184,7 @@ input[type='search']:focus {
 }
 
 .dex-toolbar-head h3 {
-  color: #6b7280;
+  color: #2f2e36;
 }
 
 .toolbar-controls {
@@ -1246,7 +1246,7 @@ input[type='search']:focus {
 
 .dex-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
   gap: 1rem;
   content-visibility: auto;
   max-height: 70svh;
@@ -1268,29 +1268,24 @@ input[type='search']:focus {
 
 .dex-tile {
   display: grid;
-  justify-items: start;
-  align-content: start;
-  gap: 0.7rem;
-  padding: 0.95rem;
-  border: 1px solid rgba(123, 161, 214, 0.14);
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 12px;
-  background:
-    linear-gradient(180deg, rgba(17, 34, 61, 0.98), rgba(8, 19, 36, 0.96)),
-    var(--surface);
-  text-align: left;
+  background: rgba(255, 255, 255, 0.06);
+  text-align: center;
   box-shadow:
     var(--shadow-soft),
-    inset 0 0 0 1px rgba(180, 214, 255, 0.05);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
 .dex-tile.is-found {
-  background:
-    linear-gradient(180deg, rgba(22, 49, 87, 0.98), rgba(12, 29, 55, 0.96)),
-    var(--surface);
-  border-color: rgba(255, 209, 74, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.34);
   box-shadow:
     0 12px 28px rgba(4, 11, 22, 0.3),
-    inset 0 0 0 1px rgba(255, 209, 74, 0.06);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .dex-tile button {
@@ -1309,31 +1304,21 @@ input[type='search']:focus {
 
 .dex-visual {
   width: 100%;
-  min-height: 6.6rem;
+  height: 100%;
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background:
-    radial-gradient(circle at 50% 18%, rgba(255, 209, 74, 0.18), transparent 42%),
-    radial-gradient(circle at 50% 72%, rgba(98, 192, 255, 0.12), transparent 54%),
-    linear-gradient(180deg, rgba(13, 29, 53, 0.92), rgba(7, 16, 30, 0.86));
-  border: 1px solid rgba(123, 161, 214, 0.12);
+  background: transparent;
 }
 
 .dex-visual img {
-  width: 96px;
-  height: 96px;
+  width: min(100%, 108px);
+  height: auto;
 }
 
 .dex-tile.is-missing .dex-visual img {
   filter: grayscale(1) saturate(0.25);
   opacity: 0.45;
-}
-
-.dex-copy {
-  display: grid;
-  gap: 0.35rem;
-  width: 100%;
 }
 
 .dex-clue {
