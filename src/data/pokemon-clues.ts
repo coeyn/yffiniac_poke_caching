@@ -21,6 +21,6 @@ export const pokemonClues: Partial<Record<string, string>> = {
   '151': 'Celui-ci aime garder un peu de mystere, meme quand on croit avoir compris.',
 };
 
-export function getPokemonClue(pokemon: Pick<PokemonEntry, 'dex' | 'name'>): string {
-  return pokemonClues[pokemon.dex] ?? `Indice a definir pour ${pokemon.name}.`;
+export function getPokemonClue(pokemon: Pick<PokemonEntry, 'dex'>): string | null {
+  return pokemonClues[pokemon.dex] ?? null;
 }

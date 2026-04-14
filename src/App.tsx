@@ -220,10 +220,12 @@ function CaptureView(props: {
               ? 'Cette figurine a deja ete validee sur cet appareil.'
               : 'Tu viens de trouver une figurine Pokemon cachee dans Yffiniac.'}
           </p>
-          <p className="capture-clue">
-            <span>Indice</span>
-            {clue}
-          </p>
+          {clue ? (
+            <p className="capture-clue">
+              <span>Indice</span>
+              {clue}
+            </p>
+          ) : null}
         </div>
 
         <button
@@ -267,6 +269,7 @@ export default function App() {
     ? displayCatalog.find((pokemon) => pokemon.dex === selectedDex) ?? null
     : null;
   const selectedFoundRecord = selectedPokemon ? collection.found[selectedPokemon.dex] : null;
+  const selectedClue = selectedPokemon ? getPokemonClue(selectedPokemon) : null;
 
   const capturePokemon = useMemo(
     () => (captureState ? displayCatalog[captureState.id - 1] : null),
@@ -602,16 +605,18 @@ export default function App() {
             </div>
 
             <div className="pokemon-modal-body">
-              <p className="pokemon-modal-clue">
-                <span>Indice</span>
-                {getPokemonClue(selectedPokemon)}
-              </p>
+              {selectedClue ? (
+                <p className="pokemon-modal-clue">
+                  <span>Indice</span>
+                  {selectedClue}
+                </p>
+              ) : null}
 
-              <p className="pokemon-modal-status">
-                {selectedFoundRecord
-                  ? `Trouve le ${formatScanDate(selectedFoundRecord.foundAt)}`
-                  : 'Pas encore trouve sur cet appareil.'}
-              </p>
+              {selectedFoundRecord ? (
+                <p className="pokemon-modal-status">
+                  {`Trouve le ${formatScanDate(selectedFoundRecord.foundAt)}`}
+                </p>
+              ) : null}
             </div>
           </section>
         </div>
