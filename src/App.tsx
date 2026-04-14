@@ -1,24 +1,13 @@
-import {
-  startTransition,
-  useDeferredValue,
-  useEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type FormEvent,
-} from 'react';
-import { buildTagUrl, getTagCodeForDex } from './data/tag-codes';
+import { startTransition, useDeferredValue, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { pokemonCatalog } from './data/pokemon';
 import {
   createEmptyCollection,
-  formatDex,
   loadCollection,
   markPokemonFound,
   saveCollection,
   type CollectionState,
-  type ScanSource,
 } from './lib/collection';
-import { beginNfcScan, isWebNfcAvailable, parseTagPayload } from './lib/nfc';
+import { parseTagPayload } from './lib/nfc';
 import { repairMojibake } from './lib/text';
 
 type FilterMode = 'all' | 'found' | 'missing';
@@ -29,12 +18,11 @@ type Notice = {
   message: string;
 };
 
-type ScanPreview = {
-  rawText: string;
-  serialNumber: string | null;
-  source: ScanSource;
-  parsedDex: string | null;
-  parsedTagCode: string | null;
+type CaptureState = {
+  rawUrl: string;
+  dex: string;
+  id: number;
+  tagCode: string | null;
 };
 
 type PokemonView = {
@@ -64,37 +52,6 @@ function formatScanDate(value: string): string {
   return dateFormatter.format(new Date(value));
 }
 
-function getNoticeFromError(error: unknown): Notice {
-  if (error instanceof DOMException) {
-    if (error.name === 'NotAllowedError') {
-      return {
-        tone: 'error',
-        title: 'Acces NFC refuse',
-        message: 'Le navigateur a bloque le scan NFC. Autorise-le puis relance la lecture.',
-      };
-    }
-
-    if (error.name === 'NotSupportedError') {
-      return {
-        tone: 'error',
-        title: 'NFC non compatible',
-        message: 'Le scan Web NFC demande surtout Android avec Chrome ou Edge, sur une page HTTPS.',
-      };
-    }
-  }
-
-  return {
-    tone: 'error',
-    title: 'Impossible de lancer le scan',
-    message:
-      'Le lecteur NFC du navigateur n’a pas pu demarrer. Verifie le HTTPS, l’autorisation navigateur et le support Web NFC.',
-  };
-}
-
-function findPokemonName(id: number): string {
-  return displayCatalog[id - 1]?.name ?? `Pokemon #${formatDex(id)}`;
-}
-
 function filterPokemon(collection: CollectionState, query: string, filterMode: FilterMode) {
   const normalizedQuery = query.trim().toLocaleLowerCase('fr-FR');
 
@@ -122,10 +79,71 @@ function filterPokemon(collection: CollectionState, query: string, filterMode: F
   });
 }
 
-function getSourceLabel(source: ScanSource): string {
-  if (source === 'nfc') return 'scan NFC';
-  if (source === 'url') return 'ouverture directe';
-  return 'saisie manuelle';
+function readCaptureState(): CaptureState | null {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const currentUrl = new URL(window.location.href);
+  if (!currentUrl.searchParams.get('tag')) {
+    return null;
+  }
+
+  const parsed = parseTagPayload(currentUrl.toString());
+  if (!parsed) {
+    return null;
+  }
+
+  return {
+    rawUrl: currentUrl.toString(),
+    dex: parsed.dex,
+    id: parsed.id,
+    tagCode: parsed.tagCode,
+  };
+}
+
+function clearCaptureTagFromUrl(): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const currentUrl = new URL(window.location.href);
+  currentUrl.searchParams.delete('tag');
+  window.history.replaceState({}, '', currentUrl);
+}
+
+function CaptureView(props: {
+  captureState: CaptureState;
+  collection: CollectionState;
+  onCapture: () => void;
+}) {
+  const pokemon = displayCatalog[props.captureState.id - 1];
+  const foundRecord = props.collection.found[props.captureState.dex];
+
+  return (
+    <main className="capture-shell">
+      <section className="capture-card">
+        <p className="hero-kicker">Capture detectee</p>
+        <img
+          src={resolvePublicAsset(pokemon.image)}
+          alt={pokemon.name}
+          width="220"
+          height="220"
+          className="capture-image"
+        />
+        <span className="capture-dex">#{pokemon.dex}</span>
+        <h1>{pokemon.name}</h1>
+        <p className="capture-text">
+          {foundRecord
+            ? 'Cette figurine a deja ete ajoutee sur cet appareil.'
+            : 'Tu viens de tomber sur une nouvelle figurine Pokemon a Yffiniac.'}
+        </p>
+        <button className="primary-button capture-button" type="button" onClick={props.onCapture}>
+          {foundRecord ? 'Revenir a ma collection' : 'Ajouter a ma collection'}
+        </button>
+      </section>
+    </main>
+  );
 }
 
 export default function App() {
@@ -133,28 +151,17 @@ export default function App() {
   const [selectedDex, setSelectedDex] = useState('025');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
-  const [manualTag, setManualTag] = useState('');
-  const [isScanning, setIsScanning] = useState(false);
-  const [scanPreview, setScanPreview] = useState<ScanPreview | null>(null);
+  const [captureState, setCaptureState] = useState<CaptureState | null>(readCaptureState);
   const [notice, setNotice] = useState<Notice>({
     tone: 'neutral',
-    title: 'Pret pour le scan',
-    message: 'Scanne une figurine NFC ou ouvre un tag URL pour voir comment la lecture est interpretee.',
+    title: 'Collection locale',
+    message: 'Ta progression est enregistree sur cet appareil.',
   });
-  const scanAbortRef = useRef<AbortController | null>(null);
-  const consumedUrlTagRef = useRef(false);
   const deferredSearch = useDeferredValue(searchTerm);
-  const supportsNfc = isWebNfcAvailable();
 
   useEffect(() => {
     saveCollection(collection);
   }, [collection]);
-
-  useEffect(() => {
-    return () => {
-      scanAbortRef.current?.abort();
-    };
-  }, []);
 
   const foundCount = Object.keys(collection.found).length;
   const completion = foundCount / totalPokemon;
@@ -165,136 +172,39 @@ export default function App() {
   const selectedFoundRecord = collection.found[selectedPokemon.dex];
   const lastHistoryEntry = collection.history[0];
   const lastScannedPokemon = lastHistoryEntry ? displayCatalog[lastHistoryEntry.id - 1] : null;
-  const selectedTagCode = getTagCodeForDex(selectedPokemon.dex);
-  const selectedTagUrl = buildTagUrl(selectedTagCode);
 
-  function stopScan(): void {
-    scanAbortRef.current?.abort();
-    scanAbortRef.current = null;
-    setIsScanning(false);
-  }
+  const capturePokemon = useMemo(
+    () => (captureState ? displayCatalog[captureState.id - 1] : null),
+    [captureState],
+  );
 
-  function applyScan(rawText: string, source: ScanSource, serialNumber: string | null): boolean {
-    const parsedPayload = parseTagPayload(rawText);
-
-    setScanPreview({
-      rawText,
-      serialNumber,
-      source,
-      parsedDex: parsedPayload?.dex ?? null,
-      parsedTagCode: parsedPayload?.tagCode ?? null,
-    });
-
-    if (!parsedPayload) {
-      setNotice({
-        tone: 'error',
-        title: 'Tag non reconnu',
-        message:
-          'Le site attend surtout une URL comme `https://coeyn.github.io/yffiniac_poke_caching/?tag=YF-XXXXXX` ou un code `YF-XXXXXX`.',
-      });
-      return false;
+  function handleCaptureConfirm(): void {
+    if (!captureState) {
+      return;
     }
 
-    const pokemonName = findPokemonName(parsedPayload.id);
-    const alreadyFound = Boolean(collection.found[parsedPayload.dex]);
+    const alreadyFound = Boolean(collection.found[captureState.dex]);
 
     setCollection((currentCollection) =>
       markPokemonFound(currentCollection, {
-        id: parsedPayload.id,
-        payload: rawText,
-        source,
-        serialNumber,
+        id: captureState.id,
+        payload: captureState.rawUrl,
+        source: 'url',
+        serialNumber: null,
       }),
     );
 
-    setSelectedDex(parsedPayload.dex);
+    setSelectedDex(captureState.dex);
     setNotice({
       tone: 'success',
-      title: alreadyFound ? `${pokemonName} deja valide` : `${pokemonName} rejoint la collection`,
+      title: alreadyFound ? `${capturePokemon?.name ?? 'Pokemon'} deja trouve` : `${capturePokemon?.name ?? 'Pokemon'} capture`,
       message: alreadyFound
-        ? `La figurine #${parsedPayload.dex} a bien ete rescanee sur cet appareil.`
-        : `La figurine #${parsedPayload.dex} est maintenant enregistree dans votre Pokedex local.`,
+        ? 'Cette capture etait deja presente sur cet appareil.'
+        : 'Le Pokemon a bien ete ajoute a ta collection.',
     });
 
-    return true;
-  }
-
-  useEffect(() => {
-    if (consumedUrlTagRef.current || typeof window === 'undefined') {
-      return;
-    }
-
-    const currentUrl = new URL(window.location.href);
-    const tagCode = currentUrl.searchParams.get('tag');
-    if (!tagCode) {
-      return;
-    }
-
-    consumedUrlTagRef.current = true;
-    const sourceUrl = currentUrl.toString();
-    applyScan(sourceUrl, 'url', null);
-    currentUrl.searchParams.delete('tag');
-    window.history.replaceState({}, '', currentUrl);
-  }, []);
-
-  async function handleStartScan(): Promise<void> {
-    if (!supportsNfc) {
-      setNotice({
-        tone: 'error',
-        title: 'Web NFC indisponible',
-        message:
-          'Le scan navigateur fonctionne surtout sur Android avec Chrome ou Edge, et sur une page servie en HTTPS.',
-      });
-      return;
-    }
-
-    stopScan();
-    setIsScanning(true);
-    setNotice({
-      tone: 'neutral',
-      title: 'Mode scan actif',
-      message: 'Approche une figurine du telephone pour lire la puce NFC.',
-    });
-
-    try {
-      const controller = await beginNfcScan(
-        ({ rawText, serialNumber }) => {
-          if (applyScan(rawText, 'nfc', serialNumber)) {
-            stopScan();
-          }
-        },
-        (message) => {
-          setNotice({
-            tone: 'error',
-            title: 'Lecture incomplete',
-            message,
-          });
-        },
-      );
-
-      scanAbortRef.current = controller;
-    } catch (error) {
-      stopScan();
-      setNotice(getNoticeFromError(error));
-    }
-  }
-
-  function handleManualSubmit(event: FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
-
-    const cleanedTag = manualTag.trim();
-    if (!cleanedTag) {
-      setNotice({
-        tone: 'error',
-        title: 'Code vide',
-        message: 'Saisis une URL de tag ou un code YF-XXXXXX avant de valider.',
-      });
-      return;
-    }
-
-    if (applyScan(cleanedTag, 'manual', null)) {
-      setManualTag('');
-    }
+    clearCaptureTagFromUrl();
+    setCaptureState(null);
   }
 
   function handleCollectionReset(): void {
@@ -306,13 +216,10 @@ export default function App() {
       return;
     }
 
-    stopScan();
     setCollection(createEmptyCollection());
     setSelectedDex('025');
     setFilterMode('all');
     setSearchTerm('');
-    setManualTag('');
-    setScanPreview(null);
     setNotice({
       tone: 'neutral',
       title: 'Collection locale effacee',
@@ -320,39 +227,39 @@ export default function App() {
     });
   }
 
+  if (captureState) {
+    return (
+      <CaptureView captureState={captureState} collection={collection} onCapture={handleCaptureConfirm} />
+    );
+  }
+
   return (
     <div className="app-shell">
       <header className="hero">
         <div className="hero-copy">
           <p className="hero-kicker">Yffiniac Poke Caching</p>
-          <h1>Le site montre maintenant clairement comment une figurine NFC ouvre et valide un tag.</h1>
+          <h1>Retrouve les figurines Pokemon cachees dans la ville et remplis ton Pokedex.</h1>
           <p className="hero-description">
-            Chaque puce peut contenir une URL du type <code>?tag=YF-XXXXXX</code>. Si le telephone
-            ouvre cette URL, le site reconnait automatiquement la figurine et l’ajoute a la
-            collection locale.
+            Chaque figurine trouvee ajoute un nouveau Pokemon a ta collection sur cet appareil.
           </p>
 
-          <div className="hero-actions">
-            <button className="primary-button" type="button" onClick={() => void handleStartScan()}>
-              {isScanning ? 'Scanner en attente...' : 'Scanner une figurine'}
-            </button>
-            <a className="secondary-button" href="#scan-demo">
-              Voir le flux NFC
-            </a>
+          <div className={`notice notice-${notice.tone} hero-notice`}>
+            <strong>{notice.title}</strong>
+            <p>{notice.message}</p>
           </div>
 
           <ul className="hero-metrics">
             <li>
-              <strong>Format retenu</strong>
-              <span>URL opaque avec parametre `tag`</span>
+              <strong>151</strong>
+              <span>figurines a retrouver</span>
             </li>
             <li>
-              <strong>Compatibilite</strong>
-              <span>Android + Chrome/Edge + HTTPS</span>
+              <strong>Yffiniac</strong>
+              <span>parcours dans toute la ville</span>
             </li>
             <li>
-              <strong>Stockage actuel</strong>
-              <span>Collection locale sur l’appareil</span>
+              <strong>Local</strong>
+              <span>progression gardee sur l’appareil</span>
             </li>
           </ul>
         </div>
@@ -372,11 +279,11 @@ export default function App() {
             <div className="hero-progress-copy">
               <p className="hero-label">Pokedex actuel</p>
               <h2>
-                {foundCount} / {totalPokemon} valides
+                {foundCount} / {totalPokemon} trouves
               </h2>
               <p>
                 {lastScannedPokemon && lastHistoryEntry
-                  ? `Dernier scan : ${lastScannedPokemon.name} le ${formatScanDate(lastHistoryEntry.scannedAt)}`
+                  ? `Derniere capture : ${lastScannedPokemon.name} le ${formatScanDate(lastHistoryEntry.scannedAt)}`
                   : 'Aucune figurine validee pour le moment.'}
               </p>
             </div>
@@ -398,8 +305,8 @@ export default function App() {
               </div>
               <p>
                 {selectedFoundRecord
-                  ? `Valide le ${formatScanDate(selectedFoundRecord.foundAt)}`
-                  : 'Encore introuvable dans votre collection locale.'}
+                  ? `Trouve le ${formatScanDate(selectedFoundRecord.foundAt)}`
+                  : 'Pas encore trouve sur cet appareil.'}
               </p>
             </figcaption>
           </figure>
@@ -408,111 +315,6 @@ export default function App() {
 
       <main className="workspace">
         <aside className="workspace-rail">
-          <section className="panel scan-panel" id="scan-demo">
-            <div className="panel-heading">
-              <p className="eyebrow">Scan NFC</p>
-              <h3>Demonstration du flux</h3>
-            </div>
-
-            <p className="panel-text">
-              Le tag recommande est une URL directe vers le site, pas un numero de Pokemon en clair.
-            </p>
-
-            <div className={`notice notice-${notice.tone}`}>
-              <strong>{notice.title}</strong>
-              <p>{notice.message}</p>
-            </div>
-
-            <div className="scan-actions">
-              <button className="primary-button" type="button" onClick={() => void handleStartScan()}>
-                {isScanning ? 'En ecoute NFC' : 'Lancer le scan'}
-              </button>
-              <button className="secondary-button" type="button" onClick={stopScan}>
-                Arreter
-              </button>
-            </div>
-
-            <form className="manual-form" onSubmit={handleManualSubmit}>
-              <label htmlFor="manual-tag">Test manuel</label>
-              <div className="manual-row">
-                <input
-                  id="manual-tag"
-                  name="manual-tag"
-                  type="text"
-                  value={manualTag}
-                  onChange={(event) => setManualTag(event.target.value)}
-                  placeholder="Ex: https://coeyn.github.io/yffiniac_poke_caching/?tag=YF-ABC123"
-                  autoComplete="off"
-                />
-                <button className="accent-button" type="submit">
-                  Simuler
-                </button>
-              </div>
-            </form>
-
-            <div className="compatibility-block">
-              <p className="hero-label">Compatibilite reelle</p>
-              <p>
-                {supportsNfc
-                  ? 'Web NFC detecte. Le scan navigateur devrait fonctionner si la page est servie en HTTPS.'
-                  : 'Web NFC non detecte sur cet appareil. Garde la saisie manuelle pour les tests desktop et iPhone.'}
-              </p>
-            </div>
-          </section>
-
-          <section className="panel">
-            <div className="panel-heading">
-              <p className="eyebrow">Tag de la figurine</p>
-              <h3>Valeur a ecrire sur la puce</h3>
-            </div>
-
-            <div className="tag-url-box">
-              <p className="hero-label">Tag opaque</p>
-              <strong>{selectedTagCode}</strong>
-              <p>{selectedTagUrl}</p>
-            </div>
-
-            <ul className="inspector-list">
-              <li>Le tag n’expose pas directement le numero du Pokemon.</li>
-              <li>Le telephone peut ouvrir le site sans que le joueur l’ait deja lance.</li>
-              <li>Le site lit ensuite `?tag=...` et interprete la figurine correspondante.</li>
-            </ul>
-          </section>
-
-          <section className="panel">
-            <div className="panel-heading">
-              <p className="eyebrow">Lecture courante</p>
-              <h3>Ce que le site a compris</h3>
-            </div>
-
-            {scanPreview ? (
-              <dl className="scan-preview">
-                <div>
-                  <dt>Source</dt>
-                  <dd>{getSourceLabel(scanPreview.source)}</dd>
-                </div>
-                <div>
-                  <dt>Contenu brut</dt>
-                  <dd className="mono-value">{scanPreview.rawText}</dd>
-                </div>
-                <div>
-                  <dt>Tag reconnu</dt>
-                  <dd>{scanPreview.parsedTagCode ?? 'Aucun'}</dd>
-                </div>
-                <div>
-                  <dt>Pokemon reconnu</dt>
-                  <dd>{scanPreview.parsedDex ? `#${scanPreview.parsedDex}` : 'Aucun'}</dd>
-                </div>
-                <div>
-                  <dt>Numero de serie NFC</dt>
-                  <dd>{scanPreview.serialNumber ?? 'Non expose par le navigateur'}</dd>
-                </div>
-              </dl>
-            ) : (
-              <p className="panel-text">Aucune lecture a afficher pour le moment.</p>
-            )}
-          </section>
-
           <section className="panel">
             <div className="panel-heading">
               <p className="eyebrow">Profil local</p>
@@ -559,6 +361,29 @@ export default function App() {
               Effacer les donnees locales
             </button>
           </section>
+
+          <section className="panel">
+            <div className="panel-heading">
+              <p className="eyebrow">Historique</p>
+              <h3>Dernieres captures</h3>
+            </div>
+
+            {collection.history.length === 0 ? (
+              <p className="panel-text">Aucune capture enregistree sur cet appareil pour l’instant.</p>
+            ) : (
+              <ol className="history-list">
+                {collection.history.map((entry) => (
+                  <li key={`${entry.scannedAt}-${entry.dex}`}>
+                    <button type="button" onClick={() => setSelectedDex(entry.dex)}>
+                      <span>#{entry.dex}</span>
+                      <strong>{displayCatalog[entry.id - 1]?.name ?? `Pokemon #${entry.dex}`}</strong>
+                      <small>{formatScanDate(entry.scannedAt)}</small>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </section>
         </aside>
 
         <section className="panel dex-panel" id="collection">
@@ -567,7 +392,7 @@ export default function App() {
               <p className="eyebrow">Collection</p>
               <h3>Pokedex d’Yffiniac</h3>
               <p className="panel-text">
-                Selectionne un Pokemon pour voir son tag URL exact et simuler sa lecture.
+                Suis ta progression et retrouve les Pokemon qui manquent encore a ta collection.
               </p>
             </div>
 
@@ -617,11 +442,7 @@ export default function App() {
               <h4>
                 #{selectedPokemon.dex} {selectedPokemon.name}
               </h4>
-              <p>
-                {selectedFoundRecord
-                  ? `Valide par ${getSourceLabel(selectedFoundRecord.lastSource)}`
-                  : 'Pas encore valide sur cet appareil'}
-              </p>
+              <p>{selectedFoundRecord ? 'Deja capture' : 'Pas encore capture'}</p>
             </div>
 
             <div className="selection-status">
@@ -665,7 +486,7 @@ export default function App() {
                     <strong>{pokemon.name}</strong>
                     <small>
                       {foundRecord
-                        ? `Valide le ${formatScanDate(foundRecord.foundAt)}`
+                        ? `Trouve le ${formatScanDate(foundRecord.foundAt)}`
                         : 'Encore cache dans la ville'}
                     </small>
                   </div>
@@ -675,13 +496,6 @@ export default function App() {
           </div>
         </section>
       </main>
-
-      <footer className="site-footer">
-        <p>
-          Le MVP reste volontairement simple : le tag NFC ouvre le site avec un code opaque, puis
-          la collection est stockee localement. La vraie securisation viendra plus tard avec un backend.
-        </p>
-      </footer>
     </div>
   );
 }
