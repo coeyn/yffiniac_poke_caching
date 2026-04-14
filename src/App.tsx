@@ -7,6 +7,7 @@ import {
   type CSSProperties,
   type FormEvent,
 } from 'react';
+import { huntingZones, rolloutPhases } from './data/game-plan';
 import { pokemonCatalog } from './data/pokemon';
 import {
   createEmptyCollection,
@@ -57,7 +58,7 @@ function getNoticeFromError(error: unknown): Notice {
       return {
         tone: 'error',
         title: 'NFC non compatible',
-        message: 'Le scan Web NFC demande en pratique Android + Chrome ou Edge, sur une page HTTPS.',
+        message: 'Le scan Web NFC demande en pratique Android avec Chrome ou Edge, sur une page HTTPS.',
       };
     }
   }
@@ -65,7 +66,8 @@ function getNoticeFromError(error: unknown): Notice {
   return {
     tone: 'error',
     title: 'Impossible de lancer le scan',
-    message: 'Le lecteur NFC du navigateur n’a pas pu démarrer. Vérifiez le HTTPS et le support Web NFC.',
+    message:
+      'Le lecteur NFC du navigateur n’a pas pu démarrer. Vérifiez le HTTPS, l’autorisation navigateur et le support Web NFC.',
   };
 }
 
@@ -73,11 +75,7 @@ function findPokemonName(id: number): string {
   return pokemonCatalog[id - 1]?.name ?? `Pokémon #${formatDex(id)}`;
 }
 
-function filterPokemon(
-  collection: CollectionState,
-  query: string,
-  filterMode: FilterMode,
-) {
+function filterPokemon(collection: CollectionState, query: string, filterMode: FilterMode) {
   const normalizedQuery = query.trim().toLocaleLowerCase('fr-FR');
 
   return pokemonCatalog.filter((pokemon) => {
@@ -102,6 +100,10 @@ function filterPokemon(
 
     return true;
   });
+}
+
+function getZoneForPokemon(id: number) {
+  return huntingZones.find((zone) => id >= zone.dexRange[0] && id <= zone.dexRange[1]) ?? huntingZones[0];
 }
 
 export default function App() {
@@ -139,6 +141,20 @@ export default function App() {
   const selectedFoundRecord = collection.found[selectedPokemon.dex];
   const lastHistoryEntry = collection.history[0];
   const lastScannedPokemon = lastHistoryEntry ? pokemonCatalog[lastHistoryEntry.id - 1] : null;
+  const selectedZone = getZoneForPokemon(selectedPokemon.id);
+  const zoneProgress = huntingZones.map((zone) => {
+    const idsInZone = pokemonCatalog.filter(
+      (pokemon) => pokemon.id >= zone.dexRange[0] && pokemon.id <= zone.dexRange[1],
+    );
+    const foundInZone = idsInZone.filter((pokemon) => collection.found[pokemon.dex]).length;
+
+    return {
+      ...zone,
+      total: idsInZone.length,
+      found: foundInZone,
+      percent: Math.round((foundInZone / idsInZone.length) * 100),
+    };
+  });
 
   function stopScan(): void {
     scanAbortRef.current?.abort();
@@ -363,7 +379,7 @@ export default function App() {
             </div>
 
             <p className="panel-text">
-              Format conseillé sur la puce pour ce MVP: <code>YFFINIAC-POKE:025</code>
+              Format conseillé sur la puce pour ce MVP : <code>YFFINIAC-POKE:025</code>
             </p>
 
             <div className={`notice notice-${notice.tone}`}>
@@ -477,6 +493,27 @@ export default function App() {
               </ol>
             )}
           </section>
+
+          <section className="panel">
+            <div className="panel-heading">
+              <p className="eyebrow">Feuille de route</p>
+              <h3>Suite du projet</h3>
+            </div>
+
+            <div className="roadmap-list">
+              {rolloutPhases.map((phase) => (
+                <article key={phase.id} className="roadmap-item">
+                  <h4>{phase.title}</h4>
+                  <p>{phase.description}</p>
+                  <ul>
+                    {phase.deliverables.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </section>
         </aside>
 
         <section className="panel dex-panel" id="collection">
@@ -551,6 +588,43 @@ export default function App() {
             </div>
           </div>
 
+          <section className="zone-overview">
+            <div className="zone-overview-header">
+              <div>
+                <p className="eyebrow">Parcours</p>
+                <h4>Plan de chasse par zone</h4>
+              </div>
+              <p className="panel-text">
+                Le Pokémon sélectionné appartient actuellement à la zone <strong>{selectedZone.name}</strong>.
+              </p>
+            </div>
+
+            <div className="zone-grid">
+              {zoneProgress.map((zone) => (
+                <article
+                  key={zone.id}
+                  className={zone.id === selectedZone.id ? 'zone-card zone-card-active' : 'zone-card'}
+                >
+                  <div className="zone-card-header">
+                    <p className="hero-label">{zone.theme}</p>
+                    <strong>
+                      {zone.found}/{zone.total}
+                    </strong>
+                  </div>
+                  <h5>{zone.name}</h5>
+                  <p>{zone.description}</p>
+                  <ul>
+                    <li>Terrain: {zone.terrain}</li>
+                    <li>Indice: {zone.clueStyle}</li>
+                    <li>
+                      Dex: #{formatDex(zone.dexRange[0])} à #{formatDex(zone.dexRange[1])}
+                    </li>
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </section>
+
           <div className="dex-grid">
             {filteredPokemon.map((pokemon) => {
               const foundRecord = collection.found[pokemon.dex];
@@ -597,7 +671,7 @@ export default function App() {
 
       <footer className="site-footer">
         <p>
-          MVP local-first: les scans sont enregistrés uniquement sur cet appareil. Pour une preuve
+          MVP local-first : les scans sont enregistrés uniquement sur cet appareil. Pour une preuve
           réellement robuste entre joueurs, la prochaine étape sera un backend avec comptes,
           historique serveur et signature de tags.
         </p>
