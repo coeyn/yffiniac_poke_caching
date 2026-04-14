@@ -250,8 +250,8 @@ export default function App() {
   const [selectedDex, setSelectedDex] = useState<string | null>(null);
   const [notice, setNotice] = useState<Notice>({
     tone: 'neutral',
-    title: 'Collection locale',
-    message: 'Ta progression est enregistree sur cet appareil.',
+    title: '',
+    message: '',
   });
   const deferredSearch = useDeferredValue(searchTerm);
 
@@ -331,7 +331,7 @@ export default function App() {
     setSearchTerm('');
     setNotice({
       tone: 'neutral',
-      title: 'Collection locale effacee',
+      title: 'Collection effacee',
       message: 'Le Pokedex de cet appareil a ete remis a zero.',
     });
   }
@@ -353,14 +353,13 @@ export default function App() {
         <div className="hero-copy">
           <p className="hero-kicker">Yffiniac Poke Caching</p>
           <h1>Retrouve les figurines Pokemon cachees dans la ville et remplis ton Pokedex.</h1>
-          <p className="hero-description">
-            Chaque figurine trouvee ajoute un nouveau Pokemon a ta collection sur cet appareil.
-          </p>
 
-          <div className={`notice notice-${notice.tone} hero-notice`}>
-            <strong>{notice.title}</strong>
-            <p>{notice.message}</p>
-          </div>
+          {notice.title || notice.message ? (
+            <div className={`notice notice-${notice.tone} hero-notice`}>
+              {notice.title ? <strong>{notice.title}</strong> : null}
+              {notice.message ? <p>{notice.message}</p> : null}
+            </div>
+          ) : null}
 
           <ul className="hero-metrics">
             <li>
@@ -480,14 +479,6 @@ export default function App() {
 
         <section className="panel dex-panel" id="collection">
           <div className="dex-toolbar">
-            <div>
-              <p className="eyebrow">Collection</p>
-              <h3>Pokedex d Yffiniac</h3>
-              <p className="panel-text">
-                Filtre les Pokemon et consulte directement leur indice dans les vignettes.
-              </p>
-            </div>
-
             <div className="toolbar-controls">
               <label className="search-field" htmlFor="pokemon-search">
                 <span className="sr-only">Rechercher un Pokemon</span>
@@ -529,13 +520,8 @@ export default function App() {
           </div>
 
           <div className="selection-strip">
-            <div>
-              <p className="hero-label">Collection</p>
-              <h4>{filteredPokemon.length} Pokemon affiches</h4>
-              <p>Touche une vignette pour ouvrir son detail.</p>
-            </div>
-
             <div className="selection-status">
+              <span>{filteredPokemon.length} affiches</span>
               <span className="status-badge found">{foundCount} trouves</span>
               <span>{totalPokemon - foundCount} restants</span>
             </div>
