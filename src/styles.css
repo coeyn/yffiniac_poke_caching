@@ -632,7 +632,7 @@ code {
   grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
   gap: 1.25rem;
   padding: 0 4vw 3rem;
-  margin-top: -5.5rem;
+  margin-top: 0;
 }
 
 .workspace-rail {
@@ -1185,7 +1185,7 @@ input[type='search']:focus {
 
   .workspace {
     grid-template-columns: 1fr;
-    margin-top: -2.4rem;
+    margin-top: 0;
   }
 
   .dex-toolbar {
