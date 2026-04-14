@@ -350,15 +350,6 @@ export default function App() {
   return (
     <div className="app-shell">
       <header className="hero">
-        <div className="hero-copy">
-          {notice.title || notice.message ? (
-            <div className={`notice notice-${notice.tone} hero-notice`}>
-              {notice.title ? <strong>{notice.title}</strong> : null}
-              {notice.message ? <p>{notice.message}</p> : null}
-            </div>
-          ) : null}
-        </div>
-
         <div className="hero-stage" aria-live="polite">
           <div className="hero-progress">
             <div
@@ -383,6 +374,15 @@ export default function App() {
               </p>
             </div>
           </div>
+        </div>
+
+        <div className="hero-copy">
+          {notice.title || notice.message ? (
+            <div className={`notice notice-${notice.tone} hero-notice`}>
+              {notice.title ? <strong>{notice.title}</strong> : null}
+              {notice.message ? <p>{notice.message}</p> : null}
+            </div>
+          ) : null}
         </div>
       </header>
 
