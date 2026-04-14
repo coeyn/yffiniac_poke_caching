@@ -1154,6 +1154,14 @@ input[type='search']:focus {
 }
 
 .dex-panel {
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0 20px,
+      #0c2142 20px,
+      #1d4f8f 58%,
+      #7cc9ff 100%
+    );
   padding: 1.45rem;
 }
 
