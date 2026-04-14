@@ -873,22 +873,34 @@ input[type='search']:focus {
 }
 
 .dex-toolbar {
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
   gap: 1rem;
   margin-bottom: 1.25rem;
 }
 
+.dex-toolbar-head {
+  display: grid;
+  gap: 0.35rem;
+}
+
 .toolbar-controls {
+  display: flex;
   justify-content: end;
+  align-items: center;
   flex-wrap: wrap;
+  gap: 0.65rem;
 }
 
 .search-field {
-  min-width: min(100%, 18rem);
+  width: min(100%, 18rem);
 }
 
 .filter-row {
+  display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .filter-chip {
@@ -907,7 +919,7 @@ input[type='search']:focus {
 }
 
 .selection-strip {
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-bottom: 1rem;
   padding: 1rem 1.1rem;
   border-radius: var(--radius-lg);
@@ -1205,7 +1217,7 @@ input[type='search']:focus {
   }
 
   .dex-toolbar {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     align-items: stretch;
   }
 
@@ -1297,6 +1309,14 @@ input[type='search']:focus {
     gap: 0.7rem;
   }
 
+  .search-field {
+    width: 100%;
+  }
+
+  .filter-row {
+    justify-content: flex-start;
+  }
+
   .dex-tile {
     padding: 0.8rem;
     border-radius: 20px;
@@ -1342,6 +1362,15 @@ input[type='search']:focus {
 
   .dex-panel {
     padding: 0.85rem;
+  }
+
+  .dex-toolbar {
+    gap: 0.8rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .toolbar-controls {
+    gap: 0.45rem;
   }
 
   .selection-strip {

@@ -479,6 +479,11 @@ export default function App() {
 
         <section className="panel dex-panel" id="collection">
           <div className="dex-toolbar">
+            <div className="dex-toolbar-head">
+              <p className="eyebrow">Collection</p>
+              <h3>Pokedex d Yffiniac</h3>
+            </div>
+
             <div className="toolbar-controls">
               <label className="search-field" htmlFor="pokemon-search">
                 <span className="sr-only">Rechercher un Pokemon</span>
