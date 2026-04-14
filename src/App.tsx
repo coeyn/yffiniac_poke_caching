@@ -229,6 +229,11 @@ function CaptureView(props: {
           <div className="capture-grass capture-grass-front" aria-hidden="true" />
           <div className="capture-ball-flight" aria-hidden="true" />
           <div className="capture-impact" aria-hidden="true" />
+          <div className="capture-stars" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
           <p className="capture-scene-text">{sceneMessage}</p>
         </div>
 

@@ -352,6 +352,7 @@ code {
 .capture-glow,
 .capture-impact,
 .capture-ball-flight,
+.capture-stars,
 .capture-grass,
 .capture-pokemon-stage,
 .capture-scene-text {
@@ -507,6 +508,45 @@ code {
   animation: ball-impact 0.46s ease-out 0.92s forwards;
 }
 
+.capture-stars {
+  left: 50%;
+  bottom: 9.8rem;
+  width: 8rem;
+  height: 4.5rem;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.capture-stars span {
+  position: absolute;
+  width: 1.1rem;
+  aspect-ratio: 1;
+  opacity: 0;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 24%, transparent 25%),
+    linear-gradient(0deg, transparent 0 40%, #ffe56a 40% 60%, transparent 60% 100%),
+    linear-gradient(90deg, transparent 0 40%, #ffe56a 40% 60%, transparent 60% 100%);
+  clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+  filter: drop-shadow(0 0 12px rgba(255, 228, 115, 0.48));
+}
+
+.capture-stars span:nth-child(1) {
+  left: 0.6rem;
+  bottom: 0.8rem;
+}
+
+.capture-stars span:nth-child(2) {
+  left: 3.2rem;
+  bottom: 2.2rem;
+  width: 1.35rem;
+}
+
+.capture-stars span:nth-child(3) {
+  right: 0.7rem;
+  bottom: 1rem;
+}
+
 .capture-arena.is-captured .capture-pokemon-stage {
   opacity: 0;
   transform: translate3d(-50%, -3rem, 0) scale(0.12);
@@ -516,7 +556,19 @@ code {
 .capture-arena.is-captured .capture-ball-flight {
   opacity: 1;
   transform: translate3d(-13.2rem, -12rem, 0) scale(1.02) rotate(420deg);
-  animation: ball-settle 0.8s ease-out both;
+  animation: ball-settle 1.45s ease-out both;
+}
+
+.capture-arena.is-captured .capture-stars span:nth-child(1) {
+  animation: capture-star-left 0.6s ease-out 1.1s forwards;
+}
+
+.capture-arena.is-captured .capture-stars span:nth-child(2) {
+  animation: capture-star-center 0.62s ease-out 1.18s forwards;
+}
+
+.capture-arena.is-captured .capture-stars span:nth-child(3) {
+  animation: capture-star-right 0.6s ease-out 1.26s forwards;
 }
 
 .capture-arena.is-captured .capture-glow {
@@ -1444,14 +1496,80 @@ input[type='search']:focus {
   0% {
     transform: translate3d(-13.2rem, -12rem, 0) scale(1.02) rotate(420deg);
   }
-  35% {
-    transform: translate3d(-13.2rem, -10.6rem, 0) scale(0.98) rotate(430deg);
+  12% {
+    transform: translate3d(-13.2rem, -10.7rem, 0) scale(0.98) rotate(428deg);
   }
-  62% {
-    transform: translate3d(-13.2rem, -11.7rem, 0) scale(1.01) rotate(438deg);
+  20% {
+    transform: translate3d(-13.7rem, -11.3rem, 0) scale(1) rotate(432deg);
+  }
+  28% {
+    transform: translate3d(-12.7rem, -11.2rem, 0) scale(1) rotate(436deg);
+  }
+  36% {
+    transform: translate3d(-13.2rem, -11.2rem, 0) scale(1) rotate(440deg);
+  }
+  48% {
+    transform: translate3d(-13.55rem, -11.2rem, 0) scale(1) rotate(444deg);
+  }
+  56% {
+    transform: translate3d(-12.9rem, -11.2rem, 0) scale(1) rotate(448deg);
+  }
+  64% {
+    transform: translate3d(-13.2rem, -11.2rem, 0) scale(1) rotate(452deg);
+  }
+  74% {
+    transform: translate3d(-13.42rem, -11.2rem, 0) scale(1) rotate(455deg);
+  }
+  82% {
+    transform: translate3d(-13.03rem, -11.2rem, 0) scale(1) rotate(458deg);
   }
   100% {
-    transform: translate3d(-13.2rem, -11.2rem, 0) scale(1) rotate(440deg);
+    transform: translate3d(-13.2rem, -11.2rem, 0) scale(1) rotate(460deg);
+  }
+}
+
+@keyframes capture-star-left {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0.4rem, 0) scale(0.2) rotate(0deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translate3d(-0.6rem, -0.9rem, 0) scale(1.05) rotate(18deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-1rem, -1.6rem, 0) scale(0.55) rotate(36deg);
+  }
+}
+
+@keyframes capture-star-center {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0.5rem, 0) scale(0.2) rotate(0deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translate3d(0, -1.25rem, 0) scale(1.18) rotate(-10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -2rem, 0) scale(0.55) rotate(-18deg);
+  }
+}
+
+@keyframes capture-star-right {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0.4rem, 0) scale(0.2) rotate(0deg);
+  }
+  35% {
+    opacity: 1;
+    transform: translate3d(0.65rem, -0.95rem, 0) scale(1.02) rotate(-18deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(1rem, -1.55rem, 0) scale(0.55) rotate(-34deg);
   }
 }
 
@@ -1504,6 +1622,7 @@ input[type='search']:focus {
 
   .capture-arena.is-captured .capture-ball-flight {
     transform: translate3d(-8.6rem, -8.5rem, 0) scale(1.02) rotate(420deg);
+    animation-name: ball-settle-mobile;
   }
 
   .hero {
@@ -1715,5 +1834,41 @@ input[type='search']:focus {
   100% {
     opacity: 1;
     transform: translate3d(-8.6rem, -8.5rem, 0) scale(1.02) rotate(420deg);
+  }
+}
+
+@keyframes ball-settle-mobile {
+  0% {
+    transform: translate3d(-8.6rem, -8.5rem, 0) scale(1.02) rotate(420deg);
+  }
+  12% {
+    transform: translate3d(-8.6rem, -7.4rem, 0) scale(0.98) rotate(428deg);
+  }
+  20% {
+    transform: translate3d(-9rem, -8rem, 0) scale(1) rotate(432deg);
+  }
+  28% {
+    transform: translate3d(-8.25rem, -7.95rem, 0) scale(1) rotate(436deg);
+  }
+  36% {
+    transform: translate3d(-8.6rem, -7.95rem, 0) scale(1) rotate(440deg);
+  }
+  48% {
+    transform: translate3d(-8.9rem, -7.95rem, 0) scale(1) rotate(444deg);
+  }
+  56% {
+    transform: translate3d(-8.35rem, -7.95rem, 0) scale(1) rotate(448deg);
+  }
+  64% {
+    transform: translate3d(-8.6rem, -7.95rem, 0) scale(1) rotate(452deg);
+  }
+  74% {
+    transform: translate3d(-8.8rem, -7.95rem, 0) scale(1) rotate(455deg);
+  }
+  82% {
+    transform: translate3d(-8.45rem, -7.95rem, 0) scale(1) rotate(458deg);
+  }
+  100% {
+    transform: translate3d(-8.6rem, -7.95rem, 0) scale(1) rotate(460deg);
   }
 }
