@@ -1440,6 +1440,12 @@ input[type='search']:focus {
   .dex-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.45rem;
+    max-height: 58svh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.15rem;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .hero-progress-copy {
@@ -1512,6 +1518,15 @@ input[type='search']:focus {
   .pokemon-modal {
     width: min(100%, 24rem);
     padding: 1.15rem;
+  }
+
+  .dex-grid::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .dex-grid::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(20, 38, 54, 0.18);
   }
 }
 
