@@ -183,6 +183,7 @@ function CaptureView(props: {
   const pokemon = displayCatalog[props.captureState.id - 1];
   const foundRecord = props.collection.found[props.captureState.dex];
   const pokeballAsset = resolvePublicAsset('/img/pokeball.webp');
+  const captureSpriteAsset = resolvePublicAsset(`/pokemon_anim/${pokemon.dex}.gif`);
   const [phase, setPhase] = useState<CapturePhase>('approach');
   const [hasRecorded, setHasRecorded] = useState(false);
   const [wasAlreadyFound, setWasAlreadyFound] = useState(Boolean(foundRecord));
@@ -273,7 +274,7 @@ function CaptureView(props: {
           </div>
           <div className="capture-pokemon-stage">
             <img
-              src={resolvePublicAsset(pokemon.image)}
+              src={captureSpriteAsset}
               alt={pokemon.name}
               width="220"
               height="220"
@@ -282,7 +283,7 @@ function CaptureView(props: {
           </div>
           <div className="capture-shadow-silhouette" aria-hidden="true">
             <img
-              src={resolvePublicAsset(pokemon.image)}
+              src={captureSpriteAsset}
               alt=""
               width="220"
               height="220"
