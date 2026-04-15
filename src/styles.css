@@ -162,7 +162,7 @@ code {
 }
 
 .professor-summary p,
-.professor-copy p,
+.professor-copy p:not(.capture-text),
 .professor-stats dt {
   margin: 0;
   color: #2f2e36;
