@@ -116,9 +116,9 @@ code {
   place-items: center;
   padding: 1.5rem;
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.54), transparent 30%),
-    linear-gradient(180deg, rgba(248, 241, 226, 0.18), rgba(29, 84, 44, 0.1)),
-    linear-gradient(180deg, #eff6d7 0%, #d9e8a7 40%, #9fbe69 100%);
+    radial-gradient(circle at 14% 10%, rgba(255, 94, 87, 0.14), transparent 18%),
+    radial-gradient(circle at 86% 12%, rgba(98, 192, 255, 0.16), transparent 18%),
+    linear-gradient(225deg, #4d9ebc 0%, #02081e 50%, #4d9ebc 100%);
 }
 
 .capture-card {
@@ -130,7 +130,7 @@ code {
   text-align: center;
   border-radius: var(--radius-xl);
   background:
-    linear-gradient(180deg, rgba(14, 29, 53, 0.98), rgba(8, 19, 36, 0.96)),
+    linear-gradient(180deg, rgba(17, 34, 61, 0.98), rgba(8, 18, 34, 0.96)),
     var(--surface);
   border: 1px solid rgba(123, 161, 214, 0.18);
   box-shadow:
@@ -143,7 +143,7 @@ code {
   gap: 1.15rem;
   padding: clamp(1.1rem, 3vw, 1.6rem);
   background:
-    linear-gradient(180deg, rgba(15, 31, 57, 0.98), rgba(8, 18, 34, 0.98)),
+    linear-gradient(180deg, rgba(19, 38, 69, 0.98), rgba(8, 18, 34, 0.98)),
     var(--surface);
 }
 
@@ -305,6 +305,7 @@ code {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  padding: 0.15rem 0 0.25rem;
 }
 
 .capture-card h1 {
@@ -328,8 +329,9 @@ code {
   min-height: 2rem;
   padding: 0.25rem 0.8rem;
   border-radius: 999px;
-  background: rgba(20, 38, 54, 0.08);
-  color: var(--muted);
+  background: rgba(255, 209, 74, 0.12);
+  color: #ffe07a;
+  font-weight: 700;
 }
 
 .capture-arena {
@@ -339,11 +341,12 @@ code {
   overflow: hidden;
   border-radius: calc(var(--radius-xl) - 8px);
   background:
-    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.82), transparent 18%),
-    radial-gradient(circle at 24% 28%, rgba(255, 244, 196, 0.24), transparent 16%),
-    linear-gradient(180deg, #e9f7bc 0%, #c7e58a 34%, #79a94a 68%, #446927 100%);
-  border: 1px solid rgba(255, 255, 255, 0.52);
+    radial-gradient(circle at 50% 18%, rgba(200, 231, 255, 0.34), transparent 18%),
+    radial-gradient(circle at 24% 28%, rgba(255, 209, 74, 0.16), transparent 16%),
+    linear-gradient(180deg, #123766 0%, #173e6f 24%, #225b4f 62%, #2e6e3e 100%);
+  border: 1px solid rgba(123, 161, 214, 0.18);
   isolation: isolate;
+  box-shadow: inset 0 0 0 1px rgba(180, 214, 255, 0.05);
 }
 
 .capture-arena::before {
@@ -373,7 +376,7 @@ code {
   height: 5rem;
   transform: translateX(-50%);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 240, 161, 0.82), rgba(255, 240, 161, 0));
+  background: radial-gradient(circle, rgba(255, 209, 74, 0.72), rgba(255, 209, 74, 0));
   opacity: 0.72;
 }
 
@@ -590,9 +593,10 @@ code {
   z-index: 5;
   margin: 0;
   padding: 0.9rem 1rem;
-  border-radius: 20px;
-  background: rgba(20, 38, 54, 0.68);
-  color: #fff7ef;
+  border-radius: 10px;
+  background: rgba(8, 18, 34, 0.74);
+  border: 1px solid rgba(123, 161, 214, 0.16);
+  color: #edf4ff;
   text-align: left;
   backdrop-filter: blur(12px);
 }
@@ -606,15 +610,16 @@ code {
 .capture-text {
   margin: 0;
   color: var(--muted);
+  max-width: 36rem;
 }
 
 .capture-clue {
   width: 100%;
   margin: 0;
   padding: 1rem 1.05rem;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.56);
-  border: 1px solid rgba(20, 38, 54, 0.08);
+  border-radius: 10px;
+  background: rgba(9, 21, 39, 0.72);
+  border: 1px solid rgba(123, 161, 214, 0.14);
   color: var(--ink);
   text-align: left;
 }
@@ -638,10 +643,12 @@ code {
   min-height: 3.4rem;
   padding: 0.95rem 1.3rem;
   border: none;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #fff8f2;
-  box-shadow: 0 14px 30px rgba(201, 71, 56, 0.24);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #ff736b, #db4039);
+  color: #fff7f5;
+  box-shadow:
+    0 14px 30px rgba(166, 47, 42, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .capture-button:disabled {
@@ -653,7 +660,7 @@ code {
 .capture-button.is-throw {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent),
-    var(--accent);
+    linear-gradient(180deg, #ff736b, #db4039);
 }
 
 .capture-button-ball {
