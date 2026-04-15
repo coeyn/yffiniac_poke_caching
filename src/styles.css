@@ -758,7 +758,7 @@ code {
 
 .capture-text {
   margin: 0;
-  color: var(--muted);
+  color: #ffffff;
   max-width: 36rem;
 }
 
@@ -882,6 +882,7 @@ code {
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.18em;
+  color: #2f2e36;
 }
 
 .hero h1,
