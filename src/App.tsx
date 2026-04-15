@@ -6,11 +6,14 @@ import {
   applyWeeklyResetIfNeeded,
   claimProfessorStarter,
   createEmptyCollection,
+  getEncounterBlockUntil,
   getNextWeeklyResetAt,
   getShinyChanceByAttempts,
   loadCollection,
   markPokemonFound,
+  registerEncounterAttempt,
   recordProfessorVisit,
+  resolveEncounterCaptured,
   saveCollection,
   type CollectionState,
 } from './lib/collection';
@@ -346,6 +349,35 @@ function CaptureView(props: {
   );
 }
 
+function CaptureUnavailableView(props: {
+  captureState: PokemonEncounterState;
+  blockedUntil: string;
+  onReturn: () => void;
+}) {
+  const pokemon = displayCatalog[props.captureState.id - 1];
+
+  return (
+    <main className="capture-shell">
+      <section className="capture-card capture-card-scene">
+        <div className="capture-header">
+          <h3 className="hero-kicker">Rencontre sauvage</h3>
+          <span className="capture-dex">#{pokemon.dex}</span>
+        </div>
+        <div className="capture-arena is-ready" aria-live="polite">
+          <TypewriterText
+            className="capture-scene-text"
+            text={`Le Pokemon n'est plus la, revenez ${formatScanDate(props.blockedUntil)}.`}
+            speed={18}
+          />
+        </div>
+        <button className="capture-button" type="button" onClick={props.onReturn}>
+          Retourner au Pokedex
+        </button>
+      </section>
+    </main>
+  );
+}
+
 function ProfessorCocoView(props: {
   collection: CollectionState;
   onChooseStarter: (starterId: number) => void;
@@ -573,6 +605,7 @@ export default function App() {
   });
   const [activeEncounterShiny, setActiveEncounterShiny] = useState(false);
   const [activeEncounterChance, setActiveEncounterChance] = useState(0);
+  const [activeEncounterBlockedUntil, setActiveEncounterBlockedUntil] = useState<string | null>(null);
   const deferredSearch = useDeferredValue(searchTerm);
 
   useEffect(() => {
@@ -612,14 +645,32 @@ export default function App() {
     if (encounterState?.kind !== 'pokemon') {
       setActiveEncounterShiny(false);
       setActiveEncounterChance(0);
+      setActiveEncounterBlockedUntil(null);
+      return;
+    }
+
+    const blockedUntil = getEncounterBlockUntil(collection, encounterState.dex);
+    if (blockedUntil) {
+      setActiveEncounterBlockedUntil(blockedUntil);
+      setActiveEncounterChance(0);
+      setActiveEncounterShiny(false);
       return;
     }
 
     const attempts = (collection.shinyAttempts[encounterState.dex] ?? 0) + 1;
     const chance = getShinyChanceByAttempts(attempts);
+    const isShiny = Math.random() < chance;
+
+    setActiveEncounterBlockedUntil(null);
     setActiveEncounterChance(chance);
-    setActiveEncounterShiny(Math.random() < chance);
-  }, [collection.shinyAttempts, encounterState]);
+    setActiveEncounterShiny(isShiny);
+    setCollection((currentCollection) =>
+      registerEncounterAttempt(currentCollection, {
+        id: encounterState.id,
+        dex: encounterState.dex,
+      }),
+    );
+  }, [encounterState]);
 
   useEffect(() => {
     if (encounterState?.kind !== 'professor') {
@@ -649,13 +700,16 @@ export default function App() {
     const isShiny = activeEncounterShiny;
 
     setCollection((currentCollection) =>
-      markPokemonFound(currentCollection, {
-        id: encounterState.id,
-        payload: encounterState.rawUrl,
-        source: 'url',
-        isShiny,
-        serialNumber: null,
-      }),
+      markPokemonFound(
+        resolveEncounterCaptured(currentCollection, encounterState.dex),
+        {
+          id: encounterState.id,
+          payload: encounterState.rawUrl,
+          source: 'url',
+          isShiny,
+          serialNumber: null,
+        },
+      ),
     );
 
     setNotice({
@@ -737,6 +791,16 @@ export default function App() {
   }
 
   if (encounterState?.kind === 'pokemon') {
+    if (activeEncounterBlockedUntil) {
+      return (
+        <CaptureUnavailableView
+          captureState={encounterState}
+          blockedUntil={activeEncounterBlockedUntil}
+          onReturn={handleCaptureReturn}
+        />
+      );
+    }
+
     return (
       <CaptureView
         captureState={encounterState}

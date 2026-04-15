@@ -19,6 +19,14 @@ export type ShinyPokemonRecord = {
   shinyCount: number;
 };
 
+export type PendingEncounterRecord = {
+  id: number;
+  dex: string;
+  openedAt: string;
+  blockedUntil: string;
+  captured: boolean;
+};
+
 export type ScanHistoryEntry = {
   id: number;
   dex: string;
@@ -30,12 +38,13 @@ export type ScanHistoryEntry = {
 };
 
 export type CollectionState = {
-  version: 4;
+  version: 5;
   explorerName: string;
   adventureStarted: boolean;
   found: Record<string, FoundPokemonRecord>;
   shinyDex: Record<string, ShinyPokemonRecord>;
   shinyAttempts: Record<string, number>;
+  pendingEncounters: Record<string, PendingEncounterRecord>;
   history: ScanHistoryEntry[];
   lastWeeklyResetAt: string | null;
   professor: ProfessorProgress;
@@ -65,12 +74,13 @@ export function createEmptyProfessorProgress(): ProfessorProgress {
 
 export function createEmptyCollection(): CollectionState {
   return {
-    version: 4,
+    version: 5,
     explorerName: '',
     adventureStarted: false,
     found: {},
     shinyDex: {},
     shinyAttempts: {},
+    pendingEncounters: {},
     history: [],
     lastWeeklyResetAt: null,
     professor: createEmptyProfessorProgress(),
@@ -154,14 +164,79 @@ export function applyWeeklyResetIfNeeded(
     ...current,
     found: {},
     history: [],
+    pendingEncounters: {},
     lastWeeklyResetAt: expectedMarker,
   };
 }
 
 export function getShinyChanceByAttempts(attempts: number): number {
-  const baseChance = 1;
+  const baseChance = 0.015;
   const progression = Math.max(0, attempts - 1) * 0.0075;
   return Math.min(0.3, baseChance + progression);
+}
+
+export function getEncounterBlockUntil(
+  current: CollectionState,
+  dex: string,
+  now = new Date(),
+): string | null {
+  const pending = current.pendingEncounters[dex];
+  if (!pending || pending.captured) {
+    return null;
+  }
+
+  const blockedUntil = new Date(pending.blockedUntil);
+  return blockedUntil.getTime() > now.getTime() ? pending.blockedUntil : null;
+}
+
+export function registerEncounterAttempt(
+  current: CollectionState,
+  options: {
+    id: number;
+    dex: string;
+    openedAt?: string;
+    blockedUntil?: string;
+  },
+): CollectionState {
+  const openedAt = options.openedAt ?? new Date().toISOString();
+  const blockedUntil = options.blockedUntil ?? getNextWeeklyResetAt(new Date(openedAt));
+  const attempts = (current.shinyAttempts[options.dex] ?? 0) + 1;
+
+  return {
+    ...current,
+    shinyAttempts: {
+      ...current.shinyAttempts,
+      [options.dex]: attempts,
+    },
+    pendingEncounters: {
+      ...current.pendingEncounters,
+      [options.dex]: {
+        id: options.id,
+        dex: options.dex,
+        openedAt,
+        blockedUntil,
+        captured: false,
+      },
+    },
+  };
+}
+
+export function resolveEncounterCaptured(current: CollectionState, dex: string): CollectionState {
+  const pending = current.pendingEncounters[dex];
+  if (!pending || pending.captured) {
+    return current;
+  }
+
+  return {
+    ...current,
+    pendingEncounters: {
+      ...current.pendingEncounters,
+      [dex]: {
+        ...pending,
+        captured: true,
+      },
+    },
+  };
 }
 
 export function loadCollection(): CollectionState {
@@ -183,19 +258,21 @@ export function loadCollection(): CollectionState {
       history?: ScanHistoryEntry[];
       shinyDex?: Record<string, ShinyPokemonRecord>;
       shinyAttempts?: Record<string, number>;
+      pendingEncounters?: Record<string, PendingEncounterRecord>;
       lastWeeklyResetAt?: string | null;
       professor?: Partial<ProfessorProgress>;
     };
 
     if (parsed.version === 1) {
       return applyWeeklyResetIfNeeded({
-        version: 4,
+        version: 5,
         explorerName: typeof parsed.explorerName === 'string' ? parsed.explorerName : '',
         adventureStarted:
           typeof parsed.explorerName === 'string' && parsed.explorerName.trim().length >= 2,
         found: normalizeFoundRecords(parsed.found),
         shinyDex: {},
         shinyAttempts: {},
+        pendingEncounters: {},
         history: normalizeHistory(parsed.history),
         lastWeeklyResetAt: null,
         professor: createEmptyProfessorProgress(),
@@ -205,7 +282,7 @@ export function loadCollection(): CollectionState {
     if (parsed.version === 2) {
       const explorerName = typeof parsed.explorerName === 'string' ? parsed.explorerName : '';
       return applyWeeklyResetIfNeeded({
-        version: 4,
+        version: 5,
         explorerName,
         adventureStarted:
           typeof parsed.adventureStarted === 'boolean'
@@ -214,6 +291,7 @@ export function loadCollection(): CollectionState {
         found: normalizeFoundRecords(parsed.found),
         shinyDex: {},
         shinyAttempts: {},
+        pendingEncounters: {},
         history: normalizeHistory(parsed.history),
         lastWeeklyResetAt: null,
         professor: {
@@ -226,7 +304,7 @@ export function loadCollection(): CollectionState {
     }
 
     if (
-      (parsed.version !== 3 && parsed.version !== 4) ||
+      (parsed.version !== 3 && parsed.version !== 4 && parsed.version !== 5) ||
       typeof parsed.explorerName !== 'string' ||
       typeof parsed.adventureStarted !== 'boolean' ||
       !parsed.found ||
@@ -236,12 +314,13 @@ export function loadCollection(): CollectionState {
     }
 
     return applyWeeklyResetIfNeeded({
-      version: 4,
+      version: 5,
       explorerName: parsed.explorerName,
       adventureStarted: parsed.adventureStarted,
       found: normalizeFoundRecords(parsed.found),
       shinyDex: parsed.shinyDex ?? {},
       shinyAttempts: parsed.shinyAttempts ?? {},
+      pendingEncounters: parsed.pendingEncounters ?? {},
       history: normalizeHistory(parsed.history),
       lastWeeklyResetAt: parsed.lastWeeklyResetAt ?? null,
       professor: {
@@ -297,8 +376,6 @@ export function markPokemonFound(
   const dex = formatDex(options.id);
   const scannedAt = options.scannedAt ?? new Date().toISOString();
   const previousRecord = current.found[dex];
-  const previousAttempts = current.shinyAttempts[dex] ?? 0;
-  const attemptCount = previousAttempts + 1;
   const isShiny = Boolean(options.isShiny);
   const hasShinyInCurrentWeek = previousRecord?.isShiny ?? false;
   const previousShiny = current.shinyDex[dex];
@@ -330,10 +407,6 @@ export function markPokemonFound(
           },
         }
       : current.shinyDex,
-    shinyAttempts: {
-      ...current.shinyAttempts,
-      [dex]: attemptCount,
-    },
     history: [
       {
         id: options.id,
