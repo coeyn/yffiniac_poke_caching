@@ -189,7 +189,6 @@ function CaptureView(props: {
   onCaptured: () => void;
   onReturn: () => void;
   isShiny: boolean;
-  shinyChance: number;
 }) {
   const pokemon = displayCatalog[props.captureState.id - 1];
   const foundRecord = props.collection.found[props.captureState.dex];
@@ -256,8 +255,8 @@ function CaptureView(props: {
       ? 'Les hautes herbes bougent... quelque chose approche.'
       : phase === 'ready'
         ? props.isShiny
-          ? `${pokemon.name} shiny surgit des herbes. Lance une Pokeball. Chance shiny: ${formatPercent(props.shinyChance)}`
-          : `${pokemon.name} surgit des herbes. Lance une Pokeball. Chance shiny: ${formatPercent(props.shinyChance)}`
+          ? `${pokemon.name} shiny surgit des herbes. Lance une Pokeball.`
+          : `${pokemon.name} surgit des herbes. Lance une Pokeball.`
         : phase === 'throwing'
           ? 'La Pokeball file droit sur la figurine.'
           : wasAlreadyFound
@@ -603,7 +602,6 @@ export default function App() {
     message: '',
   });
   const [activeEncounterShiny, setActiveEncounterShiny] = useState(false);
-  const [activeEncounterChance, setActiveEncounterChance] = useState(0);
   const [activeEncounterBlockedUntil, setActiveEncounterBlockedUntil] = useState<string | null>(null);
   const deferredSearch = useDeferredValue(searchTerm);
 
@@ -632,6 +630,10 @@ export default function App() {
     : null;
   const selectedFoundRecord = selectedPokemon ? collection.found[selectedPokemon.dex] : null;
   const selectedShinyRecord = selectedPokemon ? collection.shinyDex[selectedPokemon.dex] : null;
+  const selectedAttempts = selectedPokemon ? collection.shinyAttempts[selectedPokemon.dex] ?? 0 : 0;
+  const selectedShinyChance = selectedPokemon
+    ? getShinyChanceByAttempts(selectedAttempts + 1)
+    : null;
   const selectedClue = selectedPokemon ? getPokemonClue(selectedPokemon) : null;
   const nextWeeklyReset = getNextWeeklyResetAt();
 
@@ -643,7 +645,6 @@ export default function App() {
   useEffect(() => {
     if (encounterState?.kind !== 'pokemon') {
       setActiveEncounterShiny(false);
-      setActiveEncounterChance(0);
       setActiveEncounterBlockedUntil(null);
       return;
     }
@@ -651,7 +652,6 @@ export default function App() {
     const blockedUntil = getEncounterBlockUntil(collection, encounterState.dex);
     if (blockedUntil) {
       setActiveEncounterBlockedUntil(blockedUntil);
-      setActiveEncounterChance(0);
       setActiveEncounterShiny(false);
       return;
     }
@@ -661,7 +661,6 @@ export default function App() {
     const isShiny = Math.random() < chance;
 
     setActiveEncounterBlockedUntil(null);
-    setActiveEncounterChance(chance);
     setActiveEncounterShiny(isShiny);
     setCollection((currentCollection) =>
       registerEncounterAttempt(currentCollection, {
@@ -804,7 +803,6 @@ export default function App() {
         onCaptured={handleCaptureRecorded}
         onReturn={handleCaptureReturn}
         isShiny={activeEncounterShiny}
-        shinyChance={activeEncounterChance}
       />
     );
   }
@@ -1057,6 +1055,11 @@ export default function App() {
               ) : null}
               {selectedShinyRecord ? (
                 <p className="pokemon-modal-status">{`Shiny obtenu (${selectedShinyRecord.shinyCount} fois)`}</p>
+              ) : null}
+              {selectedShinyChance !== null ? (
+                <p className="pokemon-modal-status">
+                  {`Tentatives: ${selectedAttempts} - Chance shiny: ${formatPercent(selectedShinyChance)}`}
+                </p>
               ) : null}
             </div>
           </section>
