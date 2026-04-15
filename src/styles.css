@@ -665,7 +665,7 @@ code {
 
 .capture-arena.is-throwing .capture-ball-flight {
   opacity: 1;
-  animation: ball-throw 1.3s cubic-bezier(0.18, 0.72, 0.24, 1) forwards;
+  animation: ball-throw 1.3s cubic-bezier(0.22, 0.65, 0.24, 1) forwards;
 }
 
 .capture-arena.is-throwing .capture-ball-image {
@@ -685,7 +685,7 @@ code {
 }
 
 .capture-arena.is-throwing .capture-impact {
-  animation: ball-impact 0.42s ease-out 1.05s forwards;
+  animation: ball-impact 0.42s ease-out 1.02s forwards;
 }
 
 .capture-stars {
@@ -1827,38 +1827,6 @@ input[type='search']:focus {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(0.84);
   }
-  10% {
-    opacity: 1;
-    transform: translate3d(-1.5rem, -0.8rem, 0) scale(0.85);
-  }
-  20% {
-    opacity: 1;
-    transform: translate3d(-3rem, -2rem, 0) scale(0.87);
-  }
-  30% {
-    opacity: 1;
-    transform: translate3d(-4.6rem, -3.5rem, 0) scale(0.89);
-  }
-  42% {
-    opacity: 1;
-    transform: translate3d(-6.4rem, -5.8rem, 0) scale(0.92);
-  }
-  54% {
-    opacity: 1;
-    transform: translate3d(-8.4rem, -7.9rem, 0) scale(0.95);
-  }
-  66% {
-    opacity: 1;
-    transform: translate3d(-10.3rem, -9.9rem, 0) scale(0.98);
-  }
-  78% {
-    opacity: 1;
-    transform: translate3d(-11.7rem, -11.1rem, 0) scale(1);
-  }
-  90% {
-    opacity: 1;
-    transform: translate3d(-12.6rem, -11.9rem, 0) scale(1.02);
-  }
   100% {
     opacity: 1;
     transform: translate3d(-13.2rem, -12rem, 0) scale(1.02);
@@ -2323,30 +2291,6 @@ input[type='search']:focus {
   0% {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(0.84);
-  }
-  12% {
-    opacity: 1;
-    transform: translate3d(-1.2rem, -0.9rem, 0) scale(0.86);
-  }
-  24% {
-    opacity: 1;
-    transform: translate3d(-2.5rem, -2.2rem, 0) scale(0.88);
-  }
-  38% {
-    opacity: 1;
-    transform: translate3d(-4.2rem, -4.4rem, 0) scale(0.93);
-  }
-  52% {
-    opacity: 1;
-    transform: translate3d(-5.8rem, -6.5rem, 0) scale(0.97);
-  }
-  68% {
-    opacity: 1;
-    transform: translate3d(-7rem, -7.5rem, 0) scale(0.99);
-  }
-  84% {
-    opacity: 1;
-    transform: translate3d(-8.1rem, -8.25rem, 0) scale(1.02);
   }
   100% {
     opacity: 1;
