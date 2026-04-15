@@ -256,7 +256,15 @@ function CaptureView(props: {
           <span className="capture-dex">#{pokemon.dex}</span>
         </div>
 
-        <div className={`capture-arena is-${phase}`} aria-live="polite">
+        <div
+          className={`capture-arena is-${phase}`}
+          aria-live="polite"
+          style={
+            {
+              '--grass-texture': `url("${resolvePublicAsset('/img/grass.webp')}")`,
+            } as CSSProperties
+          }
+        >
           <div className="capture-glow" aria-hidden="true" />
           <div className="capture-grass capture-grass-back" aria-hidden="true" />
           <div className="capture-leaf-curtain" aria-hidden="true">
