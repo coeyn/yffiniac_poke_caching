@@ -2121,7 +2121,7 @@ input[type='search']:focus {
 
   .dialogue-bubble::after,
   .professor-card:not(.onboarding-card) .professor-copy .capture-text::after {
-    top: -0.52rem;
+    top: -0.5rem;
     left: 50%;
     transform: translateX(-50%);
     border-top: 0;
