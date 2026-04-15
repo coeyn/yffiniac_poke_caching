@@ -287,7 +287,7 @@ function CaptureView(props: {
             <span />
             <span />
           </div>
-          <p className="capture-scene-text">{sceneMessage}</p>
+          <TypewriterText className="capture-scene-text" text={sceneMessage} speed={18} />
         </div>
         <button
           className={`capture-button ${phase === 'ready' ? 'is-throw' : ''}`}
