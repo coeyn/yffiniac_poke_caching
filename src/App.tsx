@@ -182,7 +182,6 @@ function CaptureView(props: {
 }) {
   const pokemon = displayCatalog[props.captureState.id - 1];
   const foundRecord = props.collection.found[props.captureState.dex];
-  const clue = getPokemonClue(pokemon);
   const [phase, setPhase] = useState<CapturePhase>('approach');
   const [hasRecorded, setHasRecorded] = useState(false);
   const [wasAlreadyFound, setWasAlreadyFound] = useState(Boolean(foundRecord));
@@ -290,22 +289,6 @@ function CaptureView(props: {
           </div>
           <p className="capture-scene-text">{sceneMessage}</p>
         </div>
-
-        <div className="capture-copy">
-          <h1>{pokemon.name}</h1>
-          <p className="capture-text">
-            {wasAlreadyFound
-              ? 'Cette figurine a deja ete validee sur cet appareil.'
-              : 'Tu viens de trouver une figurine Pokemon cachée dans Yffiniac.'}
-          </p>
-          {clue ? (
-            <p className="capture-clue">
-              <span>Indice</span>
-              {clue}
-            </p>
-          ) : null}
-        </div>
-
         <button
           className={`capture-button ${phase === 'ready' ? 'is-throw' : ''}`}
           type="button"
