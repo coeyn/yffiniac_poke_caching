@@ -628,6 +628,10 @@ code {
   animation: float-pokemon 3.6s ease-in-out infinite;
 }
 
+.capture-arena.is-ready .capture-pokemon-stage::after {
+  animation: float-shadow 3.6s ease-in-out infinite;
+}
+
 .capture-ball-flight {
   right: 1.4rem;
   bottom: 1.5rem;
@@ -1651,6 +1655,18 @@ input[type='search']:focus {
   }
   50% {
     transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes float-shadow {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.72;
+  }
+  50% {
+    transform: translateX(-50%) scale(0.88);
+    opacity: 0.52;
   }
 }
 
