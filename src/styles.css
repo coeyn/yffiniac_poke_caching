@@ -129,6 +129,7 @@ code {
   padding: 1.5rem;
   text-align: center;
   border-radius: var(--radius-xl);
+  border-top-left-radius: 10px;
 }
 
 .capture-card-scene {
@@ -317,6 +318,10 @@ code {
   padding: 0;
 }
 
+.capture-header .hero-kicker {
+  color: #2f2e36;
+}
+
 .capture-card h1 {
   font-family: 'Bricolage Grotesque', sans-serif;
   margin: 0;
@@ -338,8 +343,8 @@ code {
   min-height: 2rem;
   padding: 0.25rem 0.8rem;
   border-radius: 999px;
-  background: rgba(255, 209, 74, 0.12);
-  color: #ffe07a;
+  background: rgba(47, 46, 54, 0.1);
+  color: #2f2e36;
   font-weight: 700;
 }
 
