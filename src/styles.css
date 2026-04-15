@@ -495,6 +495,7 @@ code {
   width: min(74%, 24rem);
   height: 16.2rem;
   opacity: 0;
+  overflow: visible;
   will-change: transform, opacity;
 }
 
@@ -510,11 +511,25 @@ code {
   background-size: 200% 100%;
   background-repeat: no-repeat;
   background-position-y: bottom;
-  filter: drop-shadow(0 8px 14px rgba(15, 40, 22, 0.2));
+  /* Feather edges so the texture blends with the scene instead of showing rectangular bounds. */
+  -webkit-mask-image: radial-gradient(140% 112% at 50% 108%, #000 54%, transparent 84%);
+  mask-image: radial-gradient(140% 112% at 50% 108%, #000 54%, transparent 84%);
+  filter: drop-shadow(0 8px 14px rgba(15, 40, 22, 0.2)) blur(0.5px);
 }
 
 .capture-leaf-panel::after {
-  content: none;
+  content: '';
+  position: absolute;
+  inset: -2% -3% -3%;
+  background-image: var(--grass-texture);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  background-position-y: bottom;
+  -webkit-mask-image: radial-gradient(150% 124% at 50% 112%, rgba(0, 0, 0, 0.8) 44%, transparent 86%);
+  mask-image: radial-gradient(150% 124% at 50% 112%, rgba(0, 0, 0, 0.8) 44%, transparent 86%);
+  opacity: 0.42;
+  filter: blur(4px);
+  pointer-events: none;
 }
 
 .capture-leaf-panel.is-left {
@@ -532,6 +547,14 @@ code {
 }
 
 .capture-leaf-panel.is-right::before {
+  background-position-x: right;
+}
+
+.capture-leaf-panel.is-left::after {
+  background-position-x: left;
+}
+
+.capture-leaf-panel.is-right::after {
   background-position-x: right;
 }
 
