@@ -654,7 +654,6 @@ code {
 .capture-arena.is-approach .capture-pokemon-stage {
   opacity: 1;
   transform: translate3d(-50%, 1.9rem, 0) scale(0.62);
-  animation: wild-rustle 0.7s ease-in-out infinite;
 }
 
 .capture-arena.is-approach .capture-image {
@@ -665,12 +664,10 @@ code {
 .capture-arena.is-approach .capture-pokemon-stage::after {
   opacity: 0.48;
   transform: translateX(-50%) scale(0.6);
-  animation: shadow-tease 0.7s ease-in-out infinite;
 }
 
 .capture-arena.is-approach .capture-shadow-silhouette {
   opacity: 1;
-  animation: silhouette-breathe 0.7s ease-in-out infinite;
 }
 
 .capture-arena.is-ready .capture-shadow-silhouette,
@@ -692,13 +689,11 @@ code {
 
 .capture-arena.is-ready .capture-image {
   opacity: 1;
-  animation:
-    pokemon-jump-in 0.5s cubic-bezier(0.14, 0.78, 0.24, 1.18),
-    float-pokemon 3.6s ease-in-out 0.5s infinite;
 }
 
 .capture-arena.is-ready .capture-pokemon-stage::after {
-  animation: float-shadow 3.6s ease-in-out infinite;
+  opacity: 0.7;
+  transform: translateX(-50%);
 }
 
 .capture-ball-flight {
