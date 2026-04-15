@@ -620,7 +620,20 @@ code {
 }
 
 .capture-arena.is-approach .capture-pokemon-stage {
+  opacity: 1;
+  transform: translate3d(-50%, 1.9rem, 0) scale(0.62);
   animation: wild-rustle 0.7s ease-in-out infinite;
+}
+
+.capture-arena.is-approach .capture-image {
+  opacity: 0;
+  transform: scale(0.36);
+}
+
+.capture-arena.is-approach .capture-pokemon-stage::after {
+  opacity: 0.48;
+  transform: translateX(-50%) scale(0.6);
+  animation: shadow-tease 0.7s ease-in-out infinite;
 }
 
 .capture-arena.is-ready .capture-pokemon-stage,
@@ -635,7 +648,10 @@ code {
 }
 
 .capture-arena.is-ready .capture-image {
-  animation: float-pokemon 3.6s ease-in-out infinite;
+  opacity: 1;
+  animation:
+    pokemon-jump-in 0.5s cubic-bezier(0.14, 0.78, 0.24, 1.18),
+    float-pokemon 3.6s ease-in-out 0.5s infinite;
 }
 
 .capture-arena.is-ready .capture-pokemon-stage::after {
@@ -1667,6 +1683,33 @@ input[type='search']:focus {
   }
   50% {
     transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes pokemon-jump-in {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.34);
+    filter: blur(1.2px);
+  }
+  60% {
+    transform: translate3d(0, -0.35rem, 0) scale(1.06);
+    filter: blur(0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes shadow-tease {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(0.58);
+    opacity: 0.42;
+  }
+  50% {
+    transform: translateX(-50%) scale(0.68);
+    opacity: 0.56;
   }
 }
 
