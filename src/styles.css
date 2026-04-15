@@ -438,49 +438,16 @@ code {
 }
 
 .capture-grass-back::before {
-  background-image:
-    linear-gradient(180deg, rgba(170, 220, 120, 0.18), rgba(71, 118, 45, 0.5)),
-    var(--grass-texture);
-  background-size:
-    100% 100%,
-    cover;
-  background-position:
-    center bottom,
-    center bottom;
+  background-image: var(--grass-texture);
+  background-size: cover;
+  background-position: center bottom;
   background-repeat: no-repeat;
-  clip-path: polygon(
-    0 100%,
-    0 60%,
-    5% 73%,
-    10% 42%,
-    16% 77%,
-    22% 38%,
-    28% 74%,
-    34% 30%,
-    40% 80%,
-    46% 34%,
-    52% 72%,
-    58% 28%,
-    64% 78%,
-    70% 32%,
-    76% 76%,
-    82% 36%,
-    88% 74%,
-    94% 40%,
-    100% 62%,
-    100% 100%
-  );
   filter: blur(1.7px) saturate(0.92);
-  opacity: 0.78;
+  opacity: 0.72;
 }
 
 .capture-grass-back::after {
-  background-image:
-    radial-gradient(circle at 12% 68%, rgba(217, 255, 180, 0.17), transparent 15%),
-    radial-gradient(circle at 54% 58%, rgba(225, 255, 188, 0.13), transparent 14%),
-    radial-gradient(circle at 84% 72%, rgba(214, 255, 178, 0.13), transparent 14%);
-  animation: grass-detail-drift 6.8s ease-in-out infinite;
-  mix-blend-mode: screen;
+  content: none;
 }
 
 .capture-grass-front {
@@ -491,49 +458,16 @@ code {
 }
 
 .capture-grass-front::before {
-  background-image:
-    linear-gradient(180deg, rgba(186, 247, 138, 0.22), rgba(38, 88, 25, 0.18) 46%, transparent 100%),
-    var(--grass-texture);
-  background-size:
-    100% 100%,
-    cover;
-  background-position:
-    center bottom,
-    center bottom;
+  background-image: var(--grass-texture);
+  background-size: cover;
+  background-position: center bottom;
   background-repeat: no-repeat;
-  clip-path: polygon(
-    0 100%,
-    0 74%,
-    4% 90%,
-    8% 42%,
-    13% 87%,
-    18% 28%,
-    24% 89%,
-    30% 22%,
-    37% 91%,
-    44% 30%,
-    50% 84%,
-    57% 16%,
-    64% 90%,
-    71% 26%,
-    78% 88%,
-    85% 21%,
-    92% 89%,
-    98% 36%,
-    100% 76%,
-    100% 100%
-  );
   filter: drop-shadow(0 -12px 22px rgba(211, 244, 145, 0.16)) saturate(1.08);
   opacity: 0.96;
 }
 
 .capture-grass-front::after {
-  background-image:
-    radial-gradient(circle at 18% 78%, rgba(239, 255, 203, 0.22), transparent 13%),
-    radial-gradient(circle at 50% 72%, rgba(221, 255, 179, 0.16), transparent 12%),
-    radial-gradient(circle at 84% 82%, rgba(248, 255, 220, 0.18), transparent 13%);
-  animation: grass-detail-drift 5.6s ease-in-out infinite reverse;
-  mix-blend-mode: screen;
+  content: none;
 }
 
 .capture-arena.is-approach .capture-grass-back {
@@ -572,82 +506,33 @@ code {
 }
 
 .capture-leaf-panel::before {
-  background:
-    linear-gradient(180deg, rgba(176, 229, 132, 0.38), rgba(64, 118, 41, 0.46)),
-    var(--grass-texture);
-  background-size:
-    100% 100%,
-    200% 100%;
+  background-image: var(--grass-texture);
+  background-size: 200% 100%;
   background-repeat: no-repeat;
+  background-position-y: bottom;
   filter: drop-shadow(0 8px 14px rgba(15, 40, 22, 0.2));
 }
 
 .capture-leaf-panel::after {
-  background:
-    radial-gradient(circle at 26% 34%, rgba(210, 248, 179, 0.34), transparent 20%),
-    radial-gradient(circle at 66% 56%, rgba(188, 234, 153, 0.24), transparent 18%),
-    repeating-linear-gradient(
-      105deg,
-      rgba(181, 229, 148, 0.14) 0 8px,
-      transparent 8px 17px
-    );
-  mix-blend-mode: screen;
+  content: none;
 }
 
 .capture-leaf-panel.is-left {
   left: -0.7rem;
   transform: translateX(-120%) scale(1.02) rotate(-7deg);
-  clip-path: polygon(
-    0 100%,
-    0 84%,
-    7% 72%,
-    14% 47%,
-    22% 70%,
-    30% 39%,
-    39% 68%,
-    47% 33%,
-    56% 66%,
-    64% 31%,
-    73% 63%,
-    81% 36%,
-    90% 66%,
-    100% 62%,
-    100% 100%
-  );
 }
 
 .capture-leaf-panel.is-right {
   right: -0.7rem;
   transform: translateX(120%) scale(1.02) rotate(7deg);
-  clip-path: polygon(
-    0 62%,
-    9% 66%,
-    18% 36%,
-    27% 63%,
-    36% 31%,
-    44% 66%,
-    53% 33%,
-    61% 68%,
-    70% 39%,
-    78% 70%,
-    86% 47%,
-    93% 72%,
-    100% 84%,
-    100% 100%,
-    0 100%
-  );
 }
 
 .capture-leaf-panel.is-left::before {
-  background-position:
-    center bottom,
-    left bottom;
+  background-position-x: left;
 }
 
 .capture-leaf-panel.is-right::before {
-  background-position:
-    center bottom,
-    right bottom;
+  background-position-x: right;
 }
 
 .capture-arena.is-approach .capture-leaf-panel {
