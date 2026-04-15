@@ -479,7 +479,7 @@ function OnboardingView(props: {
           </div>
 
           <div className="professor-copy">
-            <p className="hero-kicker">Professeur Coco</p>
+            <h3 className="hero-kicker">Professeur Coco</h3>
             <div className="dialogue-bubble">
               {step === 2 ? (
                 <>
