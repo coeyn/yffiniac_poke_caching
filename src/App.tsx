@@ -183,7 +183,7 @@ function CaptureView(props: {
   const pokemon = displayCatalog[props.captureState.id - 1];
   const foundRecord = props.collection.found[props.captureState.dex];
   const pokeballAsset = resolvePublicAsset('/img/pokeball.webp');
-  const captureSpriteAsset = resolvePublicAsset(`/pokemon_anim/${pokemon.dex}.gif`);
+  const captureSpriteAsset = resolvePublicAsset(`/pokemon_anim_hd/${pokemon.dex}.gif`);
   const [phase, setPhase] = useState<CapturePhase>('approach');
   const [hasRecorded, setHasRecorded] = useState(false);
   const [wasAlreadyFound, setWasAlreadyFound] = useState(Boolean(foundRecord));
