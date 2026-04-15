@@ -241,12 +241,13 @@ code {
   content: '';
   position: absolute;
   top: 1rem;
-  left: -0.42rem;
+  left: -0.5rem;
   width: 0.84rem;
   height: 0.84rem;
   background: rgba(18, 34, 60, 0.88);
   border-left: 1px solid rgba(123, 161, 214, 0.18);
   border-bottom: 1px solid rgba(123, 161, 214, 0.18);
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
   transform: rotate(45deg);
 }
 
