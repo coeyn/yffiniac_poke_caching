@@ -129,22 +129,18 @@ code {
   padding: 1.5rem;
   text-align: center;
   border-radius: var(--radius-xl);
-  background:
-    linear-gradient(180deg, rgba(17, 34, 61, 0.98), rgba(8, 18, 34, 0.96)),
-    var(--surface);
-  border: 1px solid rgba(123, 161, 214, 0.18);
-  box-shadow:
-    var(--shadow),
-    inset 0 0 0 1px rgba(180, 214, 255, 0.08);
 }
 
 .capture-card-scene {
   width: min(100%, 38rem);
   gap: 1.15rem;
-  padding: clamp(1.1rem, 3vw, 1.6rem);
+  padding: 0 clamp(1.1rem, 3vw, 1.6rem) clamp(1.1rem, 3vw, 1.6rem);
   background:
-    linear-gradient(180deg, rgba(19, 38, 69, 0.98), rgba(8, 18, 34, 0.98)),
-    var(--surface);
+    linear-gradient(
+      180deg,
+      #ffffff 0 40px,
+      #00266345 40px
+    );
 }
 
 .professor-shell {
@@ -316,8 +312,9 @@ code {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 40px;
   gap: 1rem;
-  padding: 0.15rem 0 0.25rem;
+  padding: 0;
 }
 
 .capture-card h1 {
@@ -598,7 +595,7 @@ code {
   content: '';
   position: absolute;
   left: 50%;
-  bottom: 0.4rem;
+  bottom: 0.1rem;
   width: 9.8rem;
   height: 1.9rem;
   transform: translateX(-50%);
