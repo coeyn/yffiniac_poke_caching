@@ -233,7 +233,7 @@ code {
   position: relative;
   padding: 1rem 1.05rem;
   border-radius: 12px;
-  background: rgb(18, 34, 60);
+  background: rgba(18, 34, 60, 0.88);
   border: 1px solid rgba(123, 161, 214, 0.18);
 }
 
@@ -241,14 +241,24 @@ code {
   content: '';
   position: absolute;
   top: 1rem;
-  left: -0.5rem;
-  width: 0.84rem;
-  height: 0.84rem;
-  background: rgb(18, 34, 60);
-  border-left: 1px solid rgba(123, 161, 214, 0.18);
-  border-bottom: 1px solid rgba(123, 161, 214, 0.18);
-  clip-path: polygon(0 50%, 100% 0, 100% 100%);
-  transform: rotate(45deg);
+  left: -0.64rem;
+  width: 0;
+  height: 0;
+  border-top: 0.52rem solid transparent;
+  border-bottom: 0.52rem solid transparent;
+  border-right: 0.64rem solid rgba(123, 161, 214, 0.18);
+}
+
+.dialogue-bubble::after {
+  content: '';
+  position: absolute;
+  top: calc(1rem + 1px);
+  left: -0.56rem;
+  width: 0;
+  height: 0;
+  border-top: 0.46rem solid transparent;
+  border-bottom: 0.46rem solid transparent;
+  border-right: 0.56rem solid rgba(18, 34, 60, 0.88);
 }
 
 .dialogue-label,
