@@ -2108,17 +2108,26 @@ input[type='search']:focus {
   }
 
   .capture-arena {
-    min-height: 22rem;
+    min-height: 24rem;
   }
 
   .capture-pokemon-stage {
-    bottom: 4.9rem;
+    bottom: 6.1rem;
   }
 
   .capture-image {
-    width: min(100%, 190px);
+    width: clamp(200px, 48vw, 236px);
     height: auto !important;
     max-width: 100%;
+  }
+
+  .capture-scene-text {
+    left: 0.7rem;
+    right: 0.7rem;
+    bottom: 0.6rem;
+    padding: 0.72rem 0.82rem;
+    font-size: 0.92rem;
+    line-height: 1.35;
   }
 
   .capture-arena.is-throwing .capture-ball-flight {
@@ -2283,6 +2292,24 @@ input[type='search']:focus {
 }
 
 @media (max-width: 540px) {
+  .capture-arena {
+    min-height: 24.6rem;
+  }
+
+  .capture-pokemon-stage {
+    bottom: 6.5rem;
+  }
+
+  .capture-image {
+    width: clamp(208px, 58vw, 246px);
+  }
+
+  .capture-scene-text {
+    font-size: 0.88rem;
+    line-height: 1.32;
+    padding: 0.68rem 0.78rem;
+  }
+
   .capture-header,
   .selection-status {
     flex-direction: column;
