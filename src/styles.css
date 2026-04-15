@@ -343,7 +343,9 @@ code {
 }
 
 .capture-image {
+  width: clamp(172px, 20vw, 208px);
   height: auto;
+  max-height: 210px;
   object-fit: contain;
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
@@ -2064,8 +2066,9 @@ input[type='search']:focus {
   }
 
   .capture-image {
-    width: clamp(212px, 50vw, 248px);
+    width: clamp(176px, 42vw, 210px);
     height: auto !important;
+    max-height: 208px;
     max-width: 100%;
   }
 
@@ -2257,7 +2260,8 @@ input[type='search']:focus {
   }
 
   .capture-image {
-    width: clamp(220px, 60vw, 258px);
+    width: clamp(170px, 54vw, 204px);
+    max-height: 198px;
   }
 
   .capture-shadow-silhouette {
