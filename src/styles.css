@@ -229,14 +229,17 @@ code {
   margin-bottom: 0;
 }
 
-.dialogue-bubble {
+.dialogue-bubble,
+.professor-copy .capture-text {
   position: relative;
   padding: 1rem 1.05rem;
   border-radius: 12px;
   background: rgba(18, 34, 60, 0.88);
+  text-align: left;
 }
 
-.dialogue-bubble::before {
+.dialogue-bubble::before,
+.professor-copy .capture-text::before {
   content: '';
   position: absolute;
   top: 1rem;
@@ -245,7 +248,8 @@ code {
   height: 0;
 }
 
-.dialogue-bubble::after {
+.dialogue-bubble::after,
+.professor-copy .capture-text::after {
   content: '';
   position: absolute;
   top: calc(1rem + 1px);
@@ -2104,7 +2108,8 @@ input[type='search']:focus {
     margin-top: 0.2rem;
   }
 
-  .dialogue-bubble::before {
+  .dialogue-bubble::before,
+  .professor-copy .capture-text::before {
     top: -0.62rem;
     left: 50%;
     transform: translateX(-50%);
@@ -2114,7 +2119,8 @@ input[type='search']:focus {
     border-bottom: 0.62rem solid rgba(123, 161, 214, 0.18);
   }
 
-  .dialogue-bubble::after {
+  .dialogue-bubble::after,
+  .professor-copy .capture-text::after {
     top: -0.52rem;
     left: 50%;
     transform: translateX(-50%);
