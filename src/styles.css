@@ -756,7 +756,6 @@ code {
   padding: 0.9rem 1rem;
   border-radius: 10px;
   background: rgba(8, 18, 34, 0.74);
-  border: 1px solid rgba(123, 161, 214, 0.16);
   color: #edf4ff;
   text-align: left;
   backdrop-filter: blur(12px);

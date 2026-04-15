@@ -251,7 +251,7 @@ function CaptureView(props: {
     <main className="capture-shell">
       <section className="capture-card capture-card-scene">
         <div className="capture-header">
-          <p className="hero-kicker">Rencontre sauvage</p>
+          <h3 className="hero-kicker">Rencontre sauvage</h3>
           <span className="capture-dex">#{pokemon.dex}</span>
         </div>
 
