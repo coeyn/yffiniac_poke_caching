@@ -513,7 +513,7 @@ function OnboardingView(props: {
               onClick={props.onStart}
               disabled={trimmedName.length < 2}
             >
-              Commencer l aventure
+              Commencer l'aventure
             </button>
           )}
         </div>
