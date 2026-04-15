@@ -665,11 +665,11 @@ code {
 
 .capture-arena.is-throwing .capture-ball-flight {
   opacity: 1;
-  animation: ball-throw 1.15s cubic-bezier(0.22, 0.84, 0.18, 1) forwards;
+  animation: ball-throw 1.3s cubic-bezier(0.18, 0.72, 0.24, 1) forwards;
 }
 
 .capture-arena.is-throwing .capture-ball-image {
-  animation: ball-spin-throw 1.15s linear forwards;
+  animation: ball-spin-throw 1.3s linear forwards;
 }
 
 .capture-impact {
@@ -685,7 +685,7 @@ code {
 }
 
 .capture-arena.is-throwing .capture-impact {
-  animation: ball-impact 0.46s ease-out 0.92s forwards;
+  animation: ball-impact 0.42s ease-out 1.05s forwards;
 }
 
 .capture-stars {
@@ -1827,25 +1827,37 @@ input[type='search']:focus {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(0.84);
   }
-  18% {
+  10% {
     opacity: 1;
-    transform: translate3d(-2.8rem, -1.8rem, 0) scale(0.87);
+    transform: translate3d(-1.5rem, -0.8rem, 0) scale(0.85);
   }
-  36% {
+  20% {
     opacity: 1;
-    transform: translate3d(-5.8rem, -4.9rem, 0) scale(0.9);
+    transform: translate3d(-3rem, -2rem, 0) scale(0.87);
+  }
+  30% {
+    opacity: 1;
+    transform: translate3d(-4.6rem, -3.5rem, 0) scale(0.89);
+  }
+  42% {
+    opacity: 1;
+    transform: translate3d(-6.4rem, -5.8rem, 0) scale(0.92);
   }
   54% {
     opacity: 1;
-    transform: translate3d(-8.6rem, -8rem, 0) scale(0.95);
+    transform: translate3d(-8.4rem, -7.9rem, 0) scale(0.95);
   }
-  72% {
+  66% {
     opacity: 1;
-    transform: translate3d(-10.9rem, -10.8rem, 0) scale(0.99);
+    transform: translate3d(-10.3rem, -9.9rem, 0) scale(0.98);
   }
-  88% {
+  78% {
     opacity: 1;
-    transform: translate3d(-12.4rem, -11.8rem, 0) scale(1.01);
+    transform: translate3d(-11.7rem, -11.1rem, 0) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translate3d(-12.6rem, -11.9rem, 0) scale(1.02);
   }
   100% {
     opacity: 1;
@@ -1858,7 +1870,7 @@ input[type='search']:focus {
     transform: rotate(0deg);
   }
   100% {
-    transform: rotate(1080deg);
+    transform: rotate(1440deg);
   }
 }
 
@@ -2312,21 +2324,29 @@ input[type='search']:focus {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(0.84);
   }
-  22% {
+  12% {
     opacity: 1;
-    transform: translate3d(-2.2rem, -1.8rem, 0) scale(0.88);
+    transform: translate3d(-1.2rem, -0.9rem, 0) scale(0.86);
   }
-  44% {
+  24% {
     opacity: 1;
-    transform: translate3d(-4.6rem, -4.6rem, 0) scale(0.92);
+    transform: translate3d(-2.5rem, -2.2rem, 0) scale(0.88);
   }
-  66% {
+  38% {
     opacity: 1;
-    transform: translate3d(-6.6rem, -7.1rem, 0) scale(0.98);
+    transform: translate3d(-4.2rem, -4.4rem, 0) scale(0.93);
+  }
+  52% {
+    opacity: 1;
+    transform: translate3d(-5.8rem, -6.5rem, 0) scale(0.97);
+  }
+  68% {
+    opacity: 1;
+    transform: translate3d(-7rem, -7.5rem, 0) scale(0.99);
   }
   84% {
     opacity: 1;
-    transform: translate3d(-8rem, -8.2rem, 0) scale(1.01);
+    transform: translate3d(-8.1rem, -8.25rem, 0) scale(1.02);
   }
   100% {
     opacity: 1;
