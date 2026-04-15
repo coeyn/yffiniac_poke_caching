@@ -598,8 +598,8 @@ code {
 .capture-shadow-silhouette {
   left: 50%;
   bottom: 4.45rem;
-  width: min(100%, 220px);
-  transform: translateX(-50%) scale(0.64);
+  width: min(100%, 250px);
+  transform: translateX(-50%) scale(0.74);
   transform-origin: center bottom;
   opacity: 0;
   pointer-events: none;
