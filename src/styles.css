@@ -1715,6 +1715,18 @@ input[type='search']:focus {
     padding: 0.9rem;
   }
 
+  .dex-toolbar-head {
+    justify-items: center;
+    text-align: center;
+    min-height: 80px;
+    margin: -1rem -1rem 0;
+    padding: 0 1rem;
+  }
+
+  .toolbar-controls {
+    margin-top: 0.15rem;
+  }
+
   .capture-arena {
     min-height: 22rem;
   }
@@ -1875,8 +1887,17 @@ input[type='search']:focus {
     margin-bottom: 0.9rem;
   }
 
+  .dex-toolbar-head {
+    justify-items: center;
+    min-height: 80px;
+    margin: -0.85rem -0.85rem 0;
+    padding: 0 0.9rem;
+    text-align: center;
+  }
+
   .toolbar-controls {
     gap: 0.45rem;
+    margin-top: 0.2rem;
   }
 
   .dex-tile {
