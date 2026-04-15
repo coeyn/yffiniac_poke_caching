@@ -1818,10 +1818,14 @@ input[type='search']:focus {
     border-radius: 24px;
   }
 
-  .professor-head,
   .professor-stats,
   .starter-grid {
     grid-template-columns: 1fr;
+  }
+
+  .professor-head {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
   }
 
   .professor-avatar {
