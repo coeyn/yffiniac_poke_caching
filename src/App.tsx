@@ -382,7 +382,7 @@ function ProfessorCocoView(props: {
           </div>
 
           <div className="professor-copy">
-            <p className="hero-kicker">Professeur Coco</p>
+            <h3 className="hero-kicker">Professeur Coco</h3>
             <TypewriterText className="capture-text" text={renderMessage()} speed={20} />
           </div>
         </div>
