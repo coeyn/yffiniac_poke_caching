@@ -230,7 +230,7 @@ code {
 }
 
 .dialogue-bubble,
-.professor-copy .capture-text {
+.professor-card:not(.onboarding-card) .professor-copy .capture-text {
   position: relative;
   padding: 1rem 1.05rem;
   border-radius: 12px;
@@ -239,7 +239,7 @@ code {
 }
 
 .dialogue-bubble::before,
-.professor-copy .capture-text::before {
+.professor-card:not(.onboarding-card) .professor-copy .capture-text::before {
   content: '';
   position: absolute;
   top: 1rem;
@@ -249,11 +249,11 @@ code {
 }
 
 .dialogue-bubble::after,
-.professor-copy .capture-text::after {
+.professor-card:not(.onboarding-card) .professor-copy .capture-text::after {
   content: '';
   position: absolute;
   top: calc(1rem + 1px);
-  left: -0.56rem;
+  left: -0.50rem;
   width: 0;
   height: 0;
   border-top: 0.46rem solid transparent;
@@ -2109,7 +2109,7 @@ input[type='search']:focus {
   }
 
   .dialogue-bubble::before,
-  .professor-copy .capture-text::before {
+  .professor-card:not(.onboarding-card) .professor-copy .capture-text::before {
     top: -0.62rem;
     left: 50%;
     transform: translateX(-50%);
@@ -2120,7 +2120,7 @@ input[type='search']:focus {
   }
 
   .dialogue-bubble::after,
-  .professor-copy .capture-text::after {
+  .professor-card:not(.onboarding-card) .professor-copy .capture-text::after {
     top: -0.52rem;
     left: 50%;
     transform: translateX(-50%);
