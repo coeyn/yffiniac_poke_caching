@@ -468,7 +468,7 @@ code {
   bottom: -0.6rem;
   height: 14.2rem;
   opacity: 0.98;
-  z-index: 3;
+  z-index: 1;
   animation: grass-wave-front 3.1s ease-in-out infinite;
 }
 
@@ -574,7 +574,7 @@ code {
 }
 
 .capture-arena.is-approach .capture-leaf-panel {
-  opacity: 1;
+  opacity: 0.82;
 }
 
 .capture-arena.is-approach .capture-leaf-panel.is-left {
@@ -599,7 +599,7 @@ code {
   left: 50%;
   bottom: 4.45rem;
   width: min(100%, 220px);
-  transform: translateX(-50%) scale(0.58);
+  transform: translateX(-50%) scale(0.64);
   transform-origin: center bottom;
   opacity: 0;
   pointer-events: none;
@@ -612,8 +612,8 @@ code {
   height: auto;
   display: block;
   object-fit: contain;
-  filter: brightness(0) saturate(0) contrast(1.05);
-  opacity: 0.54;
+  filter: brightness(0) saturate(0) contrast(1.1) blur(0.35px);
+  opacity: 0.78;
 }
 
 .capture-pokemon-stage {
