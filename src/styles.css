@@ -431,8 +431,8 @@ code {
 }
 
 .capture-grass-back {
-  bottom: 7.2rem;
-  height: 10.8rem;
+  bottom: 4.2rem;
+  height: 17.8rem;
   opacity: 0.78;
   animation: grass-wave-back 4.8s ease-in-out infinite;
 }
@@ -442,6 +442,8 @@ code {
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
+  transform: scaleX(-1);
+  transform-origin: center bottom;
   filter: blur(1.7px) saturate(0.92);
   opacity: 0.72;
 }
