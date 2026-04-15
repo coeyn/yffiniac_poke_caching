@@ -159,7 +159,7 @@ export function applyWeeklyResetIfNeeded(
 }
 
 export function getShinyChanceByAttempts(attempts: number): number {
-  const baseChance = 0.015;
+  const baseChance = 1;
   const progression = Math.max(0, attempts - 1) * 0.0075;
   return Math.min(0.3, baseChance + progression);
 }
