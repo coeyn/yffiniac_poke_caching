@@ -194,7 +194,7 @@ function CaptureView(props: {
   const foundRecord = props.collection.found[props.captureState.dex];
   const pokeballAsset = resolvePublicAsset('/img/pokeball.webp');
   const captureSpriteAsset = resolvePublicAsset(
-    props.isShiny ? `/pokemon_anim_shiny_hd/${pokemon.dex}.gif` : `/pokemon_anim_hd/${pokemon.dex}.gif`,
+    props.isShiny ? `/pokemon_anim_shiny_hd_ft/${pokemon.dex}.gif` : `/pokemon_anim_hd_ft/${pokemon.dex}.gif`,
   );
   const [phase, setPhase] = useState<CapturePhase>('approach');
   const [hasRecorded, setHasRecorded] = useState(false);
@@ -1067,5 +1067,4 @@ export default function App() {
     </div>
   );
 }
-
 
