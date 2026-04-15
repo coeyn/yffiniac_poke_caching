@@ -13,7 +13,6 @@ import {
   markPokemonFound,
   registerEncounterAttempt,
   recordProfessorVisit,
-  resolveEncounterCaptured,
   saveCollection,
   type CollectionState,
 } from './lib/collection';
@@ -700,16 +699,13 @@ export default function App() {
     const isShiny = activeEncounterShiny;
 
     setCollection((currentCollection) =>
-      markPokemonFound(
-        resolveEncounterCaptured(currentCollection, encounterState.dex),
-        {
-          id: encounterState.id,
-          payload: encounterState.rawUrl,
-          source: 'url',
-          isShiny,
-          serialNumber: null,
-        },
-      ),
+      markPokemonFound(currentCollection, {
+        id: encounterState.id,
+        payload: encounterState.rawUrl,
+        source: 'url',
+        isShiny,
+        serialNumber: null,
+      }),
     );
 
     setNotice({

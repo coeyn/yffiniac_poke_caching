@@ -181,7 +181,7 @@ export function getEncounterBlockUntil(
   now = new Date(),
 ): string | null {
   const pending = current.pendingEncounters[dex];
-  if (!pending || pending.captured) {
+  if (!pending) {
     return null;
   }
 
