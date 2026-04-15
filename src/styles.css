@@ -361,8 +361,7 @@ code {
 }
 
 .capture-arena {
-  --ball-start-x: 13.2rem;
-  --ball-start-y: -12.2rem;
+  --ball-size: 3.4rem;
   position: relative;
   width: 100%;
   min-height: 25rem;
@@ -698,15 +697,15 @@ code {
 }
 
 .capture-ball-flight {
-  left: 50%;
-  bottom: 14.8rem;
-  width: 3.4rem;
+  left: calc(100% - var(--ball-size) - 1.4rem);
+  bottom: 1.5rem;
+  width: var(--ball-size);
   aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
   box-shadow: 0 16px 22px rgba(20, 38, 54, 0.18);
   opacity: 0;
-  transform: translate3d(var(--ball-start-x), var(--ball-start-y), 0) scale(0.84);
+  transform: scale(0.84);
   z-index: 3;
 }
 
@@ -729,7 +728,7 @@ code {
 
 .capture-impact {
   left: 50%;
-  bottom: 14.8rem;
+  bottom: calc(50% - 0.5rem);
   width: 1rem;
   aspect-ratio: 1;
   transform: translateX(-50%) scale(0.1);
@@ -744,11 +743,11 @@ code {
 }
 
 .capture-stars {
-  left: 50%;
-  bottom: 14.8rem;
-  width: 3.4rem;
-  height: 3.4rem;
-  transform: translate3d(-1.7rem, -1.7rem, 0);
+  left: calc(50% - (var(--ball-size) / 2));
+  bottom: calc(50% - (var(--ball-size) / 2));
+  width: var(--ball-size);
+  height: var(--ball-size);
+  transform: none;
   pointer-events: none;
   z-index: 4;
 }
@@ -790,7 +789,9 @@ code {
 
 .capture-arena.is-captured .capture-ball-flight {
   opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1.02) rotate(0deg);
+  left: calc(50% - (var(--ball-size) / 2));
+  bottom: calc(50% - (var(--ball-size) / 2));
+  transform: scale(1.02) rotate(0deg);
   animation: ball-settle 1.45s ease-out both;
 }
 
@@ -1919,11 +1920,15 @@ input[type='search']:focus {
 @keyframes ball-throw {
   0% {
     opacity: 1;
-    transform: translate3d(var(--ball-start-x), var(--ball-start-y), 0) scale(0.84);
+    left: calc(100% - var(--ball-size) - 1.4rem);
+    bottom: 1.5rem;
+    transform: scale(0.84);
   }
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.02);
+    left: calc(50% - (var(--ball-size) / 2));
+    bottom: calc(50% - (var(--ball-size) / 2));
+    transform: scale(1.02);
   }
 }
 
@@ -1972,37 +1977,37 @@ input[type='search']:focus {
 
 @keyframes ball-settle {
   0% {
-    transform: translate3d(0, 0, 0) scale(1.02) rotate(0deg);
+    transform: scale(1.02) rotate(0deg);
   }
   12% {
-    transform: translate3d(0, 1.2rem, 0) scale(0.98) rotate(0deg);
+    transform: translateY(1.2rem) scale(0.98) rotate(0deg);
   }
   20% {
-    transform: translate3d(-0.5rem, 0.7rem, 0) scale(1) rotate(6deg);
+    transform: translate(-0.5rem, 0.7rem) scale(1) rotate(6deg);
   }
   28% {
-    transform: translate3d(0.5rem, 0.8rem, 0) scale(1) rotate(-6deg);
+    transform: translate(0.5rem, 0.8rem) scale(1) rotate(-6deg);
   }
   36% {
-    transform: translate3d(0, 0.8rem, 0) scale(1) rotate(3deg);
+    transform: translateY(0.8rem) scale(1) rotate(3deg);
   }
   48% {
-    transform: translate3d(-0.35rem, 0.8rem, 0) scale(1) rotate(5deg);
+    transform: translate(-0.35rem, 0.8rem) scale(1) rotate(5deg);
   }
   56% {
-    transform: translate3d(0.3rem, 0.8rem, 0) scale(1) rotate(-5deg);
+    transform: translate(0.3rem, 0.8rem) scale(1) rotate(-5deg);
   }
   64% {
-    transform: translate3d(0, 0.8rem, 0) scale(1) rotate(2deg);
+    transform: translateY(0.8rem) scale(1) rotate(2deg);
   }
   74% {
-    transform: translate3d(-0.22rem, 0.8rem, 0) scale(1) rotate(3deg);
+    transform: translate(-0.22rem, 0.8rem) scale(1) rotate(3deg);
   }
   82% {
-    transform: translate3d(0.17rem, 0.8rem, 0) scale(1) rotate(-3deg);
+    transform: translate(0.17rem, 0.8rem) scale(1) rotate(-3deg);
   }
   100% {
-    transform: translate3d(0, 0.8rem, 0) scale(1) rotate(0deg);
+    transform: translateY(0.8rem) scale(1) rotate(0deg);
   }
 }
 
@@ -2110,8 +2115,6 @@ input[type='search']:focus {
   }
 
   .capture-arena {
-    --ball-start-x: 8.2rem;
-    --ball-start-y: -11.2rem;
     min-height: 24rem;
   }
 
@@ -2135,16 +2138,16 @@ input[type='search']:focus {
   }
 
   .capture-arena.is-throwing .capture-ball-flight {
-    animation-name: ball-throw-mobile;
+    animation-name: ball-throw;
   }
 
   .capture-arena.is-captured .capture-ball-flight {
-    transform: translate3d(0, 0, 0) scale(1.02) rotate(0deg);
-    animation-name: ball-settle-mobile;
+    transform: scale(1.02) rotate(0deg);
+    animation-name: ball-settle;
   }
 
   .capture-stars {
-    transform: translate3d(-1.7rem, -1.15rem, 0);
+    transform: none;
   }
 
   .hero {
