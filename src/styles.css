@@ -233,7 +233,7 @@ code {
   position: relative;
   padding: 1rem 1.05rem;
   border-radius: 12px;
-  background: rgba(18, 34, 60, 0.88);
+  background: rgb(18, 34, 60);
   border: 1px solid rgba(123, 161, 214, 0.18);
 }
 
@@ -244,7 +244,7 @@ code {
   left: -0.5rem;
   width: 0.84rem;
   height: 0.84rem;
-  background: rgba(18, 34, 60, 0.88);
+  background: rgb(18, 34, 60);
   border-left: 1px solid rgba(123, 161, 214, 0.18);
   border-bottom: 1px solid rgba(123, 161, 214, 0.18);
   clip-path: polygon(0 50%, 100% 0, 100% 100%);
