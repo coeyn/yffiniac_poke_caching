@@ -395,6 +395,7 @@ code {
 .capture-ball-flight,
 .capture-stars,
 .capture-grass,
+.capture-leaf-curtain,
 .capture-pokemon-stage,
 .capture-scene-text {
   position: absolute;
@@ -539,6 +540,119 @@ code {
   animation:
     grass-wave-front 2.2s ease-in-out infinite,
     grass-rustle-front 0.56s steps(2, end) infinite;
+}
+
+.capture-leaf-curtain {
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.capture-leaf-panel {
+  position: absolute;
+  bottom: 4.8rem;
+  width: min(58%, 18rem);
+  height: 12rem;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.capture-leaf-panel::before,
+.capture-leaf-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.capture-leaf-panel::before {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(235, 252, 222, 0.93)),
+    repeating-linear-gradient(
+      74deg,
+      rgba(255, 255, 255, 0.95) 0 16px,
+      rgba(225, 247, 208, 0.92) 16px 32px,
+      rgba(246, 255, 238, 0.95) 32px 44px
+    );
+  filter: drop-shadow(0 8px 14px rgba(15, 40, 22, 0.2));
+}
+
+.capture-leaf-panel::after {
+  background:
+    radial-gradient(circle at 26% 34%, rgba(255, 255, 255, 0.58), transparent 20%),
+    radial-gradient(circle at 66% 56%, rgba(248, 255, 241, 0.44), transparent 18%),
+    repeating-linear-gradient(
+      105deg,
+      rgba(215, 242, 196, 0.14) 0 8px,
+      transparent 8px 17px
+    );
+  mix-blend-mode: screen;
+}
+
+.capture-leaf-panel.is-left {
+  left: -0.7rem;
+  transform: translateX(-120%) scale(1.02) rotate(-7deg);
+  clip-path: polygon(
+    0 100%,
+    0 84%,
+    7% 72%,
+    14% 47%,
+    22% 70%,
+    30% 39%,
+    39% 68%,
+    47% 33%,
+    56% 66%,
+    64% 31%,
+    73% 63%,
+    81% 36%,
+    90% 66%,
+    100% 62%,
+    100% 100%
+  );
+}
+
+.capture-leaf-panel.is-right {
+  right: -0.7rem;
+  transform: translateX(120%) scale(1.02) rotate(7deg);
+  clip-path: polygon(
+    0 62%,
+    9% 66%,
+    18% 36%,
+    27% 63%,
+    36% 31%,
+    44% 66%,
+    53% 33%,
+    61% 68%,
+    70% 39%,
+    78% 70%,
+    86% 47%,
+    93% 72%,
+    100% 84%,
+    100% 100%,
+    0 100%
+  );
+}
+
+.capture-arena.is-approach .capture-leaf-panel {
+  opacity: 0.96;
+}
+
+.capture-arena.is-approach .capture-leaf-panel.is-left {
+  transform: translateX(-10%) scale(1.02) rotate(-2deg);
+  animation: leaf-rustle-left 0.52s ease-in-out infinite;
+}
+
+.capture-arena.is-approach .capture-leaf-panel.is-right {
+  transform: translateX(10%) scale(1.02) rotate(2deg);
+  animation: leaf-rustle-right 0.52s ease-in-out infinite;
+}
+
+.capture-arena.is-ready .capture-leaf-panel.is-left {
+  animation: leaf-open-left 0.64s cubic-bezier(0.24, 0.83, 0.14, 1) forwards;
+}
+
+.capture-arena.is-ready .capture-leaf-panel.is-right {
+  animation: leaf-open-right 0.64s cubic-bezier(0.24, 0.83, 0.14, 1) forwards;
 }
 
 .capture-pokemon-stage {
@@ -1678,6 +1792,62 @@ input[type='search']:focus {
   }
   66% {
     transform: translateX(-5px) skewX(-0.9deg);
+  }
+}
+
+@keyframes leaf-rustle-left {
+  0%,
+  100% {
+    transform: translateX(-10%) scale(1.02) rotate(-2deg);
+  }
+  35% {
+    transform: translateX(-14%) scale(1.01) rotate(-4deg);
+  }
+  65% {
+    transform: translateX(-8%) scale(1.03) rotate(-1deg);
+  }
+}
+
+@keyframes leaf-rustle-right {
+  0%,
+  100% {
+    transform: translateX(10%) scale(1.02) rotate(2deg);
+  }
+  35% {
+    transform: translateX(14%) scale(1.01) rotate(4deg);
+  }
+  65% {
+    transform: translateX(8%) scale(1.03) rotate(1deg);
+  }
+}
+
+@keyframes leaf-open-left {
+  0% {
+    opacity: 0.96;
+    transform: translateX(-10%) scale(1.02) rotate(-2deg);
+  }
+  65% {
+    opacity: 0.85;
+    transform: translateX(-68%) scale(1.01) rotate(-8deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-120%) scale(1.02) rotate(-12deg);
+  }
+}
+
+@keyframes leaf-open-right {
+  0% {
+    opacity: 0.96;
+    transform: translateX(10%) scale(1.02) rotate(2deg);
+  }
+  65% {
+    opacity: 0.85;
+    transform: translateX(68%) scale(1.01) rotate(8deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(120%) scale(1.02) rotate(12deg);
   }
 }
 

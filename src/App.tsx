@@ -259,6 +259,10 @@ function CaptureView(props: {
         <div className={`capture-arena is-${phase}`} aria-live="polite">
           <div className="capture-glow" aria-hidden="true" />
           <div className="capture-grass capture-grass-back" aria-hidden="true" />
+          <div className="capture-leaf-curtain" aria-hidden="true">
+            <span className="capture-leaf-panel is-left" />
+            <span className="capture-leaf-panel is-right" />
+          </div>
           <div className="capture-pokemon-stage">
             <img
               src={resolvePublicAsset(pokemon.image)}
