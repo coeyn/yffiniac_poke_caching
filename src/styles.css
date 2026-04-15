@@ -361,6 +361,8 @@ code {
 }
 
 .capture-arena {
+  --ball-target-x: -13.2rem;
+  --ball-target-y: -10.3rem;
   position: relative;
   width: 100%;
   min-height: 25rem;
@@ -746,7 +748,7 @@ code {
   bottom: 1.5rem;
   width: 3.4rem;
   height: 3.4rem;
-  transform: translate3d(-13.2rem, -11.2rem, 0);
+  transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.6rem), 0);
   pointer-events: none;
   z-index: 4;
 }
@@ -788,7 +790,7 @@ code {
 
 .capture-arena.is-captured .capture-ball-flight {
   opacity: 1;
-  transform: translate3d(-13.2rem, -12rem, 0) scale(1.02) rotate(0deg);
+  transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02) rotate(0deg);
   animation: ball-settle 1.45s ease-out both;
 }
 
@@ -1921,7 +1923,7 @@ input[type='search']:focus {
   }
   100% {
     opacity: 1;
-    transform: translate3d(-13.2rem, -12rem, 0) scale(1.02);
+    transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02);
   }
 }
 
@@ -1970,37 +1972,37 @@ input[type='search']:focus {
 
 @keyframes ball-settle {
   0% {
-    transform: translate3d(-13.2rem, -12rem, 0) scale(1.02) rotate(0deg);
+    transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02) rotate(0deg);
   }
   12% {
-    transform: translate3d(-13.2rem, -10.7rem, 0) scale(0.98) rotate(0deg);
+    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 1.3rem), 0) scale(0.98) rotate(0deg);
   }
   20% {
-    transform: translate3d(-13.7rem, -11.3rem, 0) scale(1) rotate(6deg);
+    transform: translate3d(calc(var(--ball-target-x) - 0.5rem), calc(var(--ball-target-y) + 0.7rem), 0) scale(1) rotate(6deg);
   }
   28% {
-    transform: translate3d(-12.7rem, -11.2rem, 0) scale(1) rotate(-6deg);
+    transform: translate3d(calc(var(--ball-target-x) + 0.5rem), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(-6deg);
   }
   36% {
-    transform: translate3d(-13.2rem, -11.2rem, 0) scale(1) rotate(3deg);
+    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(3deg);
   }
   48% {
-    transform: translate3d(-13.55rem, -11.2rem, 0) scale(1) rotate(5deg);
+    transform: translate3d(calc(var(--ball-target-x) - 0.35rem), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(5deg);
   }
   56% {
-    transform: translate3d(-12.9rem, -11.2rem, 0) scale(1) rotate(-5deg);
+    transform: translate3d(calc(var(--ball-target-x) + 0.3rem), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(-5deg);
   }
   64% {
-    transform: translate3d(-13.2rem, -11.2rem, 0) scale(1) rotate(2deg);
+    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(2deg);
   }
   74% {
-    transform: translate3d(-13.42rem, -11.2rem, 0) scale(1) rotate(3deg);
+    transform: translate3d(calc(var(--ball-target-x) - 0.22rem), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(3deg);
   }
   82% {
-    transform: translate3d(-13.03rem, -11.2rem, 0) scale(1) rotate(-3deg);
+    transform: translate3d(calc(var(--ball-target-x) + 0.17rem), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(-3deg);
   }
   100% {
-    transform: translate3d(-13.2rem, -11.2rem, 0) scale(1) rotate(0deg);
+    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(0deg);
   }
 }
 
@@ -2108,6 +2110,8 @@ input[type='search']:focus {
   }
 
   .capture-arena {
+    --ball-target-x: -8.8rem;
+    --ball-target-y: -10.9rem;
     min-height: 24rem;
   }
 
@@ -2135,12 +2139,12 @@ input[type='search']:focus {
   }
 
   .capture-arena.is-captured .capture-ball-flight {
-    transform: translate3d(-8.6rem, -8.5rem, 0) scale(1.02) rotate(0deg);
+    transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02) rotate(0deg);
     animation-name: ball-settle-mobile;
   }
 
   .capture-stars {
-    transform: translate3d(-8.6rem, -7.95rem, 0);
+    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.55rem), 0);
   }
 
   .hero {
@@ -2419,42 +2423,42 @@ input[type='search']:focus {
   }
   100% {
     opacity: 1;
-    transform: translate3d(-8.6rem, -8.5rem, 0) scale(1.02);
+    transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02);
   }
 }
 
 @keyframes ball-settle-mobile {
   0% {
-    transform: translate3d(-8.6rem, -8.5rem, 0) scale(1.02) rotate(0deg);
+    transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02) rotate(0deg);
   }
   12% {
-    transform: translate3d(-8.6rem, -7.4rem, 0) scale(0.98) rotate(0deg);
+    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 1.1rem), 0) scale(0.98) rotate(0deg);
   }
   20% {
-    transform: translate3d(-9rem, -8rem, 0) scale(1) rotate(6deg);
+    transform: translate3d(calc(var(--ball-target-x) - 0.4rem), calc(var(--ball-target-y) + 0.5rem), 0) scale(1) rotate(6deg);
   }
   28% {
-    transform: translate3d(-8.25rem, -7.95rem, 0) scale(1) rotate(-6deg);
+    transform: translate3d(calc(var(--ball-target-x) + 0.35rem), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(-6deg);
   }
   36% {
-    transform: translate3d(-8.6rem, -7.95rem, 0) scale(1) rotate(3deg);
+    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(3deg);
   }
   48% {
-    transform: translate3d(-8.9rem, -7.95rem, 0) scale(1) rotate(5deg);
+    transform: translate3d(calc(var(--ball-target-x) - 0.3rem), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(5deg);
   }
   56% {
-    transform: translate3d(-8.35rem, -7.95rem, 0) scale(1) rotate(-5deg);
+    transform: translate3d(calc(var(--ball-target-x) + 0.25rem), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(-5deg);
   }
   64% {
-    transform: translate3d(-8.6rem, -7.95rem, 0) scale(1) rotate(2deg);
+    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(2deg);
   }
   74% {
-    transform: translate3d(-8.8rem, -7.95rem, 0) scale(1) rotate(3deg);
+    transform: translate3d(calc(var(--ball-target-x) - 0.2rem), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(3deg);
   }
   82% {
-    transform: translate3d(-8.45rem, -7.95rem, 0) scale(1) rotate(-3deg);
+    transform: translate3d(calc(var(--ball-target-x) + 0.15rem), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(-3deg);
   }
   100% {
-    transform: translate3d(-8.6rem, -7.95rem, 0) scale(1) rotate(0deg);
+    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(0deg);
   }
 }
