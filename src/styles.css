@@ -361,8 +361,8 @@ code {
 }
 
 .capture-arena {
-  --ball-target-x: -12.8rem;
-  --ball-target-y: -11rem;
+  --ball-start-x: 13.2rem;
+  --ball-start-y: -12.2rem;
   position: relative;
   width: 100%;
   min-height: 25rem;
@@ -698,15 +698,15 @@ code {
 }
 
 .capture-ball-flight {
-  right: 1.4rem;
-  bottom: 1.5rem;
+  left: 50%;
+  bottom: 14.8rem;
   width: 3.4rem;
   aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
   box-shadow: 0 16px 22px rgba(20, 38, 54, 0.18);
   opacity: 0;
-  transform: translate3d(0, 0, 0) scale(0.84);
+  transform: translate3d(var(--ball-start-x), var(--ball-start-y), 0) scale(0.84);
   z-index: 3;
 }
 
@@ -729,7 +729,7 @@ code {
 
 .capture-impact {
   left: 50%;
-  bottom: 11rem;
+  bottom: 14.8rem;
   width: 1rem;
   aspect-ratio: 1;
   transform: translateX(-50%) scale(0.1);
@@ -744,11 +744,11 @@ code {
 }
 
 .capture-stars {
-  right: 1.4rem;
-  bottom: 1.5rem;
+  left: 50%;
+  bottom: 14.8rem;
   width: 3.4rem;
   height: 3.4rem;
-  transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.6rem), 0);
+  transform: translate3d(-1.7rem, -1.7rem, 0);
   pointer-events: none;
   z-index: 4;
 }
@@ -790,7 +790,7 @@ code {
 
 .capture-arena.is-captured .capture-ball-flight {
   opacity: 1;
-  transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02) rotate(0deg);
+  transform: translate3d(0, 0, 0) scale(1.02) rotate(0deg);
   animation: ball-settle 1.45s ease-out both;
 }
 
@@ -1919,11 +1919,11 @@ input[type='search']:focus {
 @keyframes ball-throw {
   0% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(0.84);
+    transform: translate3d(var(--ball-start-x), var(--ball-start-y), 0) scale(0.84);
   }
   100% {
     opacity: 1;
-    transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02);
+    transform: translate3d(0, 0, 0) scale(1.02);
   }
 }
 
@@ -1972,37 +1972,37 @@ input[type='search']:focus {
 
 @keyframes ball-settle {
   0% {
-    transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02) rotate(0deg);
+    transform: translate3d(0, 0, 0) scale(1.02) rotate(0deg);
   }
   12% {
-    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 1.3rem), 0) scale(0.98) rotate(0deg);
+    transform: translate3d(0, 1.2rem, 0) scale(0.98) rotate(0deg);
   }
   20% {
-    transform: translate3d(calc(var(--ball-target-x) - 0.5rem), calc(var(--ball-target-y) + 0.7rem), 0) scale(1) rotate(6deg);
+    transform: translate3d(-0.5rem, 0.7rem, 0) scale(1) rotate(6deg);
   }
   28% {
-    transform: translate3d(calc(var(--ball-target-x) + 0.5rem), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(-6deg);
+    transform: translate3d(0.5rem, 0.8rem, 0) scale(1) rotate(-6deg);
   }
   36% {
-    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(3deg);
+    transform: translate3d(0, 0.8rem, 0) scale(1) rotate(3deg);
   }
   48% {
-    transform: translate3d(calc(var(--ball-target-x) - 0.35rem), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(5deg);
+    transform: translate3d(-0.35rem, 0.8rem, 0) scale(1) rotate(5deg);
   }
   56% {
-    transform: translate3d(calc(var(--ball-target-x) + 0.3rem), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(-5deg);
+    transform: translate3d(0.3rem, 0.8rem, 0) scale(1) rotate(-5deg);
   }
   64% {
-    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(2deg);
+    transform: translate3d(0, 0.8rem, 0) scale(1) rotate(2deg);
   }
   74% {
-    transform: translate3d(calc(var(--ball-target-x) - 0.22rem), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(3deg);
+    transform: translate3d(-0.22rem, 0.8rem, 0) scale(1) rotate(3deg);
   }
   82% {
-    transform: translate3d(calc(var(--ball-target-x) + 0.17rem), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(-3deg);
+    transform: translate3d(0.17rem, 0.8rem, 0) scale(1) rotate(-3deg);
   }
   100% {
-    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.8rem), 0) scale(1) rotate(0deg);
+    transform: translate3d(0, 0.8rem, 0) scale(1) rotate(0deg);
   }
 }
 
@@ -2110,8 +2110,8 @@ input[type='search']:focus {
   }
 
   .capture-arena {
-    --ball-target-x: -8.2rem;
-    --ball-target-y: -11.5rem;
+    --ball-start-x: 8.2rem;
+    --ball-start-y: -11.2rem;
     min-height: 24rem;
   }
 
@@ -2139,12 +2139,12 @@ input[type='search']:focus {
   }
 
   .capture-arena.is-captured .capture-ball-flight {
-    transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02) rotate(0deg);
+    transform: translate3d(0, 0, 0) scale(1.02) rotate(0deg);
     animation-name: ball-settle-mobile;
   }
 
   .capture-stars {
-    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.55rem), 0);
+    transform: translate3d(-1.7rem, -1.15rem, 0);
   }
 
   .hero {
@@ -2419,46 +2419,46 @@ input[type='search']:focus {
 @keyframes ball-throw-mobile {
   0% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(0.84);
+    transform: translate3d(var(--ball-start-x), var(--ball-start-y), 0) scale(0.84);
   }
   100% {
     opacity: 1;
-    transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02);
+    transform: translate3d(0, 0, 0) scale(1.02);
   }
 }
 
 @keyframes ball-settle-mobile {
   0% {
-    transform: translate3d(var(--ball-target-x), var(--ball-target-y), 0) scale(1.02) rotate(0deg);
+    transform: translate3d(0, 0, 0) scale(1.02) rotate(0deg);
   }
   12% {
-    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 1.1rem), 0) scale(0.98) rotate(0deg);
+    transform: translate3d(0, 1.1rem, 0) scale(0.98) rotate(0deg);
   }
   20% {
-    transform: translate3d(calc(var(--ball-target-x) - 0.4rem), calc(var(--ball-target-y) + 0.5rem), 0) scale(1) rotate(6deg);
+    transform: translate3d(-0.4rem, 0.5rem, 0) scale(1) rotate(6deg);
   }
   28% {
-    transform: translate3d(calc(var(--ball-target-x) + 0.35rem), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(-6deg);
+    transform: translate3d(0.35rem, 0.55rem, 0) scale(1) rotate(-6deg);
   }
   36% {
-    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(3deg);
+    transform: translate3d(0, 0.55rem, 0) scale(1) rotate(3deg);
   }
   48% {
-    transform: translate3d(calc(var(--ball-target-x) - 0.3rem), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(5deg);
+    transform: translate3d(-0.3rem, 0.55rem, 0) scale(1) rotate(5deg);
   }
   56% {
-    transform: translate3d(calc(var(--ball-target-x) + 0.25rem), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(-5deg);
+    transform: translate3d(0.25rem, 0.55rem, 0) scale(1) rotate(-5deg);
   }
   64% {
-    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(2deg);
+    transform: translate3d(0, 0.55rem, 0) scale(1) rotate(2deg);
   }
   74% {
-    transform: translate3d(calc(var(--ball-target-x) - 0.2rem), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(3deg);
+    transform: translate3d(-0.2rem, 0.55rem, 0) scale(1) rotate(3deg);
   }
   82% {
-    transform: translate3d(calc(var(--ball-target-x) + 0.15rem), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(-3deg);
+    transform: translate3d(0.15rem, 0.55rem, 0) scale(1) rotate(-3deg);
   }
   100% {
-    transform: translate3d(var(--ball-target-x), calc(var(--ball-target-y) + 0.55rem), 0) scale(1) rotate(0deg);
+    transform: translate3d(0, 0.55rem, 0) scale(1) rotate(0deg);
   }
 }
