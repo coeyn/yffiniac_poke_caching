@@ -2051,6 +2051,14 @@ input[type='search']:focus {
     max-width: 100%;
   }
 
+  .capture-shadow-silhouette {
+    width: min(100%, 210px);
+  }
+
+  .capture-arena.is-approach .capture-shadow-silhouette {
+    transform: translateX(-50%) scale(0.56);
+  }
+
   .capture-scene-text {
     left: 0.7rem;
     right: 0.7rem;
@@ -2232,6 +2240,14 @@ input[type='search']:focus {
 
   .capture-image {
     width: clamp(220px, 60vw, 258px);
+  }
+
+  .capture-shadow-silhouette {
+    width: min(100%, 190px);
+  }
+
+  .capture-arena.is-approach .capture-shadow-silhouette {
+    transform: translateX(-50%) scale(0.5);
   }
 
   .capture-scene-text {
