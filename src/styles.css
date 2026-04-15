@@ -344,6 +344,8 @@ code {
 
 .capture-image {
   width: min(100%, 220px);
+  height: auto;
+  object-fit: contain;
   filter: drop-shadow(0 24px 24px rgba(20, 38, 54, 0.18));
 }
 
@@ -2111,6 +2113,12 @@ input[type='search']:focus {
 
   .capture-pokemon-stage {
     bottom: 4.9rem;
+  }
+
+  .capture-image {
+    width: min(100%, 190px);
+    height: auto !important;
+    max-width: 100%;
   }
 
   .capture-arena.is-throwing .capture-ball-flight {
