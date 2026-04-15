@@ -362,7 +362,7 @@ function ProfessorCocoView(props: {
 
     const nextMessage =
       progressTarget !== null
-        ? `Reviens me voir quand tu auras valide ${progressTarget} Pokemon.`
+        ? `Reviens me voir quand tu auras validé ${progressTarget} Pokémon.`
         : 'Tu as deja reuni les trois starters. Continue la chasse.';
 
     return `Je vois ${foundCount} Pokemon valides sur cet appareil. ${nextMessage}`;
@@ -389,7 +389,7 @@ function ProfessorCocoView(props: {
 
         <dl className="professor-stats">
           <div>
-            <dt>Pokemon valides</dt>
+            <dt>Pokémon validés</dt>
             <dd>{foundCount}</dd>
           </div>
           <div>
@@ -483,7 +483,7 @@ function OnboardingView(props: {
             <div className="dialogue-bubble">
               {step === 2 ? (
                 <>
-                  <p className="dialogue-label">Creation du pseudo</p>
+                  <p className="dialogue-label">Création du pseudo</p>
                   <label className="stacked-field onboarding-field" htmlFor="trainer-name">
                     Ton nom de dresseur
                     <input
@@ -607,8 +607,8 @@ export default function App() {
       tone: 'success',
       title: alreadyFound ? `${capturePokemon?.name ?? 'Pokemon'} deja trouve` : `${capturePokemon?.name ?? 'Pokemon'} capture`,
       message: alreadyFound
-        ? 'Cette capture etait deja presente sur cet appareil.'
-        : 'Le Pokemon a bien ete ajoute a ta collection.',
+        ? 'Cette capture était déjà présente sur cet appareil.'
+        : 'Le Pokémon a bien été ajouté à ta collection.',
     });
   }
 
@@ -633,14 +633,14 @@ export default function App() {
 
     setNotice({
       tone: 'success',
-      title: `${starter.name} rejoint ton equipe`,
-      message: 'Le Professeur Coco a valide ce starter sur cet appareil.',
+      title: `${starter.name} rejoint ton équipe`,
+      message: 'Le Professeur Coco a validé ce starter sur cet appareil.',
     });
   }
 
   function handleCollectionReset(): void {
     const confirmed = window.confirm(
-      'Effacer toute la progression locale sur cet appareil ? Cette action reinitialise la collection et l historique.',
+      'Effacer toute la progression locale sur cet appareil ? Cette action réinitialise la collection et l\'historique.',
     );
 
     if (!confirmed) {
@@ -653,7 +653,7 @@ export default function App() {
     setNotice({
       tone: 'neutral',
       title: 'Collection effacée',
-      message: 'Le Pokedex de cet appareil a ete remis a zero.',
+      message: 'Le Pokedex de cet appareil a été remis à zéro.',
     });
   }
 
@@ -671,7 +671,7 @@ export default function App() {
     setNotice({
       tone: 'success',
       title: `Bienvenue ${explorerName}`,
-      message: 'Ton Pokedex local est pret. Tu peux commencer la chasse.',
+      message: 'Ton Pokedex local est prêt. Tu peux commencer la chasse.',
     });
   }
 
@@ -767,11 +767,11 @@ export default function App() {
                 <dd>{completionPercent}%</dd>
               </div>
               <div>
-                <dt>Trouves</dt>
+                <dt>Trouvés</dt>
                 <dd>{foundCount}</dd>
               </div>
               <div>
-                <dt>A trouver</dt>
+                <dt>À trouver</dt>
                 <dd>{totalPokemon - foundCount}</dd>
               </div>
             </dl>
@@ -812,7 +812,7 @@ export default function App() {
 
             <div className="toolbar-controls">
               <label className="search-field" htmlFor="pokemon-search">
-                <span className="sr-only">Rechercher un Pokemon</span>
+                <span className="sr-only">Rechercher un Pokémon</span>
                 <input
                   id="pokemon-search"
                   type="search"
@@ -829,7 +829,7 @@ export default function App() {
                 {filterModes.map((mode) => {
                   const labels: Record<FilterMode, string> = {
                     all: 'Tous',
-                    found: 'Trouves',
+                    found: 'Trouvés',
                     missing: 'Manquants',
                   };
 
