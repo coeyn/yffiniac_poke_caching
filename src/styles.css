@@ -418,7 +418,7 @@ code {
   left: -8%;
   width: 116%;
   transform-origin: center bottom;
-  mask-image: linear-gradient(180deg, transparent 0 8%, #000 40% 100%);
+  mask-image: linear-gradient(180deg, transparent 0 2%, #000 20% 100%);
   will-change: transform;
 }
 
@@ -431,8 +431,8 @@ code {
 }
 
 .capture-grass-back {
-  bottom: 7.9rem;
-  height: 8.4rem;
+  bottom: 7.2rem;
+  height: 10.8rem;
   opacity: 0.78;
   animation: grass-wave-back 4.8s ease-in-out infinite;
 }
@@ -451,9 +451,9 @@ code {
 }
 
 .capture-grass-front {
-  bottom: -0.3rem;
-  height: 11.6rem;
-  opacity: 0.97;
+  bottom: -0.6rem;
+  height: 14.2rem;
+  opacity: 0.98;
   animation: grass-wave-front 3.1s ease-in-out infinite;
 }
 
@@ -491,9 +491,9 @@ code {
 
 .capture-leaf-panel {
   position: absolute;
-  bottom: 4.8rem;
-  width: min(58%, 18rem);
-  height: 12rem;
+  bottom: 4.2rem;
+  width: min(74%, 24rem);
+  height: 16.2rem;
   opacity: 0;
   will-change: transform, opacity;
 }
@@ -518,13 +518,13 @@ code {
 }
 
 .capture-leaf-panel.is-left {
-  left: -0.7rem;
-  transform: translateX(-120%) scale(1.02) rotate(-7deg);
+  left: -2.4rem;
+  transform: translateX(-130%) scale(1.08) rotate(-7deg);
 }
 
 .capture-leaf-panel.is-right {
-  right: -0.7rem;
-  transform: translateX(120%) scale(1.02) rotate(7deg);
+  right: -2.4rem;
+  transform: translateX(130%) scale(1.08) rotate(7deg);
 }
 
 .capture-leaf-panel.is-left::before {
@@ -536,16 +536,16 @@ code {
 }
 
 .capture-arena.is-approach .capture-leaf-panel {
-  opacity: 0.96;
+  opacity: 1;
 }
 
 .capture-arena.is-approach .capture-leaf-panel.is-left {
-  transform: translateX(-10%) scale(1.02) rotate(-2deg);
+  transform: translateX(-2%) scale(1.2) rotate(-2.4deg);
   animation: leaf-rustle-left 0.52s ease-in-out infinite;
 }
 
 .capture-arena.is-approach .capture-leaf-panel.is-right {
-  transform: translateX(10%) scale(1.02) rotate(2deg);
+  transform: translateX(2%) scale(1.2) rotate(2.4deg);
   animation: leaf-rustle-right 0.52s ease-in-out infinite;
 }
 
@@ -1700,56 +1700,56 @@ input[type='search']:focus {
 @keyframes leaf-rustle-left {
   0%,
   100% {
-    transform: translateX(-10%) scale(1.02) rotate(-2deg);
+    transform: translateX(-2%) scale(1.2) rotate(-2.4deg);
   }
   35% {
-    transform: translateX(-14%) scale(1.01) rotate(-4deg);
+    transform: translateX(-8%) scale(1.16) rotate(-3.9deg);
   }
   65% {
-    transform: translateX(-8%) scale(1.03) rotate(-1deg);
+    transform: translateX(1%) scale(1.22) rotate(-1.3deg);
   }
 }
 
 @keyframes leaf-rustle-right {
   0%,
   100% {
-    transform: translateX(10%) scale(1.02) rotate(2deg);
+    transform: translateX(2%) scale(1.2) rotate(2.4deg);
   }
   35% {
-    transform: translateX(14%) scale(1.01) rotate(4deg);
+    transform: translateX(8%) scale(1.16) rotate(3.9deg);
   }
   65% {
-    transform: translateX(8%) scale(1.03) rotate(1deg);
+    transform: translateX(-1%) scale(1.22) rotate(1.3deg);
   }
 }
 
 @keyframes leaf-open-left {
   0% {
-    opacity: 0.96;
-    transform: translateX(-10%) scale(1.02) rotate(-2deg);
+    opacity: 1;
+    transform: translateX(-2%) scale(1.2) rotate(-2.4deg);
   }
   65% {
     opacity: 0.85;
-    transform: translateX(-68%) scale(1.01) rotate(-8deg);
+    transform: translateX(-76%) scale(1.14) rotate(-8deg);
   }
   100% {
     opacity: 0;
-    transform: translateX(-120%) scale(1.02) rotate(-12deg);
+    transform: translateX(-130%) scale(1.08) rotate(-12deg);
   }
 }
 
 @keyframes leaf-open-right {
   0% {
-    opacity: 0.96;
-    transform: translateX(10%) scale(1.02) rotate(2deg);
+    opacity: 1;
+    transform: translateX(2%) scale(1.2) rotate(2.4deg);
   }
   65% {
     opacity: 0.85;
-    transform: translateX(68%) scale(1.01) rotate(8deg);
+    transform: translateX(76%) scale(1.14) rotate(8deg);
   }
   100% {
     opacity: 0;
-    transform: translateX(120%) scale(1.02) rotate(12deg);
+    transform: translateX(130%) scale(1.08) rotate(12deg);
   }
 }
 
