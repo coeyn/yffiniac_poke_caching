@@ -2089,8 +2089,33 @@ input[type='search']:focus {
     max-width: 26rem;
   }
 
+  .onboarding-card .professor-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .onboarding-card .professor-copy {
+    display: contents;
+  }
+
+  .onboarding-card .professor-copy .hero-kicker {
+    order: 1;
+    margin: 0;
+  }
+
+  .onboarding-card .professor-avatar {
+    order: 2;
+  }
+
   .dialogue-bubble {
     margin-top: 0.2rem;
+  }
+
+  .onboarding-card .dialogue-bubble {
+    order: 3;
+    width: 100%;
+    max-width: 26rem;
   }
 
   .dialogue-bubble::before {
