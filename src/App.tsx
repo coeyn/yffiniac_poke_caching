@@ -280,6 +280,15 @@ function CaptureView(props: {
               className="capture-image"
             />
           </div>
+          <div className="capture-shadow-silhouette" aria-hidden="true">
+            <img
+              src={resolvePublicAsset(pokemon.image)}
+              alt=""
+              width="220"
+              height="220"
+              className="capture-shadow-image"
+            />
+          </div>
           <div className="capture-grass capture-grass-front" aria-hidden="true" />
           <div className="capture-ball-flight" aria-hidden="true">
             <img

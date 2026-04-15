@@ -406,6 +406,7 @@ code {
 .capture-stars,
 .capture-grass,
 .capture-leaf-curtain,
+.capture-shadow-silhouette,
 .capture-pokemon-stage,
 .capture-scene-text {
   position: absolute;
@@ -444,6 +445,7 @@ code {
   bottom: 4.2rem;
   height: 17.8rem;
   opacity: 0.78;
+  z-index: 1;
   animation: grass-wave-back 4.8s ease-in-out infinite;
 }
 
@@ -466,6 +468,7 @@ code {
   bottom: -0.6rem;
   height: 14.2rem;
   opacity: 0.98;
+  z-index: 3;
   animation: grass-wave-front 3.1s ease-in-out infinite;
 }
 
@@ -592,6 +595,27 @@ code {
   animation: leaf-open-right 0.64s cubic-bezier(0.24, 0.83, 0.14, 1) forwards;
 }
 
+.capture-shadow-silhouette {
+  left: 50%;
+  bottom: 4.45rem;
+  width: min(100%, 220px);
+  transform: translateX(-50%) scale(0.58);
+  transform-origin: center bottom;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 200ms ease;
+}
+
+.capture-shadow-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: brightness(0) saturate(0) contrast(1.05);
+  opacity: 0.54;
+}
+
 .capture-pokemon-stage {
   left: 50%;
   bottom: 4.7rem;
@@ -634,6 +658,17 @@ code {
   opacity: 0.48;
   transform: translateX(-50%) scale(0.6);
   animation: shadow-tease 0.7s ease-in-out infinite;
+}
+
+.capture-arena.is-approach .capture-shadow-silhouette {
+  opacity: 1;
+  animation: silhouette-breathe 0.7s ease-in-out infinite;
+}
+
+.capture-arena.is-ready .capture-shadow-silhouette,
+.capture-arena.is-throwing .capture-shadow-silhouette,
+.capture-arena.is-captured .capture-shadow-silhouette {
+  opacity: 0;
 }
 
 .capture-arena.is-ready .capture-pokemon-stage,
@@ -1710,6 +1745,18 @@ input[type='search']:focus {
   50% {
     transform: translateX(-50%) scale(0.68);
     opacity: 0.56;
+  }
+}
+
+@keyframes silhouette-breathe {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(0.56);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(-50%) scale(0.64);
+    opacity: 0.62;
   }
 }
 
