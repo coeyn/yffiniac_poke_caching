@@ -234,7 +234,6 @@ code {
   padding: 1rem 1.05rem;
   border-radius: 12px;
   background: rgba(18, 34, 60, 0.88);
-  border: 1px solid rgba(123, 161, 214, 0.18);
 }
 
 .dialogue-bubble::before {
@@ -244,9 +243,6 @@ code {
   left: -0.64rem;
   width: 0;
   height: 0;
-  border-top: 0.52rem solid transparent;
-  border-bottom: 0.52rem solid transparent;
-  border-right: 0.64rem solid rgba(123, 161, 214, 0.18);
 }
 
 .dialogue-bubble::after {
@@ -258,7 +254,7 @@ code {
   height: 0;
   border-top: 0.46rem solid transparent;
   border-bottom: 0.46rem solid transparent;
-  border-right: 0.56rem solid rgba(18, 34, 60, 0.88);
+  border-right: 0.5rem solid rgba(18, 34, 60, 0.88);
 }
 
 .dialogue-label,
@@ -2077,12 +2073,44 @@ input[type='search']:focus {
   }
 
   .professor-head {
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
   }
 
   .professor-avatar {
     width: 7rem;
+  }
+
+  .professor-copy {
+    width: 100%;
+    max-width: 26rem;
+  }
+
+  .dialogue-bubble {
+    margin-top: 0.2rem;
+  }
+
+  .dialogue-bubble::before {
+    top: -0.62rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: 0;
+    border-left: 0.52rem solid transparent;
+    border-right: 0.52rem solid transparent;
+    border-bottom: 0.62rem solid rgba(123, 161, 214, 0.18);
+  }
+
+  .dialogue-bubble::after {
+    top: -0.52rem;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: 0;
+    border-left: 0.45rem solid transparent;
+    border-right: 0.45rem solid transparent;
+    border-bottom: 0.54rem solid rgba(18, 34, 60, 0.88);
   }
 
   .progress-ring {
