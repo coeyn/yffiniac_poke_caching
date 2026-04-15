@@ -343,7 +343,6 @@ code {
 }
 
 .capture-image {
-  width: min(100%, 220px);
   height: auto;
   object-fit: contain;
   filter: drop-shadow(0 24px 24px rgba(20, 38, 54, 0.18));
@@ -417,15 +416,16 @@ code {
 }
 
 .capture-glow {
-  inset: auto 50% 5.9rem;
-  width: 15.4rem;
-  height: 5.4rem;
+  inset: auto 50% 8.9rem;
+  width: 6.4rem;
+  height: 2.4rem;
   transform: translateX(-50%);
   border-radius: 50%;
   background:
     radial-gradient(circle, rgba(255, 228, 143, 0.72), rgba(255, 228, 143, 0) 65%);
   opacity: 0.64;
   filter: blur(0.4px);
+  z-index: 2;
 }
 
 .capture-grass {
