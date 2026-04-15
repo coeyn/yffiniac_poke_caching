@@ -3,8 +3,11 @@ import { starterPokemonIds } from './data/professor-coco';
 import { getPokemonClue } from './data/pokemon-clues';
 import { pokemonCatalog } from './data/pokemon';
 import {
+  applyWeeklyResetIfNeeded,
   claimProfessorStarter,
   createEmptyCollection,
+  getNextWeeklyResetAt,
+  getShinyChanceByAttempts,
   loadCollection,
   markPokemonFound,
   recordProfessorVisit,
@@ -61,6 +64,10 @@ function resolvePublicAsset(path: string): string {
 
 function formatScanDate(value: string): string {
   return dateFormatter.format(new Date(value));
+}
+
+function formatPercent(value: number): string {
+  return `${Math.round(value * 1000) / 10}%`;
 }
 
 function filterPokemon(collection: CollectionState, query: string, filterMode: FilterMode) {
@@ -179,11 +186,15 @@ function CaptureView(props: {
   collection: CollectionState;
   onCaptured: () => void;
   onReturn: () => void;
+  isShiny: boolean;
+  shinyChance: number;
 }) {
   const pokemon = displayCatalog[props.captureState.id - 1];
   const foundRecord = props.collection.found[props.captureState.dex];
   const pokeballAsset = resolvePublicAsset('/img/pokeball.webp');
-  const captureSpriteAsset = resolvePublicAsset(`/pokemon_anim_hd/${pokemon.dex}.gif`);
+  const captureSpriteAsset = resolvePublicAsset(
+    props.isShiny ? `/pokemon_anim_shiny_hd/${pokemon.dex}.gif` : `/pokemon_anim_hd/${pokemon.dex}.gif`,
+  );
   const [phase, setPhase] = useState<CapturePhase>('approach');
   const [hasRecorded, setHasRecorded] = useState(false);
   const [wasAlreadyFound, setWasAlreadyFound] = useState(Boolean(foundRecord));
@@ -242,12 +253,18 @@ function CaptureView(props: {
     phase === 'approach'
       ? 'Les hautes herbes bougent... quelque chose approche.'
       : phase === 'ready'
-        ? `${pokemon.name} surgit des herbes. Lance une Pokeball.`
+        ? props.isShiny
+          ? `${pokemon.name} shiny surgit des herbes. Lance une Pokeball. Chance shiny: ${formatPercent(props.shinyChance)}`
+          : `${pokemon.name} surgit des herbes. Lance une Pokeball. Chance shiny: ${formatPercent(props.shinyChance)}`
         : phase === 'throwing'
           ? 'La Pokeball file droit sur la figurine.'
           : wasAlreadyFound
-            ? `${pokemon.name} est deja dans ta collection.`
-            : `${pokemon.name} rejoint maintenant ta collection locale.`;
+            ? props.isShiny
+              ? `${pokemon.name} shiny est dans ta collection.`
+              : `${pokemon.name} est deja dans ta collection.`
+            : props.isShiny
+              ? `${pokemon.name} shiny rejoint maintenant ta collection locale.`
+              : `${pokemon.name} rejoint maintenant ta collection locale.`;
 
   return (
     <main className="capture-shell">
@@ -554,11 +571,23 @@ export default function App() {
     title: '',
     message: '',
   });
+  const [activeEncounterShiny, setActiveEncounterShiny] = useState(false);
+  const [activeEncounterChance, setActiveEncounterChance] = useState(0);
   const deferredSearch = useDeferredValue(searchTerm);
 
   useEffect(() => {
     saveCollection(collection);
   }, [collection]);
+
+  useEffect(() => {
+    setCollection((currentCollection) => applyWeeklyResetIfNeeded(currentCollection));
+
+    const interval = window.setInterval(() => {
+      setCollection((currentCollection) => applyWeeklyResetIfNeeded(currentCollection));
+    }, 60_000);
+
+    return () => window.clearInterval(interval);
+  }, []);
 
   const foundCount = Object.keys(collection.found).length;
   const completion = foundCount / totalPokemon;
@@ -570,12 +599,27 @@ export default function App() {
     ? displayCatalog.find((pokemon) => pokemon.dex === selectedDex) ?? null
     : null;
   const selectedFoundRecord = selectedPokemon ? collection.found[selectedPokemon.dex] : null;
+  const selectedShinyRecord = selectedPokemon ? collection.shinyDex[selectedPokemon.dex] : null;
   const selectedClue = selectedPokemon ? getPokemonClue(selectedPokemon) : null;
+  const nextWeeklyReset = getNextWeeklyResetAt();
 
   const capturePokemon = useMemo(
     () => (encounterState?.kind === 'pokemon' ? displayCatalog[encounterState.id - 1] : null),
     [encounterState],
   );
+
+  useEffect(() => {
+    if (encounterState?.kind !== 'pokemon') {
+      setActiveEncounterShiny(false);
+      setActiveEncounterChance(0);
+      return;
+    }
+
+    const attempts = (collection.shinyAttempts[encounterState.dex] ?? 0) + 1;
+    const chance = getShinyChanceByAttempts(attempts);
+    setActiveEncounterChance(chance);
+    setActiveEncounterShiny(Math.random() < chance);
+  }, [collection.shinyAttempts, encounterState]);
 
   useEffect(() => {
     if (encounterState?.kind !== 'professor') {
@@ -602,22 +646,30 @@ export default function App() {
     }
 
     const alreadyFound = Boolean(collection.found[encounterState.dex]);
+    const isShiny = activeEncounterShiny;
 
     setCollection((currentCollection) =>
       markPokemonFound(currentCollection, {
         id: encounterState.id,
         payload: encounterState.rawUrl,
         source: 'url',
+        isShiny,
         serialNumber: null,
       }),
     );
 
     setNotice({
       tone: 'success',
-      title: alreadyFound ? `${capturePokemon?.name ?? 'Pokemon'} deja trouve` : `${capturePokemon?.name ?? 'Pokemon'} capture`,
-      message: alreadyFound
-        ? 'Cette capture était déjà présente sur cet appareil.'
-        : 'Le Pokémon a bien été ajouté à ta collection.',
+      title: isShiny
+        ? `${capturePokemon?.name ?? 'Pokemon'} shiny capture`
+        : alreadyFound
+          ? `${capturePokemon?.name ?? 'Pokemon'} deja trouve`
+          : `${capturePokemon?.name ?? 'Pokemon'} capture`,
+      message: isShiny
+        ? 'Incroyable, version shiny obtenue.'
+        : alreadyFound
+          ? 'Cette capture etait deja presente sur cet appareil.'
+          : 'Le Pokemon a bien ete ajoute a ta collection.',
     });
   }
 
@@ -691,6 +743,8 @@ export default function App() {
         collection={collection}
         onCaptured={handleCaptureRecorded}
         onReturn={handleCaptureReturn}
+        isShiny={activeEncounterShiny}
+        shinyChance={activeEncounterChance}
       />
     );
   }
@@ -745,6 +799,7 @@ export default function App() {
                   ? `Derniere capture : ${lastScannedPokemon.name} le ${formatScanDate(lastHistoryEntry.scannedAt)}`
                   : 'Aucune figurine validée pour le moment.'}
               </p>
+              <p>{`Reset hebdo: ${formatScanDate(nextWeeklyReset)}`}</p>
             </div>
           </div>
         </div>
@@ -862,6 +917,8 @@ export default function App() {
           <div className="dex-grid">
             {filteredPokemon.map((pokemon) => {
               const foundRecord = collection.found[pokemon.dex];
+              const shinyRecord = collection.shinyDex[pokemon.dex];
+              const tileImage = shinyRecord ? `/pokemon_shiny/${pokemon.dex}.png` : pokemon.image;
 
               return (
                 <button
@@ -873,13 +930,18 @@ export default function App() {
                 >
                   <div className="dex-visual">
                     <img
-                      src={resolvePublicAsset(pokemon.image)}
+                      src={resolvePublicAsset(tileImage)}
                       alt=""
                       width="96"
                       height="96"
                       loading="lazy"
                       decoding="async"
                     />
+                    {shinyRecord ? (
+                      <span className="shiny-badge" aria-label="Shiny obtenu">
+                        ✦
+                      </span>
+                    ) : null}
                   </div>
                 </button>
               );
@@ -909,7 +971,9 @@ export default function App() {
             <div className="pokemon-modal-head">
               <span className="dex-number">#{selectedPokemon.dex}</span>
               <img
-                src={resolvePublicAsset(selectedPokemon.image)}
+                src={resolvePublicAsset(
+                  selectedShinyRecord ? `/pokemon_shiny/${selectedPokemon.dex}.png` : selectedPokemon.image,
+                )}
                 alt={selectedPokemon.name}
                 width="140"
                 height="140"
@@ -931,6 +995,9 @@ export default function App() {
                   {`Trouve le ${formatScanDate(selectedFoundRecord.foundAt)}`}
                 </p>
               ) : null}
+              {selectedShinyRecord ? (
+                <p className="pokemon-modal-status">{`Shiny obtenu (${selectedShinyRecord.shinyCount} fois)`}</p>
+              ) : null}
             </div>
           </section>
         </div>
@@ -938,3 +1005,5 @@ export default function App() {
     </div>
   );
 }
+
+

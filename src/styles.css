@@ -640,7 +640,7 @@ code {
   content: '';
   position: absolute;
   left: 50%;
-  bottom: 0.1rem;
+  bottom: -0.7rem;
   width: 9.8rem;
   height: 1.9rem;
   transform: translateX(-50%);
@@ -1570,6 +1570,7 @@ input[type='search']:focus {
 }
 
 .dex-visual {
+  position: relative;
   width: 100%;
   height: 100%;
   display: grid;
@@ -1586,6 +1587,23 @@ input[type='search']:focus {
 .dex-tile.is-missing .dex-visual img {
   filter: grayscale(1) saturate(0.25);
   opacity: 0.45;
+}
+
+.shiny-badge {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 999px;
+  background: rgba(17, 34, 61, 0.86);
+  color: #ffe07a;
+  font-size: 0.74rem;
+  line-height: 1;
+  box-shadow: 0 0 0 1px rgba(255, 224, 122, 0.3);
 }
 
 .dex-clue {
