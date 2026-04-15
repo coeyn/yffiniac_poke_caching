@@ -132,6 +132,48 @@ function clearCaptureTagFromUrl(): void {
   window.history.replaceState({}, '', currentUrl);
 }
 
+function TypewriterText(props: {
+  text: string;
+  className?: string;
+  speed?: number;
+}) {
+  const { text, className, speed = 24 } = props;
+  const [visibleLength, setVisibleLength] = useState(0);
+
+  useEffect(() => {
+    setVisibleLength(0);
+
+    if (!text) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setVisibleLength((currentLength) => {
+        if (currentLength >= text.length) {
+          window.clearInterval(interval);
+          return currentLength;
+        }
+
+        return currentLength + 1;
+      });
+    }, speed);
+
+    return () => window.clearInterval(interval);
+  }, [speed, text]);
+
+  const displayedText = text.slice(0, visibleLength);
+  const isComplete = visibleLength >= text.length;
+
+  return (
+    <p className={className} aria-label={text}>
+      {displayedText}
+      <span className={`typewriter-cursor ${isComplete ? 'is-hidden' : ''}`} aria-hidden="true">
+        |
+      </span>
+    </p>
+  );
+}
+
 function CaptureView(props: {
   captureState: PokemonEncounterState;
   collection: CollectionState;
@@ -329,7 +371,7 @@ function ProfessorCocoView(props: {
 
           <div className="professor-copy">
             <p className="hero-kicker">Professeur Coco</p>
-            <p className="capture-text">{renderMessage()}</p>
+            <TypewriterText className="capture-text" text={renderMessage()} speed={20} />
           </div>
         </div>
 
@@ -444,7 +486,7 @@ function OnboardingView(props: {
                   </label>
                 </>
               ) : (
-                <p className="capture-text">{dialogue[step]}</p>
+                <TypewriterText className="capture-text" text={dialogue[step]} speed={20} />
               )}
             </div>
           </div>
