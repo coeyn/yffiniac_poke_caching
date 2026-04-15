@@ -1577,15 +1577,11 @@ input[type='search']:focus {
   place-items: center;
   border-radius: 10px;
   background: transparent;
-  overflow: hidden;
 }
 
 .dex-visual img {
-  width: 128%;
-  height: 128%;
-  max-width: none;
-  object-fit: cover;
-  object-position: center 56%;
+  width: min(100%, 108px);
+  height: auto;
 }
 
 .dex-tile.is-missing .dex-visual img {
@@ -2238,11 +2234,8 @@ input[type='search']:focus {
   }
 
   .dex-visual img {
-    width: 124%;
-    height: 124%;
-    max-width: none;
-    object-fit: cover;
-    object-position: center 56%;
+    width: 76px;
+    height: 76px;
   }
 
   .dex-clue {
@@ -2354,11 +2347,8 @@ input[type='search']:focus {
   }
 
   .dex-visual img {
-    width: 122%;
-    height: 122%;
-    max-width: none;
-    object-fit: cover;
-    object-position: center 56%;
+    width: 56px;
+    height: 56px;
   }
 
   .dex-copy {

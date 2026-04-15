@@ -539,9 +539,8 @@ function OnboardingView(props: {
             <div className="dialogue-bubble">
               {step === 2 ? (
                 <>
-                  <p className="dialogue-label">Création du pseudo</p>
                   <label className="stacked-field onboarding-field" htmlFor="trainer-name">
-                    Ton nom de dresseur
+                    Quel est ton pseudo?
                     <input
                       id="trainer-name"
                       name="trainer-name"
