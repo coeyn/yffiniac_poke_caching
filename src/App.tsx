@@ -182,6 +182,7 @@ function CaptureView(props: {
 }) {
   const pokemon = displayCatalog[props.captureState.id - 1];
   const foundRecord = props.collection.found[props.captureState.dex];
+  const pokeballAsset = resolvePublicAsset('/img/pokeball.webp');
   const [phase, setPhase] = useState<CapturePhase>('approach');
   const [hasRecorded, setHasRecorded] = useState(false);
   const [wasAlreadyFound, setWasAlreadyFound] = useState(Boolean(foundRecord));
@@ -280,7 +281,15 @@ function CaptureView(props: {
             />
           </div>
           <div className="capture-grass capture-grass-front" aria-hidden="true" />
-          <div className="capture-ball-flight" aria-hidden="true" />
+          <div className="capture-ball-flight" aria-hidden="true">
+            <img
+              src={pokeballAsset}
+              alt=""
+              width="56"
+              height="56"
+              className="capture-ball-image"
+            />
+          </div>
           <div className="capture-impact" aria-hidden="true" />
           <div className="capture-stars" aria-hidden="true">
             <span />
@@ -295,7 +304,14 @@ function CaptureView(props: {
           onClick={handlePrimaryAction}
           disabled={phase === 'approach' || phase === 'throwing'}
         >
-          <span className="capture-button-ball" aria-hidden="true" />
+          <img
+            src={pokeballAsset}
+            alt=""
+            width="24"
+            height="24"
+            className="capture-button-ball"
+            aria-hidden="true"
+          />
           {primaryButtonLabel}
         </button>
       </section>
